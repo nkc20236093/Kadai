@@ -18,11 +18,11 @@ void Start()
 
         //②身長と体重を引数にBMI(ボディマス指数)を返すメソッドGetBMIを作成
         //※BMI ＝ 体重kg ÷ (身長mの二乗)
-        float BMI = height / (weight * weight);
+        
         //③Startメソッド内でheightとweightを引数で渡してGetBMIを呼んでDebug.Logで表示。
         //※ 例）身長○○m 体重○○kg BMIは○○です
         //※ インスペクタで設定した値で表示・計算が出来ていれば成功
-        Debug.Log("身長は" + height + "cm,体重は" + weight + "kg,BMIは" + BMI);
+        Debug.Log("身長は" + height + "cm,体重は" + weight + "kg,BMIは" + GetBMI());
         //④以下のように肥満度の文字列をstring型の配列で宣言(height,weightの上か下あたりに書く)
         //[SerializeField][Header("肥満度")] string[] obesity;
 
@@ -43,23 +43,23 @@ void Start()
         //なお、配列の添え字は今回は直接数値を書いてもよい。もちろん変数を使ってもよい。
         //また、obersityに何も入力されてない場合は処理せずに注意文を表示すること
         //例）if (obesity==null) { Debug.Log("肥満度の文字が何も入力されていません"); } else { 処理 }
-        if (BMI < 18.5)
+        if (GetBMI() < 18.5)
         {
             Debug.Log(obesity[0]);
         }
-        else if (BMI > 18.5 && BMI < 25)
+        else if (GetBMI() < 25)
         {
             Debug.Log(obesity[1]);
         }
-        else if (BMI > 25 && BMI < 30)
+        else if (GetBMI() < 30)
         {
             Debug.Log(obesity[2]);
         }
-        else if (BMI > 30 && BMI < 35)
+        else if (GetBMI() < 35)
         {
             Debug.Log(obesity[3]); ;
         }
-        else if (BMI > 35 && BMI < 40)
+        else if (GetBMI() < 40)
         {
             Debug.Log(obesity[4]);
         }
@@ -69,5 +69,9 @@ void Start()
         }
         //★適正体重を求めるメソッドも作って表示できればなお良い
     }
-
+    float GetBMI()
+    {
+        float BMI = height / (weight * weight);
+        return BMI;
+    }
 }
