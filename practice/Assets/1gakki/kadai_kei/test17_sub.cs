@@ -71,7 +71,7 @@ void Start()
     }
     float GetBMI()
     {
-        float BMI = height / (weight * weight);
+        float BMI = height / Mathf.Pow(weight, 2);
         return BMI;
     }
 }
