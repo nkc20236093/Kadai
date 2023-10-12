@@ -7,6 +7,8 @@ using static Unity.Collections.Unicode;
 
 public class test_20_sub : MonoBehaviour
 {
+    [Serialize] public int m = 1;
+
     // ‰Û‘è20
     // 1‚©‚ç12‚Ì’l‚ðŽ‚Â—ñ‹“Œ^AMonth‚ðì¬
     // 1...January, 2...February..‚Æ‚¢‚Á‚½‚æ‚¤‚ÈŒ^‚ðì‚é
@@ -60,11 +62,10 @@ public class test_20_sub : MonoBehaviour
     {
         Debug.Log($"’a¶“ú‚Í{x}");
 
-        int m = 1;
 
-        if ((m + 1) >= 0 && (m + 1) <= 12)
+        if (m > 0 && m <= 12)
         {
-            Debug.Log(MonthTable[m]);
+            Debug.Log(MonthTable[m - 1]);
         }
         else
         {
