@@ -60,9 +60,9 @@ public class test_20_sub : MonoBehaviour
     {
         Debug.Log($"’a¶“ú‚Í{x}");
 
-        int m = 26;
+        int m = 1;
 
-        if (m >= 0 && m <= 12)
+        if ((m + 1) >= 0 && (m + 1) <= 12)
         {
             Debug.Log(MonthTable[m]);
         }
