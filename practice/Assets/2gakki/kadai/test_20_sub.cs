@@ -14,6 +14,7 @@ public class test_20_sub : MonoBehaviour
     // 1...January, 2...February..‚Æ‚¢‚Á‚½‚æ‚¤‚ÈŒ^‚ðì‚é
     enum Month
     {
+        none,
         January,
         February,
         March,
@@ -60,12 +61,13 @@ public class test_20_sub : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log($"’a¶“ú‚Í{x}");
+        Debug.Log($"’a¶“ú‚Í{(int)x}ŒŽ");
 
 
         if (m > 0 && m <= 12)
         {
-            Debug.Log(MonthTable[m - 1]);
+            Month month = (Month)(int)m;
+            Debug.Log(month);
         }
         else
         {
