@@ -28,7 +28,6 @@ public class test_20_sub : MonoBehaviour
         November,
         December,
     };
-    Month x = Month.May;
 
     // intŒ^‚Ì•Ï”x‚ðì¬‚µAŽ©•ª‚Ì’a¶ŒŽ‚ðMonthŒ^‚Ì—ñ‹“Žq‚Å
     // ƒLƒƒƒXƒg‚ð—p‚¢‚Ä‘ã“ü
@@ -61,7 +60,8 @@ public class test_20_sub : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log($"’a¶“ú‚Í{(int)x}ŒŽ");
+        int x = (int)Month.May;
+        Debug.Log($"’a¶“ú‚Í{x}ŒŽ");
 
 
         if (m > 0 && m <= 12)
