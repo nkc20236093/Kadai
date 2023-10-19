@@ -54,9 +54,9 @@ public class test21_sub : MonoBehaviour
         }
         public void Print()
         {
-            Debug.Log($"アックス");
-            //Debug.Log();
-            //Debug.Log();
+            Debug.Log($"{name}アックス");
+            Debug.Log(atkPow);
+            Debug.Log(vital);
         }
         public void SetName(string n)
         {
@@ -83,12 +83,78 @@ public class test21_sub : MonoBehaviour
             return vital;
         }
     }
-
+    class Shield 
+    {
+        private string name_1;
+        private int defense;
+        private int vital_1;
+        public Shield(string n, int d, int v)
+        {
+            name_1 = n;
+            defense = d;
+            vital_1 = v;
+        }
+        public void Print()
+        {
+            Debug.Log($"{name_1}シールド");
+            Debug.Log(defense);
+            Debug.Log(vital_1);
+        }
+        public void SetName(string n)
+        {
+            name_1 = n;
+        }
+        public void SetDefence(int d)
+        {
+            defense = d;
+        }
+        public void SetVital(int v)
+        {
+            vital_1 = v;
+        }
+        public string GetName()
+        {
+            return name_1;
+        }
+        public int GetDefence()
+        {
+            return defense;
+        }
+        public int GetVital()
+        {
+            return vital_1;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
-        Axe axe = new Axe("斧", 500, 500);
+        Axe axe = new Axe("木", 600, 500);
         axe.Print();
+        string a = axe.GetName();
+        int b = axe.GetatkPow();
+        int c = axe.GetVital();
+
+        Shield shield = new Shield("木", 500, 600);
+        shield.Print();
+        string aa = shield.GetName();
+        int bb = shield.GetDefence();
+        int cc = shield.GetVital();
+
+        int zz = axe.GetatkPow() - shield.GetDefence();
+        string zzz;
+
+        Debug.Log($"{a}の攻撃:{b} VS {aa}の防御:{bb}");
+        if (b > bb)
+        {
+            zzz = aa;
+            Debug.Log($"{aa}の勝利");
+        }
+        else
+        {
+            zzz = a;
+            Debug.Log($"{a}の勝利");
+        }
+        Debug.Log($"{zzz}の耐久が{zz}になりました");
     }
 
     // Update is called once per frame
