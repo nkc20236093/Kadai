@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using static Unity.Collections.Unicode;
 
-public class test_20_sub : MonoBehaviour
+public class test20_sub : MonoBehaviour
 {
     [Serialize] public int m = 1;
 
