@@ -140,6 +140,7 @@ public class test21_sub : MonoBehaviour
         int bb = shield.GetDefence();
         int cc = shield.GetVital();
 
+        int z = axe.GetatkPow() - shield.GetDefence();
         int zz = axe.GetatkPow() - shield.GetDefence();
         string zzz;
 
@@ -148,11 +149,13 @@ public class test21_sub : MonoBehaviour
         {
             zzz = aa;
             Debug.Log($"{aa}‚ÌŸ—˜");
+            axe.SetVital(zz);
         }
         else
         {
             zzz = a;
             Debug.Log($"{a}‚ÌŸ—˜");
+            axe.SetVital(z);
         }
         Debug.Log($"{zzz}‚Ì‘Ï‹v‚ª{zz}‚É‚È‚è‚Ü‚µ‚½");
     }
