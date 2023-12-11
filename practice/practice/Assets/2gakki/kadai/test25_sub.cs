@@ -12,9 +12,9 @@ public class test25_sub : MonoBehaviour
 
     class Shape
     {
-        public virtual int Area(float a ,float b)
+        public virtual float Area(float a ,float b)
         {
-            return (int)a;
+            return a;
         }
     }
 
@@ -24,11 +24,12 @@ public class test25_sub : MonoBehaviour
     // Areaメソッドをオーバーライドして、面積を計算
     class Circle : Shape
     {
-        public int radius;
-        public override int Area(float a , float b)
+        public float radius;
+        public override float Area(float a , float b)
         {
-            radius = (int)a;
-            return (int)a;
+            radius = a;
+            a = a * a * Mathf.PI;
+            return a;
         }
     }
 
@@ -38,14 +39,14 @@ public class test25_sub : MonoBehaviour
     // Areaメソッドをオーバーライドして、面積を計算
     class Rectangle : Shape
     {
-        public int width;
-        public int length;
-        public override int Area(float a, float b)
+        public float width;
+        public float length;
+        public override float Area(float a, float b)
         {
-            width = (int)a;
-            length = (int)b;
+            width = a;
+            length = b;
             float c = a * b;
-            return (int)c;
+            return c;
         }
     }
 
@@ -61,7 +62,7 @@ public class test25_sub : MonoBehaviour
     {
         Circle circle = new Circle();
         double c = circle.Area(5, 0);
-        Debug.Log($"円の面積は{c * Mathf.PI}");
+        Debug.Log($"円の面積は{c}");
 
         Rectangle rectangle = new Rectangle();
         double r = rectangle.Area(5, 10);
