@@ -14,6 +14,11 @@ public class PlayerController006 : MonoBehaviour
     AudioSource audioSource;
     [SerializeField] AudioClip clip;
 
+    [SerializeField] float Ray_distance;
+    [SerializeField] float Jump_power;
+    new Rigidbody rigidbody;
+    bool Ground;
+    public LayerMask lmask;
     public Text speedText;      // UI-TEXTオブジェクトを保存する
     public Text shotLevelText;  // UI-TEXTオブジェクトを保存する
     public Text hakiText;       // UI-TEXTオブジェクトを保存する
@@ -37,6 +42,7 @@ public class PlayerController006 : MonoBehaviour
 
     void Start()
     {
+        rigidbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
 
         // 各変数初期化
@@ -122,7 +128,7 @@ public class PlayerController006 : MonoBehaviour
                 Instantiate(bulletPre, pos, rot);
             }
         }
-
+        Jump();
         // 覇気システム
         if (hakiFlg == false)
         {
@@ -159,7 +165,30 @@ public class PlayerController006 : MonoBehaviour
         hakiText.text = "覇気フラグ：" + hakiFlg.ToString();
         
     }
-
+    void Jump()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        Debug.DrawRay(ray.origin, ray.direction * Ray_distance, Color.red);
+        if (Physics.Raycast(ray, Ray_distance, lmask))
+        {
+            Ground = true;
+            Debug.Log("地面");
+        }
+        else
+        {
+            Ground = false;
+            Debug.Log("空中");
+        }
+        Vector3 force = new Vector3(0, Jump_power, 0);
+        if (Ground)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                Debug.Log("ジャンプ");
+                rigidbody.AddForce(force, ForceMode.Impulse);
+            }
+        }
+    }
     void OnTriggerEnter(Collider c)
     {
         // 当たってきたオブジェクトのTagが「Enemy」だったら
