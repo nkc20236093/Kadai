@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7286624898571312434}
   - component: {fileID: 2295347555191056632}
   - component: {fileID: 533597774895767356}
-  - component: {fileID: 7286765868820153993}
+  - component: {fileID: 5972714125475438363}
   m_Layer: 0
-  m_Name: BulletPre
+  m_Name: BulletPre_fall
   m_TagString: bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7286765868820153993
+--- !u!114 &5972714125475438363
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,6 +115,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3589590030772819334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65a1e364b5f18d448ae369c264a14433, type: 3}
+  m_Script: {fileID: 11500000, guid: 816477a0bae8d914eaf2ef5e49ab178d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

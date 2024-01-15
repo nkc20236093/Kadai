@@ -17,13 +17,14 @@ public class PlayerController006 : MonoBehaviour
     [SerializeField] float Ray_distance;
     [SerializeField] float Jump_power;
     new Rigidbody rigidbody;
-    bool Ground;
     public LayerMask lmask;
+    [SerializeField] Slider jump_energy;
     public Text speedText;      // UI-TEXTオブジェクトを保存する
     public Text shotLevelText;  // UI-TEXTオブジェクトを保存する
     public Text hakiText;       // UI-TEXTオブジェクトを保存する
     GameObject bulletPre;       // 弾のプレハブを保存する
-    GameObject firePre;         // 燃えてるエフェクトのプレハブを帆zン
+    GameObject bullet_Pre_fall;
+    GameObject firePre;         // 燃えてるエフェクトのプレハブを保存
 
     Vector3 dir;                // 移動方向を保存する変数
     float speed;                // 移動量を保存する変数
@@ -57,6 +58,7 @@ public class PlayerController006 : MonoBehaviour
 
         // Resourcesフォルダ内にある弾のプレハブを取得する
         bulletPre = (GameObject)Resources.Load("BulletPre");
+        bullet_Pre_fall = (GameObject)Resources.Load("BulletPre_fall");
         firePre = (GameObject)Resources.Load("MyFireMobile");
 
         // SphereColliderコンポーネントを取得
@@ -111,24 +113,45 @@ public class PlayerController006 : MonoBehaviour
 
         // Zキーが押されているとき弾を発射
         timer += Time.deltaTime;
-        if (timer >= 0.3f && Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
-            timer = 0;
             audioSource.Play();
-            for (int i = -power; i < power + 1; i++)
+            //地上攻撃
+            if (timer >= 0.3f && transform.position.y == 0)
             {
-                // 弾の生成位置はプレーヤーの0.5m上の位置
-                Vector3 pos = transform.position + new Vector3(0, 0.5f, 0);
+                timer = 0;
+                for (int i = -power; i < power + 1; i++)
+                {
+                    // 弾の生成位置はプレーヤーの0.5m上の位置
+                    Vector3 pos = transform.position + new Vector3(0, 0.5f, 0);
 
-                // プレーヤーの回転角度を取得し、15度ずつずらした方向に弾を回転させる
-                Vector3 r = transform.rotation.eulerAngles + new Vector3(0, 15f * i, 0);
-                Quaternion rot = Quaternion.Euler(r);
+                    // プレーヤーの回転角度を取得し、15度ずつずらした方向に弾を回転させる
+                    Vector3 r = transform.rotation.eulerAngles + new Vector3(0, 15f * i, 0);
+                    Quaternion rot = Quaternion.Euler(r);
 
-                // 位置と回転情報をセットして生成
-                Instantiate(bulletPre, pos, rot);
+                    // 位置と回転情報をセットして生成
+                    Instantiate(bulletPre, pos, rot);
+                }
+            }
+            else if (timer >= 0.3f && transform.position.y != 0) //空中攻撃
+            {
+                timer = 0;
+                for (int i = -power; i < power + 1; i++)
+                {
+                    // 弾の生成位置はプレーヤーの0.5m下の位置
+                    Vector3 pos = transform.position + new Vector3(0, -0.5f, 0);
+
+                    // プレーヤーの回転角度を取得し、15度ずつずらした方向に弾を回転させる
+                    Vector3 r = transform.rotation.eulerAngles + new Vector3(0, 15f * i, 0);
+                    Quaternion rot = Quaternion.Euler(r);
+
+                    // 位置と回転情報をセットして生成
+                    Instantiate(bullet_Pre_fall, pos, rot);
+                }
             }
         }
         Jump();
+        Range();
         // 覇気システム
         if (hakiFlg == false)
         {
@@ -167,27 +190,53 @@ public class PlayerController006 : MonoBehaviour
     }
     void Jump()
     {
-        Ray ray = new Ray(transform.position, Vector3.down);
-        Debug.DrawRay(ray.origin, ray.direction * Ray_distance, Color.red);
-        if (Physics.Raycast(ray, Ray_distance, lmask))
+        float time;
+        if (jump_energy.value == 1)
         {
-            Ground = true;
-            Debug.Log("地面");
+            time = +Time.deltaTime;
         }
         else
         {
-            Ground = false;
-            Debug.Log("空中");
+            time = 0;
+        }
+        if (time >= 2)
+        {
+            jump_energy.enabled = false;
+        }
+        else
+        {
+            jump_energy.enabled = true;
+        }
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y + 0.01f, transform.position.z);
+        Ray ray = new Ray(pos, Vector3.down);
+        Debug.DrawRay(ray.origin, ray.direction * Ray_distance, Color.red);
+        if (Physics.Raycast(ray, Ray_distance, lmask))
+        {
+            if (jump_energy.value < 1f)
+            {
+                jump_energy.value += Time.deltaTime * 0.1f;
+            }
+            Debug.Log("地面");
         }
         Vector3 force = new Vector3(0, Jump_power, 0);
-        if (Ground)
+        jump_energy.value = Mathf.Clamp(jump_energy.value, 0, 1);
+        if (jump_energy.value > 0 && transform.position.y < 10f)
         {
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButton("Jump"))
             {
                 Debug.Log("ジャンプ");
-                rigidbody.AddForce(force, ForceMode.Impulse);
+                jump_energy.value -= Time.deltaTime * 0.2f;
+                rigidbody.AddForce(force, ForceMode.Force);
             }
         }
+    }
+    void Range()
+    {
+        Vector3 pos = transform.position;
+        pos.y = Mathf.Clamp(pos.y, 0, 10);
+        pos.x = Mathf.Clamp(pos.x, -49.5f, 49.5f);
+        pos.z = Mathf.Clamp(pos.z, -49.5f, 49.5f);
+        transform.position = pos;
     }
     void OnTriggerEnter(Collider c)
     {
