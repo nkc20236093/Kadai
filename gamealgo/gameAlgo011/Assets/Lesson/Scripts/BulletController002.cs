@@ -10,11 +10,12 @@ using UnityEngine;
 public class BulletController002 : MonoBehaviour
 {
     // public Transform player;
+    Vector3 pos;
     float speed = 12;
     GameObject Exp;
     void Start()
     {
-        Exp = (GameObject)Resources.Load("Exp");
+        Exp = (GameObject)Resources.Load("MyFireExpPre_fall");
         // ヒエラルキーからPlayerオブジェクトを検索して保存
         // player = GameObject.Find("Player").transform;
 
@@ -29,12 +30,22 @@ public class BulletController002 : MonoBehaviour
 
     void Update()
     {
-        // 移動
-        transform.position += Vector3.down * speed * Time.deltaTime;
         if (transform.position.y == 0)
         {
-            Instantiate(Exp, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            pos = new Vector3(transform.position.x, 1, transform.position.z);
         }
+        // 移動
+        transform.position += Vector3.down * speed * Time.deltaTime;
+        if (transform.position.y <= 0)
+        {
+            StartCoroutine(nameof(Expro));
+        }
+    }
+    IEnumerator Expro()
+    {
+        Debug.Log("下");
+        Instantiate(Exp, pos, Quaternion.identity);
+        yield return new WaitForSeconds(2);
+        Destroy(gameObject);
     }
 }

@@ -15,8 +15,9 @@ public class Exp_Con : MonoBehaviour
     void Update()
     {
         float time =+ Time.deltaTime;
-        if (time <= 2.1f)
+        if (time <= 1.1f)
         {
+            Debug.Log("”j‰ó");
             Destroy(gameObject);
         }
     }

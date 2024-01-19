@@ -40,7 +40,6 @@ public class PlayerController006 : MonoBehaviour
     float hakiAccel;            // 覇気加速度
 
     const float MAX_SPEED = 10;  // スピードの上限値を指定する定数
-
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -66,7 +65,6 @@ public class PlayerController006 : MonoBehaviour
         hakiFlg = false;
         hakiSpeed = 3;
         hakiAccel = 0.02f;
-
     }
 
     void Update()
@@ -113,13 +111,13 @@ public class PlayerController006 : MonoBehaviour
 
         // Zキーが押されているとき弾を発射
         timer += Time.deltaTime;
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && timer >= 0.5f)
         {
             audioSource.Play();
+            timer = 0;
             //地上攻撃
-            if (timer >= 0.3f && transform.position.y == 0)
+            if (transform.position.y <= 1)
             {
-                timer = 0;
                 for (int i = -power; i < power + 1; i++)
                 {
                     // 弾の生成位置はプレーヤーの0.5m上の位置
@@ -133,9 +131,8 @@ public class PlayerController006 : MonoBehaviour
                     Instantiate(bulletPre, pos, rot);
                 }
             }
-            else if (timer >= 0.3f && transform.position.y != 0) //空中攻撃
+            else if (transform.position.y > 1) //空中攻撃
             {
-                timer = 0;
                 for (int i = -power; i < power + 1; i++)
                 {
                     // 弾の生成位置はプレーヤーの0.5m下の位置
@@ -219,14 +216,22 @@ public class PlayerController006 : MonoBehaviour
             Debug.Log("地面");
         }
         Vector3 force = new Vector3(0, Jump_power, 0);
+        Vector3 force_fall = new Vector3(0, -Jump_power, 0);
         jump_energy.value = Mathf.Clamp(jump_energy.value, 0, 1);
-        if (jump_energy.value > 0 && transform.position.y < 10f)
+        if (jump_energy.value > 0)
         {
             if (Input.GetButton("Jump"))
             {
                 Debug.Log("ジャンプ");
                 jump_energy.value -= Time.deltaTime * 0.2f;
-                rigidbody.AddForce(force, ForceMode.Force);
+                if (transform.position.y < 5f)
+                {
+                    rigidbody.AddForce(force);
+                }
+            }
+            else
+            {
+                rigidbody.AddForce(force_fall);
             }
         }
     }
