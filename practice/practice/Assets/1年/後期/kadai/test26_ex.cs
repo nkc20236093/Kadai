@@ -14,204 +14,219 @@ public class test26_ex : MonoBehaviour
     // 例）炎が草に攻撃は2倍、草が炎に攻撃は0.5倍
     public interface Attribute
     {
-        public void attribute();
+        public string attribute();
     }
     public interface Attack
     {
-        public void attack();
+        public int attack();
     }
     public interface Defense
     {
-        public void defense();
+        public string defense();
     }
-    public class Player : Attribute, Attack, Defense
+    public interface Name
     {
+        public string name();
+    }
+
+    public class Player : Attribute, Attack, Defense,Name
+    {
+        string names;
         int attacks;
         string attribute_attack;
         string attribute_defense;
-        public void attribute()
+        public Player(string n, int a, string att_a, string att_d)
         {
-            attribute_attack = "水";
+            names = n;
+            attacks = a;
+            attribute_attack = att_a;
+            attribute_defense = att_d;
         }
-        public void attack()
+        public string name()
         {
-            attacks = 50;
+            return names;
         }
-        public void defense()
-        {
-            attribute_defense = "火";
-        }
-        public int Get_attacks()
-        {
-            return attacks;
-        }
-        public string Get_attribute_attack()
+        public string attribute()
         {
             return attribute_attack;
         }
-        public string Get_attribute_defense()
+        public int attack()
+        {
+            return attacks;
+        }
+        public string defense()
         {
             return attribute_defense;
+        }
+        /// <summary>
+        /// Player被弾
+        /// </summary>
+        /// <param name="name">攻撃してくる相手の名前</param>
+        /// <param name="partner_attribute_a">攻撃してくる相手の攻撃属性</param>
+        /// <param name="partner_attribute__d">攻撃してくる相手の防御属性</param>
+        /// <param name="a">攻撃してくる相手の攻撃力
+        public void Damage(string name, string partner_attribute_a, string partner_attribute__d, int a)
+        {
+            // 表示例
+            // PLの攻撃：炎、威力10
+            // 敵の属性：草
+            // 効果抜群!! 20ダメージ
+            Debug.Log($"{name} VS {names}");
+            Debug.Log($"{name}の攻撃属性:{partner_attribute_a}、威力{a}");
+            Debug.Log($"{names}の防御属性:{attribute_defense}");
+            if (partner_attribute_a == attribute_attack)
+            {
+                Debug.Log($"あまり効果はないようだ…{a * 0.5f}ダメージ");
+            }
+            else if (partner_attribute_a == attribute_defense)
+            {
+                Debug.Log($"{a}ダメージ");
+            }
+            else
+            {
+                Debug.Log($"効果抜群!!{a * 2}ダメージ");
+            }
         }
     }
     public class Enemy : Attribute, Attack, Defense
     {
+        string names;
         int attacks;
         string attribute_attack;
         string attribute_defense;
-        public void attribute()
+        public Enemy(string n, int a, string att_a, string att_d)
         {
-            attribute_attack = "草";
+            names = n;
+            attacks = a;
+            attribute_attack = att_a;
+            attribute_defense = att_d;
         }
-        public void attack()
+        public string name()
         {
-            attacks = 10;
+            return names;
         }
-        public void defense()
-        {
-            attribute_defense = "草";
-        }
-        public int Get_attacks()
-        {
-            return attacks;
-        }
-        public string Get_attribute_attack()
+        public string attribute()
         {
             return attribute_attack;
         }
-        public string Get_attribute_defense()
+        public int attack()
+        {
+            return attacks;
+        }
+        public string defense()
         {
             return attribute_defense;
+        }
+        /// <summary>
+        /// Enemy被弾
+        /// </summary>
+        /// <param name="name">攻撃してくる相手の名前</param>
+        /// <param name="partner_attribute_a">攻撃してくる相手の攻撃属性</param>
+        /// <param name="partner_attribute__d">攻撃してくる相手の防御属性</param>
+        /// <param name="a">攻撃してくる相手の攻撃力
+        public void Damage(string name, string partner_attribute_a, string partner_attribute__d, int a)
+        {
+            // 表示例
+            // PLの攻撃：炎、威力10
+            // 敵の属性：草
+            // 効果抜群!! 20ダメージ
+            Debug.Log($"{name} VS {names}");
+            Debug.Log($"{name}の攻撃属性:{partner_attribute_a}、威力{a}");
+            Debug.Log($"{names}の防御属性:{attribute_defense}");
+            if (partner_attribute_a == attribute_attack)
+            {
+                Debug.Log($"あまり効果はないようだ…{a * 0.5f}ダメージ");
+            }
+            else if (partner_attribute_a == attribute_defense)
+            {
+                Debug.Log($"{a}ダメージ");
+            }
+            else
+            {
+                Debug.Log($"効果抜群!!{a * 2}ダメージ");
+            }
         }
     }
     public class Boss : Attribute, Attack, Defense
     {
+        string names;
         int attacks;
         string attribute_attack;
         string attribute_defense;
-        public void attribute()
+        public Boss(string n, int a, string att_a, string att_d)
         {
-            attribute_attack = "火";
+            names = n;
+            attacks = a;
+            attribute_attack = att_a;
+            attribute_defense = att_d;
         }
-        public void attack()
+        public string name()
         {
-            attacks = 100;
+            return names;
         }
-        public void defense()
-        {
-            attribute_defense = "草";
-        }
-        public int Get_attacks()
-        {
-            return attacks;
-        }
-        public string Get_attribute_attack()
+        public string attribute()
         {
             return attribute_attack;
         }
-        public string Get_attribute_defense()
+        public int attack()
+        {
+            return attacks;
+        }
+        public string defense()
         {
             return attribute_defense;
         }
+        /// <summary>
+        /// Boss被弾
+        /// </summary>
+        /// <param name="name">攻撃してくる相手の名前</param>
+        /// <param name="partner_attribute_a">攻撃してくる相手の攻撃属性</param>
+        /// <param name="partner_attribute__d">攻撃してくる相手の防御属性</param>
+        /// <param name="a">攻撃してくる相手の攻撃力
+        public void Damage(string name, string partner_attribute_a, string partner_attribute__d, int a)
+        {
+            // 表示例
+            // PLの攻撃：炎、威力10
+            // 敵の属性：草
+            // 効果抜群!! 20ダメージ
+            Debug.Log($"{name} VS {names}");
+            Debug.Log($"{name}の攻撃属性:{partner_attribute_a}、威力{a}");
+            Debug.Log($"{names}の防御属性:{attribute_defense}");
+            if (partner_attribute_a == attribute_attack)
+            {
+                Debug.Log($"あまり効果はないようだ…{a * 0.5f}ダメージ");
+            }
+            else if (partner_attribute_a == attribute_defense)
+            {
+                Debug.Log($"{a}ダメージ");
+            }
+            else
+            {
+                Debug.Log($"効果抜群!!{a * 2}ダメージ");
+            }
+        }
     }
-
-    // プレイヤー、敵、ボスの攻撃力、属性を自由に設定
-    //
-    // プレイヤーVS敵
-    // プレイヤーVSボス
-    // 敵VSボス
-    // それぞれの攻撃、防御でのダメージ計算を行い表示する
-    //
-    // 表示例
-    // PLの攻撃：炎、威力10
-    // 敵の属性：草
-    // 効果抜群!! 20ダメージ
-    //
-    // 条件
-    // 抽象クラスまたはインターフェースクラスを用いて実装
-    // Start is called before the first frame update
     void Start()
     {
-        Player player = new Player();
-        player.attack();
-        player.attribute();
-        player.defense();
-        int pl_attack= player.Get_attacks();
-        string pl_attri_attack = player.Get_attribute_attack();
-        string pl_attri_defense = player.Get_attribute_defense();
-        Enemy enemy = new Enemy();
-        enemy.attack();
-        enemy.defense();
-        enemy.attribute();
-        int ene_attack = enemy.Get_attacks();
-        string ene_attri_attack = enemy.Get_attribute_attack();
-        string ene_attri_defence = enemy.Get_attribute_defense();
-        Boss boss = new Boss();
-        boss.attribute();
-        boss.attack();
-        boss.defense();
-        int boss_attack = boss.Get_attacks();
-        string boss_attri_attack = boss.Get_attribute_attack();
-        string boss_attri_defense = boss.Get_attribute_defense();
-        //pl vs ene
-        Debug.Log("Player VS Enemy");
-        Debug.Log($"Playerの攻撃属性：{pl_attri_attack}、威力{pl_attack}");
-        Debug.Log($"Enemyの防御属性：{ene_attri_defence}");
-        if (ene_attri_defence == "草")
-        {
-            float Info = pl_attack * 0.5f;
-            Debug.Log($"あまり効果はないようだ…{Info}ダメージ");
-        }
-        else if (ene_attri_defence == "火")
-        {
-            int Info = pl_attack * 2;
-            Debug.Log($"効果抜群!!{Info}ダメージ");
-        }
-        else
-        {
-            Debug.Log($"{pl_attack}ダメージ");
-        }
-        // pl vs boss
-        Debug.Log($"Player VS Boss");
-        Debug.Log($"Playerの攻撃属性：{pl_attri_attack}、威力{pl_attack}");
-        Debug.Log($"Bossの防御属性：{boss_attri_defense}");
-        if (boss_attri_defense == "草")
-        {
-            float Info = pl_attack * 0.5f;
-            Debug.Log($"あまり効果はないようだ…{Info}ダメージ");
-        }
-        else if(ene_attri_defence == "火")
-        {
-            int Info = pl_attack * 2;
-            Debug.Log($"効果抜群!!{Info}ダメージ");
-        }
-        else
-        {
-            Debug.Log($"{pl_attack}");
-        }
-        // ene vs boss
-        Debug.Log($"Enemy VS Boss");
-        Debug.Log($"Enemyの攻撃属性：{ene_attri_attack}、威力{ene_attack}");
-        Debug.Log($"Bossの防御属性：{boss_attri_defense}");
-        if (boss_attri_defense == "水")
-        {
-            float Info = ene_attack * 0.5f;
-            Debug.Log($"あまり効果はないようだ…{Info}ダメージ");
-        }
-        else if(ene_attri_defence == "火")
-        {
-            int Info = ene_attack * 2;
-            Debug.Log($"効果抜群!!{Info}ダメージ");
-        }
-        else
-        {
-            Debug.Log($"{ene_attack}ダメージ");
-        }
-    }
+        // プレイヤー、敵、ボスの攻撃力、属性を自由に設定
+        //
+        // プレイヤーVS敵
+        // プレイヤーVSボス
+        // 敵VSボス
+        // それぞれの攻撃、防御でのダメージ計算を行い表示する
+        //
+        // 条件
+        // 抽象クラスまたはインターフェースクラスを用いて実装
+        // Start is called before the first frame update
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Player player = new Player("Player", 50, "水", "草");
+        Boss boss = new Boss("Boss", 100, "火", "水");
+        Enemy enemy = new Enemy("Enemy", 10, "草", "火");
+        // Player VS Enemy
+        player.Damage(enemy.name(), enemy.attribute(), enemy.defense(), enemy.attack());
+        // Boss VS Player
+        boss.Damage(player.name(), player.attribute(), player.defense(), player.attack());
+        // Enemy VS Boss
+        enemy.Damage(boss.name(), boss.attribute(), boss.defense(), boss.attack());
     }
 }
