@@ -24,23 +24,30 @@ public class test26_ex : MonoBehaviour
     {
         public string defense();
     }
+    public interface Weakness
+    {
+        public string weakness();
+    }
+
     public interface Name
     {
         public string name();
     }
 
-    public class Player : Attribute, Attack, Defense,Name
+    public class Player : Attribute, Attack, Defense,Name,Weakness
     {
+        string Weak;
         string names;
         int attacks;
         string attribute_attack;
         string attribute_defense;
-        public Player(string n, int a, string att_a, string att_d)
+        public Player(string n, int a, string att_a, string att_d, string weak)
         {
             names = n;
             attacks = a;
             attribute_attack = att_a;
             attribute_defense = att_d;
+            Weak = weak;
         }
         public string name()
         {
@@ -57,6 +64,10 @@ public class test26_ex : MonoBehaviour
         public string defense()
         {
             return attribute_defense;
+        }
+        public string weakness()
+        {
+            return Weak;
         }
         /// <summary>
         /// Player被弾
@@ -76,30 +87,32 @@ public class test26_ex : MonoBehaviour
             Debug.Log($"{names}の防御属性:{attribute_defense}");
             if (partner_attribute_a == attribute_attack)
             {
+                Debug.Log($"効果抜群!!{a * 2}ダメージ");
+            }
+            else if (partner_attribute_a == Weak)
+            {
                 Debug.Log($"あまり効果はないようだ…{a * 0.5f}ダメージ");
             }
             else if (partner_attribute_a == attribute_defense)
             {
                 Debug.Log($"{a}ダメージ");
-            }
-            else
-            {
-                Debug.Log($"効果抜群!!{a * 2}ダメージ");
             }
         }
     }
     public class Enemy : Attribute, Attack, Defense
     {
+        string Weak;
         string names;
         int attacks;
         string attribute_attack;
         string attribute_defense;
-        public Enemy(string n, int a, string att_a, string att_d)
+        public Enemy(string n, int a, string att_a, string att_d, string weak)
         {
             names = n;
             attacks = a;
             attribute_attack = att_a;
             attribute_defense = att_d;
+            Weak = weak;
         }
         public string name()
         {
@@ -117,8 +130,12 @@ public class test26_ex : MonoBehaviour
         {
             return attribute_defense;
         }
+        public string weakness()
+        {
+            return Weak;
+        }
         /// <summary>
-        /// Enemy被弾
+        /// Player被弾
         /// </summary>
         /// <param name="name">攻撃してくる相手の名前</param>
         /// <param name="partner_attribute_a">攻撃してくる相手の攻撃属性</param>
@@ -135,30 +152,32 @@ public class test26_ex : MonoBehaviour
             Debug.Log($"{names}の防御属性:{attribute_defense}");
             if (partner_attribute_a == attribute_attack)
             {
+                Debug.Log($"効果抜群!!{a * 2}ダメージ");
+            }
+            else if (partner_attribute_a == Weak)
+            {
                 Debug.Log($"あまり効果はないようだ…{a * 0.5f}ダメージ");
             }
             else if (partner_attribute_a == attribute_defense)
             {
                 Debug.Log($"{a}ダメージ");
-            }
-            else
-            {
-                Debug.Log($"効果抜群!!{a * 2}ダメージ");
             }
         }
     }
     public class Boss : Attribute, Attack, Defense
     {
+        string Weak;
         string names;
         int attacks;
         string attribute_attack;
         string attribute_defense;
-        public Boss(string n, int a, string att_a, string att_d)
+        public Boss(string n, int a, string att_a, string att_d, string weak)
         {
             names = n;
             attacks = a;
             attribute_attack = att_a;
             attribute_defense = att_d;
+            Weak = weak;
         }
         public string name()
         {
@@ -176,8 +195,12 @@ public class test26_ex : MonoBehaviour
         {
             return attribute_defense;
         }
+        public string weakness()
+        {
+            return Weak;
+        }
         /// <summary>
-        /// Boss被弾
+        /// Player被弾
         /// </summary>
         /// <param name="name">攻撃してくる相手の名前</param>
         /// <param name="partner_attribute_a">攻撃してくる相手の攻撃属性</param>
@@ -194,15 +217,15 @@ public class test26_ex : MonoBehaviour
             Debug.Log($"{names}の防御属性:{attribute_defense}");
             if (partner_attribute_a == attribute_attack)
             {
+                Debug.Log($"効果抜群!!{a * 2}ダメージ");
+            }
+            else if (partner_attribute_a == Weak)
+            {
                 Debug.Log($"あまり効果はないようだ…{a * 0.5f}ダメージ");
             }
             else if (partner_attribute_a == attribute_defense)
             {
                 Debug.Log($"{a}ダメージ");
-            }
-            else
-            {
-                Debug.Log($"効果抜群!!{a * 2}ダメージ");
             }
         }
     }
@@ -219,9 +242,9 @@ public class test26_ex : MonoBehaviour
         // 抽象クラスまたはインターフェースクラスを用いて実装
         // Start is called before the first frame update
 
-        Player player = new Player("Player", 50, "水", "草");
-        Boss boss = new Boss("Boss", 100, "火", "水");
-        Enemy enemy = new Enemy("Enemy", 10, "草", "火");
+        Player player = new Player("Player", 50, "水", "火","草");
+        Boss boss = new Boss("Boss", 100, "水", "火", "草");
+        Enemy enemy = new Enemy("Enemy", 10, "火", "草", "水");
         // Player VS Enemy
         player.Damage(enemy.name(), enemy.attribute(), enemy.defense(), enemy.attack());
         // Boss VS Player
