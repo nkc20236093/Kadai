@@ -1,13 +1,14 @@
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
+using System.Collections;
+using UnityEditor.SceneManagement;
 
-public class Controller2 : MonoBehaviourPunCallbacks, IPunObservable
+public class Controller : MonoBehaviourPunCallbacks, IPunObservable
 {
     GameObject target;
-    Animator animator;
     public int Speed = 5;
-    PTest2 pTest;
+    PTest pTest;
     Rigidbody rigid;
     Text text1;      //サーバーの点数表示
     Text text2;      //クライアント1の点数表示
@@ -18,8 +19,7 @@ public class Controller2 : MonoBehaviourPunCallbacks, IPunObservable
         Vector3 r = transform.localEulerAngles;
         r.y = 180;
         transform.localEulerAngles = r;
-        animator = GetComponent<Animator>();
-        pTest = GameObject.Find("GameObject").GetComponent<PTest2>();
+        pTest = GameObject.Find("GameObject").GetComponent<PTest>();
         text1 = GameObject.Find("Text1").GetComponent<Text>();
         text2 = GameObject.Find("Text2").GetComponent<Text>();
         text3 = GameObject.Find("Text3").GetComponent<Text>();
@@ -57,45 +57,41 @@ public class Controller2 : MonoBehaviourPunCallbacks, IPunObservable
     }
     void Update()
     {
+        //自分のオブジェクトの時
         if (photonView.IsMine)
-        {     //自分のオブジェクトの時
-            //カーソルキーの上矢印が押されたとき(Idoleのアニメーション)
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                animator.SetInteger("Action", 0);
-            }
-            //カーソルキーの左矢印が押されたとき(Walkのアニメーション)
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                animator.SetInteger("Action", 1);
-            }
-            //カーソルキーの左矢印が押されたとき(Runのアニメーション)
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                animator.SetInteger("Action", 2);
-            }
+        {
+            Vector3 pos = transform.position;
+            pos.z = Mathf.Clamp(pos.z, 0, 0);
+            transform.position = pos;
             //ネットワークオブジェクトの移動する
             float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
-            transform.Translate(new Vector3(x, y, 0) * Time.deltaTime * Speed);
+            transform.Translate(new Vector3(-x, y, 0) * Time.deltaTime * Speed);
         }
     }
 
     // データの送受信
-    Vector3 velo;    //受信した移動速度
-    Vector3 angul;   //受信した回転速度
-    //データの送受信
+    Vector3 velo;       //移動速度の保存
+    Vector3 angul;      //回転速度の保存
+    // データの送受信
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)   //自分のオブジェクトの時
+        if (stream.IsWriting) //自分のオブジェクトの時
         {
-            //アニメーションパラメーター送信
-            stream.SendNext(animator.GetInteger("Action"));
+            string msg = transform.position + ";"                   //表示座標
+                       + transform.localEulerAngles + ";"           //回転角度
+                       + GetComponent<Rigidbody>().velocity + ";"   //移動速度
+                       + GetComponent<Rigidbody>().angularVelocity; //回転速度
+            stream.SendNext(msg);                                   //メッセージ出力
         }
-        else                    //他人のオブジェクトの時
+        else                //他人のオブジェクトの時
         {
-            //アニメーションパラメーター受信
-            animator.SetInteger("Action", int.Parse(stream.ReceiveNext().ToString()));
+            string msg = stream.ReceiveNext().ToString();           //メッセージ入力
+            string[] p = msg.Split(';');                            //「;」で区切る
+            transform.position = Str2vec3(p[0]);                    //表示座標修正
+            transform.localEulerAngles = Str2vec3(p[1]);            //回転角度修正
+            velo = Str2vec3(p[2]);                                  //移動速度保存
+            angul = Str2vec3(p[3]);                                 //回転速度保存
         }
     }
 
@@ -106,21 +102,53 @@ public class Controller2 : MonoBehaviourPunCallbacks, IPunObservable
         return (new Vector3(float.Parse(xyz[0]), float.Parse(xyz[1]), float.Parse(xyz[2])));
     }
 
-    //プレイヤーがSphereに接触したとき 
     void OnTriggerEnter(Collider col)
     {
         if (pTest.ServerFlg)        //サーバーだけが行う
         {
-            string id = GetComponent<PhotonView>().ViewID.ToString();  //端末のIDを取得
+            bool b = false;
+            //プレイヤーがSphereに接触したとき 
+            if (col.gameObject.CompareTag("Sphere"))
+            {
+                b = true;
+                Debug.Log("s");
+                StartCoroutine(Partical(col.gameObject,b));
+            }
+            else if (col.gameObject.CompareTag("Bomb"))
+            {
+                b = false;
+                Debug.Log("b");
+                StartCoroutine(Partical(col.gameObject, b));
+            }
+        }
+    }
+    IEnumerator Partical(GameObject g, bool plmi)
+    {
+        ParticleSystem particleSystem = g.GetComponentInChildren<ParticleSystem>();
+        particleSystem.Play();
+        string id = GetComponent<PhotonView>().ViewID.ToString();  //端末のIDを取得
+        if (plmi)
+        {
             if (id == "1001") pTest.sc1++;
             if (id == "2001") pTest.sc2++;
             if (id == "3001") pTest.sc3++;
-            if (id == "4001") pTest.sc4++;            //RPC(遠隔手続き呼び出し)
-            photonView.RPC("TargetHit", RpcTarget.All, pTest.sc1, pTest.sc2, pTest.sc3, pTest.sc4);
-            //ネットワークオブジェクトの削除
-            PhotonNetwork.Destroy(col.gameObject);
+            if (id == "4001") pTest.sc4++;
         }
+        else
+        {
+            if (id == "1001") pTest.sc1--;
+            if (id == "2001") pTest.sc2--;
+            if (id == "3001") pTest.sc3--;
+            if (id == "4001") pTest.sc4--;
+        }
+        //RPC(遠隔手続き呼び出し)
+        photonView.RPC(nameof(TargetHit), RpcTarget.All, pTest.sc1, pTest.sc2, pTest.sc3, pTest.sc4);
+        Destroy(GetComponent<SphereCollider>());
+        yield return new WaitForSeconds(0.5f);
+        //ネットワークオブジェクトの削除
+        PhotonNetwork.Destroy(g.gameObject);
     }
+
     //すべての端末で実行される
     [PunRPC]
     private void TargetHit(int sc1, int sc2, int sc3, int sc4)
