@@ -850,10 +850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b164f074cbf50048948faa7f5151006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sc1: 0
-  sc2: 0
-  sc3: 0
-  sc4: 0
+  sc: 00000000000000000000000000000000
   ServerFlg: 0
   GameEnd: 0
   time: {fileID: 805039089}
@@ -1167,7 +1164,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &805039088
 RectTransform:
   m_ObjectHideFlags: 0

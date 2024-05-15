@@ -2,28 +2,20 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviourPunCallbacks, IPunObservable
 {
-    GameObject target;
     public int Speed = 5;
     PTest pTest;
     Rigidbody rigid;
-    Text text1;      //サーバーの点数表示
-    Text text2;      //クライアント1の点数表示
-    Text text3;      //クライアント2の点数表示
-    Text text4;      //クライアント3の点数表示
+    Text[] text = new Text[4];      //サーバーの点数表示
     private void Start()
     {
         Vector3 r = transform.localEulerAngles;
         r.y = 180;
         transform.localEulerAngles = r;
         pTest = GameObject.Find("GameObject").GetComponent<PTest>();
-        text1 = GameObject.Find("Text1").GetComponent<Text>();
-        text2 = GameObject.Find("Text2").GetComponent<Text>();
-        text3 = GameObject.Find("Text3").GetComponent<Text>();
-        text4 = GameObject.Find("Text4").GetComponent<Text>();
         // 端末IDを取得
         string id = GetComponent<PhotonView>().ViewID.ToString();
         // プレイヤーの色を変更
@@ -32,28 +24,10 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
         if (id == "3001") GetComponent<Renderer>().material.color = Color.green;
         if (id == "4001") GetComponent<Renderer>().material.color = Color.yellow;
         rigid = GetComponent<Rigidbody>();
-        //if (photonView.IsMine)
-        //{        
-        //    if (pTest.ServerFlg)
-        //    {
-        //        GetComponent<Renderer>().material.color = Color.red;
-        //    }
-        //    else
-        //    {
-        //        GetComponent<Renderer>().material.color = Color.blue;
-        //    }
-        //}
-        //else
-        //{
-        //    if (pTest.ServerFlg)
-        //    {
-        //        GetComponent<Renderer>().material.color = Color.blue;
-        //    }
-        //    else
-        //    {
-        //        GetComponent<Renderer>().material.color = Color.red;
-        //    }
-        //}
+        text[0] = GameObject.Find("Text1").GetComponent<Text>();
+        text[1] = GameObject.Find("Text2").GetComponent<Text>();
+        text[2] = GameObject.Find("Text3").GetComponent<Text>();
+        text[3] = GameObject.Find("Text4").GetComponent<Text>();
     }
     void Update()
     {
@@ -68,30 +42,33 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
             float y = Input.GetAxis("Vertical");
             transform.Translate(new Vector3(-x, y, 0) * Time.deltaTime * Speed);
         }
+        else
+        {
+            //移動速度を指定する
+            rigid.velocity = velo;
+            //回転速度を指定する
+            rigid.angularVelocity = angul;
+        }
     }
 
     // データの送受信
-    Vector3 velo;       //移動速度の保存
-    Vector3 angul;      //回転速度の保存
-    // データの送受信
+    Vector3 velo;    //受信した移動速度
+    Vector3 angul;   //受信した回転速度
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting) //自分のオブジェクトの時
         {
-            string msg = transform.position + ";"                   //表示座標
-                       + transform.localEulerAngles + ";"           //回転角度
-                       + GetComponent<Rigidbody>().velocity + ";"   //移動速度
-                       + GetComponent<Rigidbody>().angularVelocity; //回転速度
-            stream.SendNext(msg);                                   //メッセージ出力
+            stream.SendNext(transform.position);                        //表示座標送信
+            stream.SendNext(transform.localEulerAngles);                //回転角度送信
+            stream.SendNext(GetComponent<Rigidbody>().velocity);        //移動速度送信
+            stream.SendNext(GetComponent<Rigidbody>().angularVelocity); //回転速度送信
         }
-        else                //他人のオブジェクトの時
+        else   //他人のオブジェクトの時
         {
-            string msg = stream.ReceiveNext().ToString();           //メッセージ入力
-            string[] p = msg.Split(';');                            //「;」で区切る
-            transform.position = Str2vec3(p[0]);                    //表示座標修正
-            transform.localEulerAngles = Str2vec3(p[1]);            //回転角度修正
-            velo = Str2vec3(p[2]);                                  //移動速度保存
-            angul = Str2vec3(p[3]);                                 //回転速度保存
+            transform.position = (Vector3)stream.ReceiveNext();         //表示座標受信
+            transform.localEulerAngles = (Vector3)stream.ReceiveNext(); //回転角度受信
+            velo = (Vector3)stream.ReceiveNext();                       //移動速度受信
+            angul = (Vector3)stream.ReceiveNext();                      //回転速度受信
         }
     }
 
@@ -126,23 +103,25 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
     {
         ParticleSystem particleSystem = g.GetComponentInChildren<ParticleSystem>();
         particleSystem.Play();
+        AudioSource audioSource = g.GetComponent<AudioSource>();
+        audioSource.Play();
         string id = GetComponent<PhotonView>().ViewID.ToString();  //端末のIDを取得
         if (plmi)
         {
-            if (id == "1001") pTest.sc1++;
-            if (id == "2001") pTest.sc2++;
-            if (id == "3001") pTest.sc3++;
-            if (id == "4001") pTest.sc4++;
+            if (id == "1001") pTest.sc[0]++;
+            if (id == "2001") pTest.sc[1]++;
+            if (id == "3001") pTest.sc[2]++;
+            if (id == "4001") pTest.sc[3]++;
         }
         else
         {
-            if (id == "1001") pTest.sc1--;
-            if (id == "2001") pTest.sc2--;
-            if (id == "3001") pTest.sc3--;
-            if (id == "4001") pTest.sc4--;
+            if (id == "1001") pTest.sc[0]--;
+            if (id == "2001") pTest.sc[1]--;
+            if (id == "3001") pTest.sc[2]--;
+            if (id == "4001") pTest.sc[3]--;
         }
         //RPC(遠隔手続き呼び出し)
-        photonView.RPC(nameof(TargetHit), RpcTarget.All, pTest.sc1, pTest.sc2, pTest.sc3, pTest.sc4);
+        photonView.RPC(nameof(TargetHit), RpcTarget.All, pTest.sc[0], pTest.sc[1], pTest.sc[2], pTest.sc[3]);
         Destroy(GetComponent<SphereCollider>());
         yield return new WaitForSeconds(0.5f);
         //ネットワークオブジェクトの削除
@@ -153,9 +132,9 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     private void TargetHit(int sc1, int sc2, int sc3, int sc4)
     {
-        text1.text = sc1.ToString();        //サーバーの点数表示
-        text2.text = sc2.ToString();        //クライアント１の点数表示
-        text3.text = sc3.ToString();        //クライアント２の点数表示
-        text4.text = sc4.ToString();        //クライアント３の点数表示
+        text[0].text = sc1.ToString();        //サーバーの点数表示
+        text[1].text = sc2.ToString();        //クライアント１の点数表示
+        text[2].text = sc3.ToString();        //クライアント２の点数表示
+        text[3].text = sc4.ToString();        //クライアント３の点数表示
     }
 }

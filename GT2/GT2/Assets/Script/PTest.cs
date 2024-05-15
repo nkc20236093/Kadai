@@ -9,10 +9,7 @@ using System.Linq;
 
 public class PTest : MonoBehaviourPunCallbacks
 {
-    public int sc1 = 0;     //サーバーの点数
-    public int sc2 = 0;     //クライアント1の点数
-    public int sc3 = 0;     //クライアント2の点数
-    public int sc4 = 0;     //クライアント3の点数
+    public int[] sc = new int[4];     //サーバーの点数
     public bool ServerFlg;  //サーバーフラグ
     public bool GameEnd;    //ゲームが終了したか
 
@@ -70,15 +67,7 @@ public class PTest : MonoBehaviourPunCallbacks
             //ゲームが開始したら
             if (GameEnd)
             {
-                time.enabled = true;
-                NowTime = Mathf.Clamp(NowTime, 0, MaxTime);
                 ResultTime = 0;
-                NowTime -= Time.deltaTime;
-                time.text = NowTime.ToString();
-                if (NowTime <= 0)
-                {
-                    GameEnd = false;
-                }
                 //時間のカウント
                 TimerCount += Time.deltaTime;
                 //N秒経過したらSohereを作成する
@@ -86,14 +75,19 @@ public class PTest : MonoBehaviourPunCallbacks
             }
             else
             {
-                NowTime = MaxTime;
-                time.text = MaxTime.ToString();
-                time.enabled = false;
                 ResultTime = Mathf.Clamp(ResultTime, 0, 8);
-                ResultTime += Time.deltaTime;
-                if (ResultTime >= 8)
+                ResultTime += Time.deltaTime;                time.text = MaxTime.ToString();
+                if (ResultTime >= 5)
                 {
                     GameEnd = true;
+                }
+            }
+            for (int i = 0; i < sc.Length; i++)
+            {
+                sc[i] = Mathf.Clamp(sc[i], -5, 30);
+                if (sc[i] >= 30 || sc[i] <= -5)
+                {
+                    GameEnd = false;
                 }
             }
         }
@@ -101,50 +95,6 @@ public class PTest : MonoBehaviourPunCallbacks
     void TimeCreate()
     {
         if (NowTime < 45 && NowTime >= 30)
-        {
-            if (TimerCount > 5)
-            {
-                TimerCount = 0;
-                int r = Random.Range(0, 2);
-                var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
-                if (r == 0)
-                {
-                    Debug.Log("S作成");
-                    //ネットワークオブジェクトのSphereをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.Log("B作成");
-                    Quaternion rot = Quaternion.Euler(-90, 0, 180);
-                    //ネットワークオブジェクトのbombをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("bomb", v, rot);
-                }
-            }
-        }
-        else if (NowTime < 30 && NowTime >= 20)
-        {
-            if (TimerCount > 4)
-            {
-                TimerCount = 0;
-                int r = Random.Range(0, 2);
-                var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
-                if (r == 0)
-                {
-                    Debug.Log("S作成");
-                    //ネットワークオブジェクトのSphereをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.Log("B作成");
-                    Quaternion rot = Quaternion.Euler(-90, 0, 180);
-                    //ネットワークオブジェクトのbombをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("bomb", v, rot);
-                }
-            }
-        }
-        else if (NowTime < 20 && NowTime >= 10)
         {
             if (TimerCount > 3)
             {
@@ -166,9 +116,53 @@ public class PTest : MonoBehaviourPunCallbacks
                 }
             }
         }
+        else if (NowTime < 30 && NowTime >= 20)
+        {
+            if (TimerCount > 2.5f)
+            {
+                TimerCount = 0;
+                int r = Random.Range(0, 2);
+                var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
+                if (r == 0)
+                {
+                    Debug.Log("S作成");
+                    //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                    GameObject go = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                }
+                else
+                {
+                    Debug.Log("B作成");
+                    Quaternion rot = Quaternion.Euler(-90, 0, 180);
+                    //ネットワークオブジェクトのbombをランダムの位置に配置する
+                    GameObject go = PhotonNetwork.Instantiate("bomb", v, rot);
+                }
+            }
+        }
+        else if (NowTime < 20 && NowTime >= 10)
+        {
+            if (TimerCount > 1.5f)
+            {
+                TimerCount = 0;
+                int r = Random.Range(0, 2);
+                var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
+                if (r == 0)
+                {
+                    Debug.Log("S作成");
+                    //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                    GameObject go = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                }
+                else
+                {
+                    Debug.Log("B作成");
+                    Quaternion rot = Quaternion.Euler(-90, 0, 180);
+                    //ネットワークオブジェクトのbombをランダムの位置に配置する
+                    GameObject go = PhotonNetwork.Instantiate("bomb", v, rot);
+                }
+            }
+        }
         else if (NowTime < 10 && NowTime >= 5)
         {
-            if (TimerCount > 2)
+            if (TimerCount > 1)
             {
                 TimerCount = 0;
                 int r = Random.Range(0, 2);
@@ -190,7 +184,7 @@ public class PTest : MonoBehaviourPunCallbacks
         }
         else if (NowTime < 50)
         {
-            if (TimerCount > 1)
+            if (TimerCount > 0.75f)
             {
                 TimerCount = 0;
                 int r = Random.Range(0, 2);
