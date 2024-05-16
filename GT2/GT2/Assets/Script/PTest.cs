@@ -182,7 +182,7 @@ public class PTest : MonoBehaviourPunCallbacks
                 }
             }
         }
-        else if (NowTime < 50)
+        else if (NowTime < 5)
         {
             if (TimerCount > 0.75f)
             {

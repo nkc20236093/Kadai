@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviourPunCallbacks, IPunObservable
 {
-    public int Speed = 5;
+    [SerializeField] int Speed = 5;
     PTest pTest;
     Rigidbody rigid;
-    Text[] text = new Text[4];      //サーバーの点数表示
+    private Text[] text = new Text[4];      //サーバーの点数表示
     private void Start()
     {
         Vector3 r = transform.localEulerAngles;
@@ -122,7 +122,6 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
         }
         //RPC(遠隔手続き呼び出し)
         photonView.RPC(nameof(TargetHit), RpcTarget.All, pTest.sc[0], pTest.sc[1], pTest.sc[2], pTest.sc[3]);
-        Destroy(GetComponent<SphereCollider>());
         yield return new WaitForSeconds(0.5f);
         //ネットワークオブジェクトの削除
         PhotonNetwork.Destroy(g.gameObject);
