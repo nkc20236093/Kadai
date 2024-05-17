@@ -88,23 +88,19 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
             if (col.gameObject.CompareTag("Sphere"))
             {
                 b = true;
-                Debug.Log("s");
                 StartCoroutine(Partical(col.gameObject,b));
             }
             else if (col.gameObject.CompareTag("Bomb"))
             {
                 b = false;
-                Debug.Log("b");
                 StartCoroutine(Partical(col.gameObject, b));
             }
         }
     }
     IEnumerator Partical(GameObject g, bool plmi)
     {
-        ParticleSystem particleSystem = g.GetComponentInChildren<ParticleSystem>();
-        particleSystem.Play();
-        AudioSource audioSource = g.GetComponent<AudioSource>();
-        audioSource.Play();
+        ScoreAudio(g);
+        ScoreParticle(g);
         string id = GetComponent<PhotonView>().ViewID.ToString();  //端末のIDを取得
         if (plmi)
         {
@@ -135,5 +131,17 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
         text[1].text = sc2.ToString();        //クライアント１の点数表示
         text[2].text = sc3.ToString();        //クライアント２の点数表示
         text[3].text = sc4.ToString();        //クライアント３の点数表示
+    }
+    [PunRPC]
+    public void ScoreAudio(GameObject g)
+    {
+        AudioSource audioSource = g.GetComponent<AudioSource>();
+        audioSource.Play();
+    }
+    [PunRPC]
+    public void ScoreParticle(GameObject g)
+    {
+        ParticleSystem particleSystem = g.GetComponentInChildren<ParticleSystem>();
+        particleSystem.Play();
     }
 }

@@ -6,18 +6,17 @@ using Photon.Realtime;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class PTest : MonoBehaviourPunCallbacks
 {
     public int[] sc = new int[4];     //サーバーの点数
     public bool ServerFlg;  //サーバーフラグ
-    public bool GameEnd;    //ゲームが終了したか
-
+    private bool NowGame;   //今のゲームがリザルトも含めて終了したか
     public Text time;
     const int MaxTime = 45;
     float NowTime;
     float ResultTime;
-    float MatchTime;
     public void Login(string ip, bool sf, bool start)
     {
         //IPアドレスの設定
@@ -27,7 +26,11 @@ public class PTest : MonoBehaviourPunCallbacks
         //ネットワークへの接続
         PhotonNetwork.ConnectUsingSettings();
         ServerFlg = sf;
-        GameEnd = start;
+        if (ServerFlg)
+        {
+            GameManeger.instance.GameEnd = start;
+            NowGame = start;
+        }
         //送信回数の設定
         PhotonNetwork.SerializationRate = 1;  //１秒に１回だけ通信する
     }
@@ -39,17 +42,12 @@ public class PTest : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom("room", new RoomOptions(), TypedLobby.Default);
     }
 
-    // ルームに入ったとき時
+    // ルームに入った時
     public override void OnJoinedRoom()
     {
-        //途中参加不可
-        //ゲームが終了するまで待機
-        if (GameEnd)
-        {
-            // ランダムな位置にネットワークオブジェクトを生成する
-            var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
-            GameObject go = PhotonNetwork.Instantiate("Player", v, Quaternion.identity);
-        }
+        // ランダムな位置にネットワークオブジェクトを生成する
+        var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
+        GameObject go = PhotonNetwork.Instantiate("Player", v, Quaternion.identity);
     }
     private void Start()
     {
@@ -58,28 +56,33 @@ public class PTest : MonoBehaviourPunCallbacks
     }
     float TimerCount = 0; //時間のカウンタ
     //接続状態の表示
-    int status = 0;
     private void Update()
     {
+        if (NowGame)
+        {
+            //時間制限
+            TimeUP();
+        }
         //サーバーのときのみ
         if (ServerFlg)
         {
             //ゲームが開始したら
-            if (GameEnd)
+            if (NowGame)
             {
+                time.enabled = true;
                 ResultTime = 0;
-                //時間のカウント
-                TimerCount += Time.deltaTime;
                 //N秒経過したらSohereを作成する
                 TimeCreate();
             }
             else
             {
+                time.enabled = false;
                 ResultTime = Mathf.Clamp(ResultTime, 0, 8);
-                ResultTime += Time.deltaTime;                time.text = MaxTime.ToString();
+                ResultTime += Time.deltaTime;                
+                time.text = MaxTime.ToString();
                 if (ResultTime >= 5)
                 {
-                    GameEnd = true;
+                    SceneManager.LoadScene("TitleScene");
                 }
             }
             for (int i = 0; i < sc.Length; i++)
@@ -87,33 +90,25 @@ public class PTest : MonoBehaviourPunCallbacks
                 sc[i] = Mathf.Clamp(sc[i], -5, 30);
                 if (sc[i] >= 30 || sc[i] <= -5)
                 {
-                    GameEnd = false;
+                    NowGame = false;
                 }
             }
         }
     }
     void TimeCreate()
     {
+        Quaternion rot = Quaternion.Euler(-90, 0, 180);
+        var v = new Vector3(Random.Range(-9f, 9f), Random.Range(-3f, 4f), 0);
+        var v2 = new Vector3(Random.Range(-9f, 9f), Random.Range(-3f, 4f), 0);
         if (NowTime < 45 && NowTime >= 30)
         {
             if (TimerCount > 3)
             {
                 TimerCount = 0;
-                int r = Random.Range(0, 2);
-                var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
-                if (r == 0)
-                {
-                    Debug.Log("S作成");
-                    //ネットワークオブジェクトのSphereをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.Log("B作成");
-                    Quaternion rot = Quaternion.Euler(-90, 0, 180);
-                    //ネットワークオブジェクトのbombをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("bomb", v, rot);
-                }
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
             }
         }
         else if (NowTime < 30 && NowTime >= 20)
@@ -121,21 +116,11 @@ public class PTest : MonoBehaviourPunCallbacks
             if (TimerCount > 2.5f)
             {
                 TimerCount = 0;
-                int r = Random.Range(0, 2);
-                var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
-                if (r == 0)
-                {
-                    Debug.Log("S作成");
-                    //ネットワークオブジェクトのSphereをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.Log("B作成");
-                    Quaternion rot = Quaternion.Euler(-90, 0, 180);
-                    //ネットワークオブジェクトのbombをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("bomb", v, rot);
-                }
+                Debug.Log("作成");
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
             }
         }
         else if (NowTime < 20 && NowTime >= 10)
@@ -143,21 +128,11 @@ public class PTest : MonoBehaviourPunCallbacks
             if (TimerCount > 1.5f)
             {
                 TimerCount = 0;
-                int r = Random.Range(0, 2);
-                var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
-                if (r == 0)
-                {
-                    Debug.Log("S作成");
-                    //ネットワークオブジェクトのSphereをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.Log("B作成");
-                    Quaternion rot = Quaternion.Euler(-90, 0, 180);
-                    //ネットワークオブジェクトのbombをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("bomb", v, rot);
-                }
+                Debug.Log("作成");
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
             }
         }
         else if (NowTime < 10 && NowTime >= 5)
@@ -165,21 +140,11 @@ public class PTest : MonoBehaviourPunCallbacks
             if (TimerCount > 1)
             {
                 TimerCount = 0;
-                int r = Random.Range(0, 2);
-                var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
-                if (r == 0)
-                {
-                    Debug.Log("S作成");
-                    //ネットワークオブジェクトのSphereをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.Log("B作成");
-                    Quaternion rot = Quaternion.Euler(-90, 0, 180);
-                    //ネットワークオブジェクトのbombをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("bomb", v, rot);
-                }
+                Debug.Log("作成");
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
             }
         }
         else if (NowTime < 5)
@@ -187,40 +152,45 @@ public class PTest : MonoBehaviourPunCallbacks
             if (TimerCount > 0.75f)
             {
                 TimerCount = 0;
-                int r = Random.Range(0, 2);
-                var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
-                if (r == 0)
-                {
-                    Debug.Log("S作成");
-                    //ネットワークオブジェクトのSphereをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.Log("B作成");
-                    Quaternion rot = Quaternion.Euler(-90, 0, 180);
-                    //ネットワークオブジェクトのbombをランダムの位置に配置する
-                    GameObject go = PhotonNetwork.Instantiate("bomb", v, rot);
-                }
+                Debug.Log("作成");
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
             }
         }
     }
+    //int status = 0;
     private void FixedUpdate()
     {
-        if (PhotonNetwork.NetworkClientState.ToString() == "ConnectingToMasterserver" && status == 0)
+        //if (PhotonNetwork.NetworkClientState.ToString() == "ConnectingToMasterserver" && status == 0)
+        //{
+        //    status = 1;
+        //    Debug.Log("サーバーに接続中･･･");
+        //}
+        //if (PhotonNetwork.NetworkClientState.ToString() == "Authenticating" && status == 1)
+        //{
+        //    status = 2;
+        //    Debug.Log("認証中･･･");
+        //}
+        //if (PhotonNetwork.NetworkClientState.ToString() == "Joining" && status == 2)
+        //{
+        //    status = 3;
+        //    Debug.Log("ルームに参加中");
+        //}
+    }
+    [PunRPC]
+    private void TimeUP()
+    {
+        //時間のカウント
+        TimerCount += Time.deltaTime;
+        //タイムアップ
+        NowTime -= Time.deltaTime;
+        NowTime = Mathf.Clamp(NowTime, 0, MaxTime);
+        time.text = NowTime.ToString();
+        if (NowTime <= 0)
         {
-            status = 1;
-            Debug.Log("サーバーに接続中･･･");
-        }
-        if (PhotonNetwork.NetworkClientState.ToString() == "Authenticating" && status == 1)
-        {
-            status = 2;
-            Debug.Log("認証中･･･");
-        }
-        if (PhotonNetwork.NetworkClientState.ToString() == "Joining" && status == 2)
-        {
-            status = 3;
-            Debug.Log("ルームに参加中");
+            NowGame = false;
         }
     }
 }
