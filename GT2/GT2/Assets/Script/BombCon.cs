@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class BombCon : MonoBehaviourPunCallbacks
 {
+    bool tach;
     const float MaxTime = 2.5f;
     float Timer;
     // Start is called before the first frame update
@@ -16,9 +17,17 @@ public class BombCon : MonoBehaviourPunCallbacks
     void Update()
     {
         Timer -= Time.deltaTime;
-        if (Timer < 0)
+        if (Timer < 0 && !tach)
         {
             StartCoroutine(nameof(Exp));
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        int l = LayerMask.NameToLayer("Player");
+        if (other.gameObject.layer == l)
+        {
+            tach = true;
         }
     }
     IEnumerator Exp()

@@ -5,19 +5,22 @@ using UnityEngine.UI;
 
 public class Director : MonoBehaviour
 {
-    public GameObject Object; //メインスクリプト
     public GameObject inputField; //IPアドレスの入力欄
-    public GameObject toggle;     //サーバーのチェックボックス
-
+    bool SV;
     public void OnClick()
     {
+        if (GameManeger.instance.OnSV > 0)
+        {
+            SV = true;
+        }
+        else
+        {
+            SV = false;
+        }
         //IPアドレスの取得
         string ip = inputField.GetComponent<InputField>().text;
-        //サーバーのチェック
-        bool server = toggle.GetComponent<Toggle>().isOn;
-        //ログイン処理を呼び出す
-        Object.GetComponent<PTest>().Login(ip, server, true);
         //親オブジェクトを非表示(Panelを非表示)
         transform.parent.gameObject.SetActive(false);
+        GameManeger.instance.Login(ip, SV);
     }
 }

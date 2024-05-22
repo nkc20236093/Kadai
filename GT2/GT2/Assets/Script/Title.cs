@@ -3,9 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class Title : MonoBehaviourPunCallbacks
 {
+    private bool SV;
+    [SerializeField] Image check;
+    [SerializeField] Sprite[] sprites;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +21,25 @@ public class Title : MonoBehaviourPunCallbacks
     {
         if (!GameManeger.instance.GameEnd)
         {
-
+            Change();
+        }
+    }
+    [PunRPC]
+    void Change()
+    {
+        if (Input.GetKeyDown(KeyCode.Delete))
+        {
+            SV = !SV;
+        }
+        if (SV)
+        {
+            check.sprite = sprites[1];
+            GameManeger.instance.OnSV++;
+        }
+        else
+        {
+            check.sprite = sprites[0];
+            GameManeger.instance.OnSV--;
         }
     }
 }

@@ -6,34 +6,14 @@ using Photon.Realtime;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 using System.Linq;
-using UnityEngine.SceneManagement;
 
 public class PTest : MonoBehaviourPunCallbacks
 {
     public int[] sc = new int[4];     //サーバーの点数
-    public bool ServerFlg;  //サーバーフラグ
-    private bool NowGame;   //今のゲームがリザルトも含めて終了したか
     public Text time;
     const int MaxTime = 45;
     float NowTime;
     float ResultTime;
-    public void Login(string ip, bool sf, bool start)
-    {
-        //IPアドレスの設定
-        PhotonNetwork.PhotonServerSettings.AppSettings.Server = ip;
-        //ポート番号の設定
-        PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
-        //ネットワークへの接続
-        PhotonNetwork.ConnectUsingSettings();
-        ServerFlg = sf;
-        if (ServerFlg)
-        {
-            GameManeger.instance.GameEnd = start;
-            NowGame = start;
-        }
-        //送信回数の設定
-        PhotonNetwork.SerializationRate = 1;  //１秒に１回だけ通信する
-    }
 
     // サーバーへの接続が成功した時
     public override void OnConnectedToMaster()
@@ -58,16 +38,16 @@ public class PTest : MonoBehaviourPunCallbacks
     //接続状態の表示
     private void Update()
     {
-        if (NowGame)
+        if (GameManeger.instance.GameEnd)
         {
             //時間制限
             TimeUP();
         }
         //サーバーのときのみ
-        if (ServerFlg)
+        if (GameManeger.instance.ServerFlg)
         {
             //ゲームが開始したら
-            if (NowGame)
+            if (GameManeger.instance.GameEnd)
             {
                 time.enabled = true;
                 ResultTime = 0;
@@ -82,7 +62,7 @@ public class PTest : MonoBehaviourPunCallbacks
                 time.text = MaxTime.ToString();
                 if (ResultTime >= 5)
                 {
-                    SceneManager.LoadScene("TitleScene");
+                    GameManeger.instance.Finish();
                 }
             }
             for (int i = 0; i < sc.Length; i++)
@@ -90,7 +70,7 @@ public class PTest : MonoBehaviourPunCallbacks
                 sc[i] = Mathf.Clamp(sc[i], -5, 30);
                 if (sc[i] >= 30 || sc[i] <= -5)
                 {
-                    NowGame = false;
+                    GameManeger.instance.GameEnd = false;
                 }
             }
         }
@@ -116,7 +96,6 @@ public class PTest : MonoBehaviourPunCallbacks
             if (TimerCount > 2.5f)
             {
                 TimerCount = 0;
-                Debug.Log("作成");
                 //ネットワークオブジェクトのSphereをランダムの位置に配置する
                 GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
                 //ネットワークオブジェクトのbombをランダムの位置に配置する
@@ -128,7 +107,6 @@ public class PTest : MonoBehaviourPunCallbacks
             if (TimerCount > 1.5f)
             {
                 TimerCount = 0;
-                Debug.Log("作成");
                 //ネットワークオブジェクトのSphereをランダムの位置に配置する
                 GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
                 //ネットワークオブジェクトのbombをランダムの位置に配置する
@@ -152,7 +130,6 @@ public class PTest : MonoBehaviourPunCallbacks
             if (TimerCount > 0.75f)
             {
                 TimerCount = 0;
-                Debug.Log("作成");
                 //ネットワークオブジェクトのSphereをランダムの位置に配置する
                 GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
                 //ネットワークオブジェクトのbombをランダムの位置に配置する
@@ -190,7 +167,7 @@ public class PTest : MonoBehaviourPunCallbacks
         time.text = NowTime.ToString();
         if (NowTime <= 0)
         {
-            NowGame = false;
+            GameManeger.instance.GameEnd = false;
         }
     }
 }

@@ -81,7 +81,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
 
     void OnTriggerEnter(Collider col)
     {
-        if (pTest.ServerFlg)        //サーバーだけが行う
+        if (GameManeger.instance.ServerFlg)        //サーバーだけが行う
         {
             bool b = false;
             //プレイヤーがSphereに接触したとき 
@@ -99,8 +99,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
     }
     IEnumerator Partical(GameObject g, bool plmi)
     {
-        ScoreAudio(g);
-        ScoreParticle(g);
+        ScoreEffec(g);
         string id = GetComponent<PhotonView>().ViewID.ToString();  //端末のIDを取得
         if (plmi)
         {
@@ -133,15 +132,13 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
         text[3].text = sc4.ToString();        //クライアント３の点数表示
     }
     [PunRPC]
-    public void ScoreAudio(GameObject g)
+    public void ScoreEffec(GameObject g)
     {
         AudioSource audioSource = g.GetComponent<AudioSource>();
         audioSource.Play();
-    }
-    [PunRPC]
-    public void ScoreParticle(GameObject g)
-    {
         ParticleSystem particleSystem = g.GetComponentInChildren<ParticleSystem>();
         particleSystem.Play();
+        SphereCollider sphere = g.GetComponent<SphereCollider>();
+        sphere.enabled = false;
     }
 }
