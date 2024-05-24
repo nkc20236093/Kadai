@@ -43,5 +43,11 @@ MonoBehaviour:
   - Update
   - ScoreEffec
   - Change
+  - ScoreEffect
+  - Start
+  - MaxTimer
+  - Photon.Pun.IPunObservable.OnPhotonSerializeView
+  - Str2vec3
+  - TimeCreate
   DisableAutoOpenWizard: 1
   ShowSettings: 1

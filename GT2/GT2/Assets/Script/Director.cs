@@ -9,7 +9,7 @@ public class Director : MonoBehaviour
     bool SV;
     public void OnClick()
     {
-        if (GameManeger.instance.OnSV > 0)
+        if (GameManeger.instance.OnSV)
         {
             SV = true;
         }

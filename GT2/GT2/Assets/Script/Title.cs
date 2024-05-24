@@ -34,12 +34,12 @@ public class Title : MonoBehaviourPunCallbacks
         if (SV)
         {
             check.sprite = sprites[1];
-            GameManeger.instance.OnSV++;
+            GameManeger.instance.OnSV = true;
         }
         else
         {
             check.sprite = sprites[0];
-            GameManeger.instance.OnSV--;
+            GameManeger.instance.OnSV = false;
         }
     }
 }

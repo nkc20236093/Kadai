@@ -14,7 +14,7 @@ public class GameManeger : MonoBehaviour
     /// </summary>
     public bool GameEnd;
     public bool ServerFlg;  //サーバーフラグ
-    public int OnSV;       //鯖主が存在するかどうか
+    public bool OnSV;       //鯖主が存在するかどうか
     private void Awake()
     {
         if (instance == null)
@@ -47,7 +47,7 @@ public class GameManeger : MonoBehaviour
         //ネットワークへの接続
         PhotonNetwork.ConnectUsingSettings();
         ServerFlg = sf;
-        if (ServerFlg && OnSV > 0)
+        if (ServerFlg && OnSV)
         {
             GameEnd = true;
         }

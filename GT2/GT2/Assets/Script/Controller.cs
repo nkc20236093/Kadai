@@ -6,12 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviourPunCallbacks, IPunObservable
 {
+    float ResultTime;
+    float TimerCount = 0; //時間のカウンタ
+    Text time;
+    const int MAXTIME = 45;
+    float NowTime;
     [SerializeField] int Speed = 5;
     PTest pTest;
     Rigidbody rigid;
     private Text[] text = new Text[4];      //サーバーの点数表示
+    [PunRPC]
     private void Start()
     {
+        time = GameObject.Find("Time").GetComponent<Text>();
+        NowTime = MAXTIME;
         Vector3 r = transform.localEulerAngles;
         r.y = 180;
         transform.localEulerAngles = r;
@@ -31,6 +39,30 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
     }
     void Update()
     {
+        //ゲームが開始したら
+        if (GameManeger.instance.GameEnd)
+        {
+            //時間制限
+            TimeUP();
+            if (GameManeger.instance.ServerFlg)
+            {
+                if (GameManeger.instance.GameEnd)
+                {
+                    ResultTime = 0;
+                    //N秒経過したらSohereを作成する
+                    TimeCreate();
+                }
+            }
+        }
+        else
+        {
+            ResultTime = Mathf.Clamp(ResultTime, 0, 8);
+            ResultTime += Time.deltaTime;
+            if (ResultTime >= 5)
+            {
+                GameManeger.instance.Finish();
+            }
+        }
         //自分のオブジェクトの時
         if (photonView.IsMine)
         {
@@ -99,7 +131,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
     }
     IEnumerator Partical(GameObject g, bool plmi)
     {
-        ScoreEffec(g);
+        ScoreEffect(g);
         string id = GetComponent<PhotonView>().ViewID.ToString();  //端末のIDを取得
         if (plmi)
         {
@@ -132,7 +164,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
         text[3].text = sc4.ToString();        //クライアント３の点数表示
     }
     [PunRPC]
-    public void ScoreEffec(GameObject g)
+    public void ScoreEffect(GameObject g)
     {
         AudioSource audioSource = g.GetComponent<AudioSource>();
         audioSource.Play();
@@ -141,4 +173,84 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
         SphereCollider sphere = g.GetComponent<SphereCollider>();
         sphere.enabled = false;
     }
+    [PunRPC]
+    private void TimeUP()
+    {
+        time.enabled = true;
+        //時間のカウント
+        TimerCount += Time.deltaTime;
+        //タイムアップ
+        NowTime -= Time.deltaTime;
+        NowTime = Mathf.Clamp(NowTime, 0, MAXTIME);
+        time.text = NowTime.ToString();
+        if (NowTime <= 0)
+        {
+            time.enabled = false;
+            GameManeger.instance.GameEnd = false;
+        }
+    }
+    [PunRPC]
+    void TimeCreate()
+    {
+        Quaternion rot = Quaternion.Euler(-90, 0, 180);
+        var v = new Vector3(Random.Range(-9f, 9f), Random.Range(-3f, 4f), 0);
+        var v2 = new Vector3(Random.Range(-9f, 9f), Random.Range(-3f, 4f), 0);
+        if (NowTime < 45 && NowTime >= 30)
+        {
+            if (TimerCount > 3)
+            {
+                TimerCount = 0;
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
+            }
+        }
+        else if (NowTime < 30 && NowTime >= 20)
+        {
+            if (TimerCount > 2.5f)
+            {
+                TimerCount = 0;
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
+            }
+        }
+        else if (NowTime < 20 && NowTime >= 10)
+        {
+            if (TimerCount > 1.5f)
+            {
+                TimerCount = 0;
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
+            }
+        }
+        else if (NowTime < 10 && NowTime >= 5)
+        {
+            if (TimerCount > 1)
+            {
+                TimerCount = 0;
+                Debug.Log("作成");
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
+            }
+        }
+        else if (NowTime < 5)
+        {
+            if (TimerCount > 0.75f)
+            {
+                TimerCount = 0;
+                //ネットワークオブジェクトのSphereをランダムの位置に配置する
+                GameObject gos = PhotonNetwork.Instantiate("Sphere", v, Quaternion.identity);
+                //ネットワークオブジェクトのbombをランダムの位置に配置する
+                GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
+            }
+        }
+    }
+
 }
