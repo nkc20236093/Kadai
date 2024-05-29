@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManeger : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class GameManeger : MonoBehaviour
     public bool GameEnd;
     public bool ServerFlg;  //サーバーフラグ
     public bool OnSV;       //鯖主が存在するかどうか
+    private bool SV;
+    [SerializeField] Image check;
+    [SerializeField] Sprite[] sprites;
+    public AudioSource audioSource;
     private void Awake()
     {
         if (instance == null)
@@ -36,8 +41,27 @@ public class GameManeger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Change();
     }
+    [PunRPC]
+    void Change()
+    {
+        if (Input.GetKeyDown(KeyCode.Delete))
+        {
+            SV = !SV;
+        }
+        if (SV)
+        {
+            check.sprite = sprites[1];
+            OnSV = true;
+        }
+        else
+        {
+            check.sprite = sprites[0];
+            OnSV = false;
+        }
+    }
+
     public void Login(string ip, bool sf)
     {
         //IPアドレスの設定
@@ -47,17 +71,10 @@ public class GameManeger : MonoBehaviour
         //ネットワークへの接続
         PhotonNetwork.ConnectUsingSettings();
         ServerFlg = sf;
-        if (ServerFlg && OnSV)
-        {
-            GameEnd = true;
-        }
+        GameEnd = true;
+        audioSource.Play();
         //送信回数の設定
-        PhotonNetwork.SerializationRate = 1;  //１秒に１回だけ通信する
-        NextScene("GameScene");
-    }
-    public void NextScene(string scnename)
-    {
-        SceneManager.LoadScene(scnename);
+        PhotonNetwork.SerializationRate = 5;  //１秒に１回だけ通信する
     }
      public void Finish()
     {
@@ -66,5 +83,14 @@ public class GameManeger : MonoBehaviour
 #else
     Application.Quit();//ゲームプレイ終了
 #endif
+    }
+    bool b;
+    public void result()
+    {
+        if (!b)
+        {
+            b = true;
+            audioSource.Play();
+        }
     }
 }

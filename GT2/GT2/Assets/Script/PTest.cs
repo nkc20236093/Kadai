@@ -9,6 +9,10 @@ using System.Linq;
 
 public class PTest : MonoBehaviourPunCallbacks
 {
+    [SerializeField] Text time;
+    const int MAXTIME = 45;
+    public float NowTime;
+
     public int[] sc = new int[4];     //サーバーの点数
     // サーバーへの接続が成功した時
     public override void OnConnectedToMaster()
@@ -26,11 +30,12 @@ public class PTest : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
-
+        NowTime = MAXTIME;
     }
     //接続状態の表示
     private void Update()
     {
+        time.text = NowTime.ToString("f");
         //サーバーのときのみ
         if (GameManeger.instance.ServerFlg)
         {

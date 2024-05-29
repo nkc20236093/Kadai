@@ -6,11 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviourPunCallbacks, IPunObservable
 {
+    AudioClip clip;
     float ResultTime;
     float TimerCount = 0; //時間のカウンタ
-    Text time;
-    const int MAXTIME = 45;
-    float NowTime;
     [SerializeField] int Speed = 5;
     PTest pTest;
     Rigidbody rigid;
@@ -18,8 +16,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     private void Start()
     {
-        time = GameObject.Find("Time").GetComponent<Text>();
-        NowTime = MAXTIME;
+        clip = Resources.Load<AudioClip>("Audio/BGM/リザルト");
         Vector3 r = transform.localEulerAngles;
         r.y = 180;
         transform.localEulerAngles = r;
@@ -56,6 +53,8 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
+            GameManeger.instance.audioSource.clip = clip;
+            GameManeger.instance.result();
             ResultTime = Mathf.Clamp(ResultTime, 0, 8);
             ResultTime += Time.deltaTime;
             if (ResultTime >= 5)
@@ -176,16 +175,14 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     private void TimeUP()
     {
-        time.enabled = true;
         //時間のカウント
         TimerCount += Time.deltaTime;
         //タイムアップ
-        NowTime -= Time.deltaTime;
-        NowTime = Mathf.Clamp(NowTime, 0, MAXTIME);
-        time.text = NowTime.ToString();
-        if (NowTime <= 0)
+        pTest.NowTime -= Time.deltaTime;
+        pTest.NowTime = Mathf.Clamp(pTest.NowTime, 0, 45);
+        if (pTest.NowTime <= 0)
         {
-            time.enabled = false;
+            Debug.Log("タイムアップ");
             GameManeger.instance.GameEnd = false;
         }
     }
@@ -195,7 +192,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
         Quaternion rot = Quaternion.Euler(-90, 0, 180);
         var v = new Vector3(Random.Range(-9f, 9f), Random.Range(-3f, 4f), 0);
         var v2 = new Vector3(Random.Range(-9f, 9f), Random.Range(-3f, 4f), 0);
-        if (NowTime < 45 && NowTime >= 30)
+        if (pTest.NowTime < 45 && pTest.NowTime >= 30)
         {
             if (TimerCount > 3)
             {
@@ -206,7 +203,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
                 GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
             }
         }
-        else if (NowTime < 30 && NowTime >= 20)
+        else if (pTest.NowTime < 30 && pTest.NowTime >= 20)
         {
             if (TimerCount > 2.5f)
             {
@@ -217,7 +214,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
                 GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
             }
         }
-        else if (NowTime < 20 && NowTime >= 10)
+        else if (pTest.NowTime < 20 && pTest.NowTime >= 10)
         {
             if (TimerCount > 1.5f)
             {
@@ -228,7 +225,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
                 GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
             }
         }
-        else if (NowTime < 10 && NowTime >= 5)
+        else if (pTest.NowTime < 10 && pTest.NowTime >= 5)
         {
             if (TimerCount > 1)
             {
@@ -240,7 +237,7 @@ public class Controller : MonoBehaviourPunCallbacks, IPunObservable
                 GameObject gob = PhotonNetwork.Instantiate("bomb", v2, rot);
             }
         }
-        else if (NowTime < 5)
+        else if (pTest.NowTime < 5)
         {
             if (TimerCount > 0.75f)
             {

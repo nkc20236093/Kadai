@@ -34,8 +34,6 @@ public class BombCon : MonoBehaviourPunCallbacks
     {
         ParticleSystem particleSystem = GetComponentInChildren<ParticleSystem>();
         particleSystem.Play();
-        AudioSource audioSource = GetComponentInChildren<AudioSource>();
-        audioSource.Play();
         yield return new WaitForSeconds(0.5f);
         PhotonNetwork.Destroy(gameObject);
     }
