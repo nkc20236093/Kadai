@@ -15,12 +15,15 @@ public class PlayerController : MonoBehaviour
     public Vector3 jumpForce = new Vector3(0, 6, 0);//ジャンプ力 
     public Transform groundCheckPoint;//地面に向けてレイを飛ばすオブジェクト 
     public LayerMask groundLayers;//地面だと認識するレイヤー 
+
     Rigidbody rb;//
+    
     public float walkSpeed = 4f, runSpeed = 8f;//歩きの速度、走りの速度
     private bool cursorLock = true;//カーソルの表示/非表示 
     public List<Gun> guns = new List<Gun>();//武器の格納配列
     private int selectedGun = 0;//選択中の武器管理用数値
     private float shotTimer;//射撃間隔
+    
     [Tooltip("所持弾薬")]
     public int[] ammunition;
     [Tooltip("最高所持弾薬数")]
