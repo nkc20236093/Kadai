@@ -26,24 +26,24 @@ private:
 int main()
 {
 #if false
+	// クラスの実体（インスタンス）作成
+	MyClass mc{};
+
+	// bは公開部なので、アクセス可能
+	mc.b = 100;
+	cout << "b = " << mc.b << endl;
+
+	// aは非公開なのでアクセスできない
+	//mc.a = 100;
+
+	// 公開のset_a()を使用し、非公開のaの値を設定
+	mc.set_a();
+	// 公開のshow_a()を使用し、非公開のaの値を表示
+	mc.show_a();
 #endif
+
 	BMI b{};
 	b.SetData();
 	b.ShowBMI();
-	//// クラスの実体（インスタンス）作成
-	//MyClass mc{};
-
-	//// bは公開部なので、アクセス可能
-	//mc.b = 100;
-	//cout << "b = " << mc.b << endl;
-
-	//// aは非公開なのでアクセスできない
-	////mc.a = 100;
-
-	//// 公開のset_a()を使用し、非公開のaの値を設定
-	//mc.set_a();
-	//// 公開のshow_a()を使用し、非公開のaの値を表示
-	//mc.show_a();
-
 	return 0;
 }
