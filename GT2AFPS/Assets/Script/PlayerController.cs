@@ -46,10 +46,17 @@ public class PlayerController : MonoBehaviour
 
     UIManager uIManager;//UI管理
 
+
+    SpawnManager spawnManager;//スポーンマネージャー管理
+
+
     private void Awake()
     {
         //タグからUIManagerを探す
         uIManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
+
+        //タグからSpawnManagerを探す
+        spawnManager = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>();
     }
 
     private void Start()
@@ -68,6 +75,10 @@ public class PlayerController : MonoBehaviour
 
         //弾薬テキスト更新
         uIManager.SettingBulletsText(ammoClip[selectedGun], ammunition[selectedGun]);
+
+
+        //ランダムな位置でスポーンさせる
+        transform.position = spawnManager.GetSpawnPoint().position;
     }
 
     private void Update()
@@ -274,6 +285,7 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+
     }
 
     /// <summary>
@@ -288,6 +300,8 @@ public class PlayerController : MonoBehaviour
 
         guns[selectedGun].gameObject.SetActive(true);//選択中の銃のみ表示
     }
+
+
 
 
 
