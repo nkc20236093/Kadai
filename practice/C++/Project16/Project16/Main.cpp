@@ -8,6 +8,7 @@ using namespace std;
 #include "Menseki.h"
 #include "MyClass2.h"
 #include "MyClass3.h"
+#include "MyClass4.h"
 #include "Meibo.h"
 
 // クラスとは
@@ -62,6 +63,20 @@ public:
 	// デフォルト引数があるコンストラクタ
 	Test3(int a, int b, int c) :x(a + b + c) {}
 };
+
+// 関数のポインタの例
+void ActionCharge() { cout << "突進\n"; }
+void ActionTall() { cout << "尾撃\n"; };
+void ActionPunch() { cout << "打撃"; };
+
+// 関数のポインタの配列を定義
+void (*ActionFunc[])(void) =
+{
+	ActionCharge,
+	ActionPunch,
+	ActionTall
+};
+
 
 int main()
 {
@@ -147,7 +162,6 @@ int main()
 	cout << "体重の合計:" << Meibo::bw_total << endl;
 	cout << "身長の合計:" << Meibo::bl_total << endl;
 
-#endif
 	string end;
 	while (1)
 	{
@@ -163,6 +177,69 @@ int main()
 		}
 		cout << "----------------\n";
 	}
+
+	// 関数のポインタ
+	MyClass4 mc;
+	// メンバ変数へのポインタを宣言
+	// 戻り値、ポインタの名前、引数の型
+	int (MyClass4:: * ptr1)();
+	int (MyClass4:: * ptr2)(int);
+
+	// 引数無しのShow関数のアドレス
+	ptr1 = &MyClass4::Show;
+	// 引数有りのShow関数のアドレス
+	ptr2 = &MyClass4::Show;
+	// 間接ポインタを使って関数呼び出し
+	(mc.*ptr1)();
+	(mc.*ptr2)(20);
+
+	int actionNo = 0;
+	ActionFunc[actionNo]();
+
+	// 構造体(struct)について
+	// ほぼclassと同じだが、デフォルトのアクセス指定がpublicになってる
+	struct A
+	{
+		string str;
+		int x;
+	};
+	A test;
+	test.str = "abc";
+	test.x = 100;
+	cout << "str = " << test.str << endl;
+	cout << "x = " << test.x << endl;
+
+
+#endif
+	// 共用体
+	// 複数のデータメンバを持つことができる型だが
+	// 実際に記憶できるのは1つのメンバのみ
+	// それぞれの変数の一番大きな領域が確保される
+	union Account
+	{
+		int x;
+		double y;
+		char c[4];
+		bool b[32];
+	};
+
+	Account a;
+	a.x = 100;
+	a.y = 3.14;
+	cout << "a.x = " << a.x << endl;
+	cout << "a.y = " << a.y << endl;
+
+	union Free
+	{
+		int x;
+		double y;
+		char c[4];
+		bool b[32];
+	};
+	class Enemy
+	{
+		Free free[4];
+	};
 
 	return 0;
 }
