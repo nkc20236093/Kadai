@@ -1,9 +1,14 @@
 #include <iostream>
+using namespace std;
+
+// 自作ヘッダ
 #include "MyClass.h"
 #include "BMI.h"
 #include "Person.h"
 #include "Menseki.h"
-using namespace std;
+#include "MyClass2.h"
+#include "MyClass3.h"
+#include "Meibo.h"
 
 // クラスとは
 // データ、関数などをまとめた型
@@ -79,6 +84,7 @@ int main()
 	b.SetData();
 	b.ShowBMI();
 	Person p("aaaa", 100, 'M');
+	
 	// 人間クラスの作成
 	Person yamada("山田太郎", 26, 'M');
 	Person hanako("田中花子", 24, 'F');
@@ -87,14 +93,76 @@ int main()
 	cout << "-----------------" << endl;
 	hanako.Show();
 	cout << "-----------------" << endl;
+	
 	Menseki circle(1.5), rect(5.2, 2.5), daikei(2.5, 4.5, 3.0);
 	cout << "半径1.5の円の面積は" << circle.show() << "です\n";
 	cout << "縦5.2、横2.5の長方形の面積は" << rect.show() << "です\n";
 	cout << "上辺2.5、下底4.5、高さ3.0の台形の面積は" << daikei.show() << "です\n";
-#endif
 
 	Test3 a1;
 	Test3(5);
 	Test3(1, 2, 3);
+
+	// MyClass2の実体作成
+	MyClass2 a(10, 100);
+	// コピーコンストラクタによる初期化
+	// 初期化の際に自分自身のクラスを代入
+	MyClass2 b = a;
+	// MyClass2 b(a);　この書き方も可 
+
+	// 代入(コピーコンストラクタは呼ばれない)
+	b = a;
+
+	a.show();
+	b.show();
+
+	MyClass2 a(10, 100);
+	a.show();
+	// コピーコンストラクタでコピー
+	// コピーコンストラクタでポインタをコピーすると
+	// バグが起きる可能性がある
+	// bの*pxはbのxのアドレスではなく、aのxのアドレスをもってしまう
+	MyClass2 b = a;
+	b.show();
+
+	MyClass2 a(10, 100);
+	MyClass2 b = a;
+	a.show();
+	b.show();
+
+	MyClass3 a;
+	a.SetX(10);
+	int num;
+	a.ReadX(&num);
+	cout << "x = " << num << endl;
+
+	Meibo man[3];
+	for (int i = 0; i < 3; ++i)
+	{
+		man[i].SetData();
+	}
+
+	// 静的データメンバはスコープ解決演算子で使用する
+	// Meibo::bw_total
+	cout << "体重の合計:" << Meibo::bw_total << endl;
+	cout << "身長の合計:" << Meibo::bl_total << endl;
+
+#endif
+	string end;
+	while (1)
+	{
+		Meibo person;
+		// 静的メンバ関数呼び出し
+		// クラス名::関数で呼び出す
+		Meibo::GetMean();
+		cout << "続けますか?(y/n)";
+		cin >> end;
+		if (end[0] == 'n')
+		{
+			break;
+		}
+		cout << "----------------\n";
+	}
+
 	return 0;
 }
