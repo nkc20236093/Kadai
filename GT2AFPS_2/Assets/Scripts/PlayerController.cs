@@ -51,6 +51,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
     SpawnManager spawnManager;//スポーンマネージャー管理
 
 
+    public Animator animator;//アニメーター
+
+
+    public GameObject[] playerModel;//プレイヤーモデルを格納
+    public Gun[] gunsHolder, OtherGunsHolder;//銃ホルダー
+
+
     private void Awake()
     {
         //タグからUIManagerを探す
@@ -80,6 +87,34 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //ランダムな位置でスポーンさせる
         //transform.position = spawnManager.GetSpawnPoint().position;
+
+
+        guns.Clear();//初期化
+
+        if (photonView.IsMine)//自分だったら
+        {
+
+            foreach (var model in playerModel)//モデルのパーツ分ループ
+            {
+                model.SetActive(false);//非表示
+            }
+
+
+            foreach (Gun gun in gunsHolder)//銃の数分ループ
+            {
+                guns.Add(gun);//リストに追加
+            }
+
+        }
+        else//他人だったらOtherGunsHolderを表示させる
+        {
+            foreach (Gun gun in OtherGunsHolder)//銃の数分ループ
+            {
+                guns.Add(gun);//リストに追加
+            }
+        }
+
+        switchGun();//銃を表示させるため
     }
 
     private void Update()
@@ -122,6 +157,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //カーソル非表示
         UpdateCursorLock();
+
+        //アニメーター遷移
+        AnimatorSet();
     }
 
     //Update関数が呼ばれた後に実行される
@@ -280,7 +318,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
 
             //実際に武器を切り替える関数
-            switchGun();
+            //switchGun();
+
+            //銃の切り替え（ルーム内のプレイヤー全員呼び出し）
+            photonView.RPC("SetGun", RpcTarget.All, selectedGun);
+
         }
         else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
         {
@@ -293,7 +335,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
 
             //実際に武器を切り替える関数
-            switchGun();
+            //switchGun();
+
+            //銃の切り替え（ルーム内のプレイヤー全員呼び出し）
+            photonView.RPC("SetGun", RpcTarget.All, selectedGun);
         }
 
         //数値キーの入力検知で武器を切り替える
@@ -304,10 +349,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 selectedGun = i;//銃を扱う数値を設定
 
                 //実際に武器を切り替える関数
-                switchGun();
+                //switchGun();
+
+                //銃の切り替え（ルーム内のプレイヤー全員呼び出し）
+                photonView.RPC("SetGun", RpcTarget.All, selectedGun);
 
             }
         }
+
     }
 
     /// <summary>
@@ -413,4 +462,45 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
         }
     }
+
+
+    private void AnimatorSet()
+    {
+        //walk判定
+        if (moveDir != Vector3.zero)
+        {
+            animator.SetBool("walk", true);
+
+        }
+        else
+        {
+            animator.SetBool("walk", false);
+        }
+
+        //run判定
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            animator.SetBool("run", true);
+        }
+        else
+        {
+            animator.SetBool("run", false);
+        }
+
+    }
+
+
+    [PunRPC]//（同じルームにいる）リモートクライアントに対してのメソッドの呼び出しが可能に
+    public void SetGun(int gunNo)
+    {
+        //銃の切り替え
+        if (gunNo < guns.Count)
+        {
+            selectedGun = gunNo;
+
+            switchGun();
+        }
+
+    }
+
 }
