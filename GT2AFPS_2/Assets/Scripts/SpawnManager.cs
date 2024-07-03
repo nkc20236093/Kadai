@@ -45,4 +45,21 @@ public class SpawnManager : MonoBehaviour
         //ネットワーク上のプレイヤーを生成する：第一引数ではオブジェクトの名前が必要
         player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);//後で削除するときのために格納
     }
+
+
+    /// <summary>
+    /// 撃たれて体力がなくなった時に呼ばれる
+    /// </summary>
+    public void Die()
+    {
+
+        if (player != null)
+        {
+            //5秒後にリスポーンさせる
+            Invoke("SpawnPlayer", 5f);
+        }
+        //playerをネットワーク上から削除
+        PhotonNetwork.Destroy(player);
+
+    }
 }

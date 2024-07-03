@@ -58,6 +58,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public Gun[] gunsHolder, OtherGunsHolder;//銃ホルダー
 
 
+    public int maxHP = 100;//最大HP
+    private int currentHp;//現在のHP
+
+
     private void Awake()
     {
         //タグからUIManagerを探す
@@ -69,6 +73,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        currentHp = maxHP;//現在のHPをMAXHPの数値に設定
+
+
         //変数にメインカメラを格納
         cam = Camera.main;
 
@@ -104,6 +111,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 guns.Add(gun);//リストに追加
             }
+
+            uIManager.UpdateHP(maxHP, currentHp);//HPをスライダーに反映
 
         }
         else//他人だったらOtherGunsHolderを表示させる
@@ -423,13 +432,25 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             //Debug.Log("当たったオブジェクトは" + hit.collider.gameObject.name);
 
-            //弾痕エフェクト (hit.pointはコライダーにヒットした位置)：hit.point + (hit.normal * .002f)はちらつかないように少し上にしている
-            //hit normalは当たったオブジェクトに対して直角の方向が返される
-            //LookRotationは指定した方向に回す
-            GameObject bulletImpactObject = Instantiate(guns[selectedGun].bulletImpact, hit.point + (hit.normal * .002f), Quaternion.LookRotation(hit.normal, Vector3.up));
+            if (hit.collider.gameObject.tag == "Player")//プレイヤーにぶつかった場合
+            {
+                // ヒット関数を全プレイヤーで呼び出して撃たれたプレイヤーのHPを同期する
+                hit.collider.gameObject.GetPhotonView().RPC("Hit", RpcTarget.All, guns[selectedGun].shotDamage, photonView.Owner.NickName, PhotonNetwork.LocalPlayer.ActorNumber);
 
-            //時間経過で消えるようにする
-            Destroy(bulletImpactObject, 10f);
+            }
+            else
+            {
+                //弾痕エフェクト (hit.pointはコライダーにヒットした位置)：hit.point + (hit.normal * .002f)はちらつかないように少し上にしている
+                //hit normalは当たったオブジェクトに対して直角の方向が返される
+                //LookRotationは指定した方向に回す
+                GameObject bulletImpactObject = Instantiate(guns[selectedGun].bulletImpact, hit.point + (hit.normal * .002f), Quaternion.LookRotation(hit.normal, Vector3.up));
+
+                //時間経過で消えるようにする
+                Destroy(bulletImpactObject, 10f);
+            }
+
+
+
         }
 
         //射撃間隔を設定
@@ -503,4 +524,47 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     }
 
+
+    /// <summary>
+    /// 敵の弾に当たったら呼ばれる関数（全プレイヤーで共有するためPunRPC）
+    /// </summary>
+    [PunRPC]
+    public void Hit(int damage, string name, int actor)//ダメージ、撃った奴の名前、撃った奴の番号
+    {
+        ReceiveDamage(name, damage, actor);//ダメージ関数呼び出し
+
+    }
+
+
+    /// <summary>
+    /// ダメージを受ける関数
+    /// </summary>
+    public void ReceiveDamage(string name, int damage, int actor)
+    {
+        if (photonView.IsMine)//自分なら
+        {
+            currentHp -= damage;//ダメージ
+
+
+            if (currentHp <= 0)//現在のHPが0以下の場合
+            {
+                Death(name, actor);//死亡関数を呼ぶ
+            }
+
+            uIManager.UpdateHP(maxHP, currentHp);//HPをスライダーに反映
+
+        }
+
+    }
+
+    //死亡処理
+    public void Death(string name, int actor)
+    {
+        currentHp = 0;
+
+        //死亡関数を呼ぶ
+        spawnManager.Die();
+        uIManager.UpdateDeathUI(name);
+
+    }
 }
