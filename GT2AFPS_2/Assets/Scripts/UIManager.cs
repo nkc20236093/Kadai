@@ -13,6 +13,10 @@ public class UIManager : MonoBehaviour
     public Text deathText;//デステキスト
 
 
+    public GameObject scoreboard;//スコアボードUI
+    public PlayerInformation info;//プレイヤー情報セットスクリプト
+
+
     /// <summary>
     /// 装備中の銃の弾数をテキストに反映
     /// </summary>
@@ -49,4 +53,13 @@ public class UIManager : MonoBehaviour
         deathPanel.SetActive(false);
     }
 
+
+    /// <summary>
+    /// キルデス表の表示切替
+    /// </summary>
+    public void ChangeScoreUI()
+    {
+        //表示していたら非表示に、非表示なら表示させる
+        scoreboard.SetActive(!scoreboard.activeInHierarchy);
+    }
 }

@@ -62,6 +62,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private int currentHp;//現在のHP
 
 
+    public GameObject hitEffect;//血のエフェクト
+
+
+    GameManager gameManager;//ゲームマネージャー
+
+
     private void Awake()
     {
         //タグからUIManagerを探す
@@ -69,6 +75,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //タグからSpawnManagerを探す
         spawnManager = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>();
+
+        //タグからGameManagerを探す
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     private void Start()
@@ -434,6 +443,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             if (hit.collider.gameObject.tag == "Player")//プレイヤーにぶつかった場合
             {
+                //血のエフェクトをネットワーク上に生成
+                PhotonNetwork.Instantiate(hitEffect.name, hit.point, Quaternion.identity);
+
                 // ヒット関数を全プレイヤーで呼び出して撃たれたプレイヤーのHPを同期する
                 hit.collider.gameObject.GetPhotonView().RPC("Hit", RpcTarget.All, guns[selectedGun].shotDamage, photonView.Owner.NickName, PhotonNetwork.LocalPlayer.ActorNumber);
 
@@ -565,6 +577,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
         //死亡関数を呼ぶ
         spawnManager.Die();
         uIManager.UpdateDeathUI(name);
+
+
+        //自分のデス数を上昇させる(自分の識別番号、デス、加算数値)
+        gameManager.ScoreGet(PhotonNetwork.LocalPlayer.ActorNumber, 1, 1);
+
+        //撃ってきた相手のキル数を上昇する(撃ってきた敵の識別番号、キル、加算数値)
+        gameManager.ScoreGet(actor, 0, 1);
 
     }
 }
