@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 
 //photonViewと、PUNが呼び出すことのできるすべてのコールバック/イベントを提供します。使用したいイベント/メソッドをオーバーライドしてください。
+//マスターサーバーへ接続した時や、Photonのサーバーから切断された時のコールバックを受け取ることができます。
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     //よく見るドキュメントページ
@@ -452,4 +453,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     }
 
+
+    //タイトルのUIから呼ぶ：ゲーム終了関数
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;//ゲームプレイ終了
+#else
+    Application.Quit();//ゲームプレイ終了
+#endif
+    }
 }

@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour
     public PlayerInformation info;//プレイヤー情報セットスクリプト
 
 
+    public GameObject endPanel;//終了パネル
+
+
     /// <summary>
     /// 装備中の銃の弾数をテキストに反映
     /// </summary>
@@ -62,4 +65,12 @@ public class UIManager : MonoBehaviour
         //表示していたら非表示に、非表示なら表示させる
         scoreboard.SetActive(!scoreboard.activeInHierarchy);
     }
+
+
+    //ゲーム終了パネル表示
+    public void OpenEndPanel()
+    {
+        endPanel.SetActive(true);
+    }
+
 }

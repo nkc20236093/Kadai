@@ -178,6 +178,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //アニメーター遷移
         AnimatorSet();
+
+        //サウンド止める条件
+        if (Input.GetMouseButtonUp(0) || ammoClip[2] <= 0)
+        {
+            //サウンド止める
+            photonView.RPC("SoundStop", RpcTarget.All);
+        }
+
+        OutGame();//
     }
 
     //Update関数が呼ばれた後に実行される
@@ -468,6 +477,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         //射撃間隔を設定
         shotTimer = Time.time + guns[selectedGun].shootInterval;
 
+        //発射音
+        photonView.RPC("SoundGeneration", RpcTarget.All);
 
     }
 
@@ -586,4 +597,55 @@ public class PlayerController : MonoBehaviourPunCallbacks
         gameManager.ScoreGet(actor, 0, 1);
 
     }
+
+
+    public override void OnDisable()
+    {
+        //マウス表示
+        cursorLock = false;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+
+    //音の発生
+    [PunRPC]
+    public void SoundGeneration()
+    {
+        if (selectedGun == 2)//アサルトライフルなら
+        {
+            guns[selectedGun].LoopON_SubmachineGun();//ループして鳴らす
+        }
+        else//違うなら
+        {
+            guns[selectedGun].SoundGunShot();//単発で鳴らす
+        }
+    }
+
+    //音を止める関数
+    [PunRPC]
+    public void SoundStop()
+    {
+        guns[2].LoopOFF_SubmachineGun();//アサルトライフルのSEループを止める
+    }
+
+
+    /// <summary>
+    /// Mを押したらメニューに戻る
+    /// </summary>
+    public void OutGame()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            //プレイヤーデータ削除
+            gameManager.OutPlayerGet(PhotonNetwork.LocalPlayer.ActorNumber);
+
+            PhotonNetwork.AutomaticallySyncScene = false;//同期オフ
+
+            PhotonNetwork.LeaveRoom();//部屋を抜ける
+
+        }
+
+
+    }
+
 }
