@@ -10,7 +10,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private float verticalMouseInput;//y軸の回転を格納　回転を制限したいから
     private Camera cam;//カメラ
 
-
+    float[] lenght = new float[3]
+    {
+       3.5f, 5.75f,10f
+    };
+    float[] magnification = new float[3]
+    {
+        1.25f,1.0f,0.5f
+    };
 
     private Vector3 moveDir;//プレイヤーの入力を格納（移動）
     private Vector3 movement;//進む方向を格納する変数
@@ -449,6 +456,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             //Debug.Log("当たったオブジェクトは" + hit.collider.gameObject.name);
+            Vector3 pos = hit.point;
 
             if (hit.collider.gameObject.tag == "Player")//プレイヤーにぶつかった場合
             {
@@ -456,7 +464,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 PhotonNetwork.Instantiate(hitEffect.name, hit.point, Quaternion.identity);
 
                 // ヒット関数を全プレイヤーで呼び出して撃たれたプレイヤーのHPを同期する
-                hit.collider.gameObject.GetPhotonView().RPC("Hit", RpcTarget.All, guns[selectedGun].shotDamage, photonView.Owner.NickName, PhotonNetwork.LocalPlayer.ActorNumber);
+                hit.collider.gameObject.GetPhotonView().RPC(nameof(Hit), RpcTarget.All, guns[selectedGun].shotDamage, photonView.Owner.NickName, PhotonNetwork.LocalPlayer.ActorNumber, pos);
 
             }
             else
@@ -552,8 +560,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
     /// 敵の弾に当たったら呼ばれる関数（全プレイヤーで共有するためPunRPC）
     /// </summary>
     [PunRPC]
-    public void Hit(int damage, string name, int actor)//ダメージ、撃った奴の名前、撃った奴の番号
+    public void Hit(int damage, string name, int actor, Vector3 point)//ダメージ、撃った奴の名前、撃った奴の番号
     {
+        float distance = Vector3.Distance(transform.position, point);
+        Mathf.Abs(distance);
+        for(int i = 0;i<lenght.Length;i++)
+        {
+            if (lenght[i] < distance)
+            {
+                damage = (int)(damage * magnification[i]);
+            }
+        }
         ReceiveDamage(name, damage, actor);//ダメージ関数呼び出し
 
     }
