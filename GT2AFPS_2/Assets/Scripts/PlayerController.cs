@@ -10,10 +10,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private float verticalMouseInput;//y軸の回転を格納　回転を制限したいから
     private Camera cam;//カメラ
 
+    bool SafeZone = true;
+
+    // 射程距離減衰(m)
     float[] lenght = new float[3]
     {
        3.5f, 5.75f,10f
     };
+    // 射程距離減衰率
     float[] magnification = new float[3]
     {
         1.25f,1.0f,0.5f
@@ -66,7 +70,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 
     public int maxHP = 100;//最大HP
-    private int currentHp;//現在のHP
+    private float currentHp;//現在のHP
 
 
     public GameObject hitEffect;//血のエフェクト
@@ -74,7 +78,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     GameManager gameManager;//ゲームマネージャー
 
-
+    ZoneManager zoneManager;//ゾーンマネージャー
+    float Zonetimer = 0;
     private void Awake()
     {
         //タグからUIManagerを探す
@@ -85,6 +90,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //タグからGameManagerを探す
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
+        zoneManager = GameObject.FindGameObjectWithTag("Zone").GetComponent<ZoneManager>();
     }
 
     private void Start()
@@ -150,7 +157,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
             //戻ってこれ以降の処理を行わない
             return;
         }
+        // 安置外ダメージ
+        Zone(SafeZone);
 
+        // 落下死
+        if (transform.position.y < -10)
+        {
+            Death("落下死", 00);
+        }
 
         //視点移動関数
         PlayerRotate();
@@ -223,6 +237,44 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //弾薬テキスト更新
         uIManager.SettingBulletsText(ammoClip[selectedGun], ammunition[selectedGun]);
+    }
+
+    void Zone(bool safe)
+    {
+        if (safe)
+        {
+            Zonetimer = 0;
+            return;
+        }
+        else
+        {
+            Debug.Log("安置外");
+            Zonetimer += Time.deltaTime;
+            if (Zonetimer > 5)
+            {
+                Debug.Log("安置外ダメージ");
+                photonView.RPC(nameof(ZoneDamage), RpcTarget.All);
+                Zonetimer = 0;
+            }
+        }
+    }
+    [PunRPC]
+    void ZoneDamage()
+    {
+        if (photonView.IsMine)//自分なら
+        {
+            float damage = zoneManager.ZoneDamage[zoneManager.ZoneSequence];
+            currentHp -= damage;//ダメージ
+
+
+            if (currentHp <= 0)//現在のHPが0以下の場合
+            {
+                Death("安置外ダメージ", 00);//死亡関数を呼ぶ
+            }
+
+            uIManager.UpdateHP(maxHP, currentHp);//HPをスライダーに反映
+
+        }
     }
 
     /// <summary>
@@ -464,7 +516,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 PhotonNetwork.Instantiate(hitEffect.name, hit.point, Quaternion.identity);
 
                 // ヒット関数を全プレイヤーで呼び出して撃たれたプレイヤーのHPを同期する
-                hit.collider.gameObject.GetPhotonView().RPC(nameof(Hit), RpcTarget.All, guns[selectedGun].shotDamage, photonView.Owner.NickName, PhotonNetwork.LocalPlayer.ActorNumber, pos);
+                hit.collider.gameObject.GetPhotonView().RPC(nameof(Hit), RpcTarget.All, guns[selectedGun].shotDamage, photonView.Owner.NickName, PhotonNetwork.LocalPlayer.ActorNumber);
 
             }
             else
@@ -560,26 +612,24 @@ public class PlayerController : MonoBehaviourPunCallbacks
     /// 敵の弾に当たったら呼ばれる関数（全プレイヤーで共有するためPunRPC）
     /// </summary>
     [PunRPC]
-    public void Hit(int damage, string name, int actor, Vector3 point)//ダメージ、撃った奴の名前、撃った奴の番号
+    public void Hit(float damage, string name, int actor)
+    //ダメージ、撃った奴の名前、撃った奴の番号、撃った奴の座標
     {
-        float distance = Vector3.Distance(transform.position, point);
-        Mathf.Abs(distance);
-        for(int i = 0;i<lenght.Length;i++)
-        {
-            if (lenght[i] < distance)
-            {
-                damage = (int)(damage * magnification[i]);
-            }
-        }
+        //float distance = Vector3.Distance(transform.position, point);
+        //for(int i = 0;i<lenght.Length;i++)
+        //{
+        //    if (lenght[i] < distance)
+        //    {
+        //        damage *= magnification[i];
+        //    }
+        //}
         ReceiveDamage(name, damage, actor);//ダメージ関数呼び出し
-
     }
-
 
     /// <summary>
     /// ダメージを受ける関数
     /// </summary>
-    public void ReceiveDamage(string name, int damage, int actor)
+    public void ReceiveDamage(string name, float damage, int actor)
     {
         if (photonView.IsMine)//自分なら
         {
@@ -623,7 +673,22 @@ public class PlayerController : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.None;
     }
 
-
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Zone"))
+        {
+            // 安置外にいる
+            SafeZone = false;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Zone"))
+        {
+            // 安置内にいる
+            SafeZone = true;
+        }
+    }
     //音の発生
     [PunRPC]
     public void SoundGeneration()

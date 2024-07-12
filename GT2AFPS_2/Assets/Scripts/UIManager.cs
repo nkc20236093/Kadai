@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
 
 
     //HPÇÃçXêV
-    public void UpdateHP(int maxhp, int currentHp)
+    public void UpdateHP(int maxhp, float currentHp)
     {
         hpSlider.maxValue = maxhp;
         hpSlider.value = currentHp;

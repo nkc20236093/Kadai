@@ -60,9 +60,6 @@ void GetVoice(Cat tama, Dog pochi)
 	cout << "猫は" << tama.voice << endl;
 	cout << "犬は" << pochi.voice << endl;
 };
-
-#endif
-
 class A2
 {
 	int x;
@@ -73,7 +70,7 @@ public:
 class B2
 {
 public:
-	void Func(A2 a) 
+	void Func(A2 a)
 	{
 		// AがBをフレンドクラスとしているので
 		// BはAの非公開部にアクセスできる
@@ -91,6 +88,86 @@ public:
 		Func(a);	// 親は友達なんで、親の力
 	};
 };
+
+// 多重継承
+class B3_1
+{
+	int x;
+public:
+	B3_1() :x(10) {}
+	void ShowB3_1()
+	{
+		cout << "x = " << x << endl;
+	};
+};
+class B3_2
+{
+	int y;
+public:
+	B3_2() :y(20) {};
+	void ShowB3_2()
+	{
+		cout << "y = " << y << endl;
+	};
+};
+// B3_1とB3_2を多重継承
+class C2 :public B3_1, public B3_2
+{
+	int d;
+public:
+	C2() :d(30) {}
+	void ShowC2()
+	{
+		cout << "d = " << d << endl;
+	};
+};
+
+// ひし形継承
+class B4_1
+{
+protected:
+	int x;
+public:
+	void ShowX()
+	{
+		cout << "x = " << x << endl;
+	}
+	B4_1() :x(10)
+	{
+		cout << "B4_1のコンストラクタ\n";
+		cout << "xを10に設定\n";
+	};
+};
+class B4_2 :virtual public B4_1
+{
+public:
+	B4_2()
+	{
+		cout << "B4_2のコンストラクタ\n";
+		x = 100;
+		cout << "xを100に設定\n";
+	};
+};
+class B4_3 :virtual public B4_1
+{
+public:
+	B4_3()
+	{
+		cout << "B4_3のコンストラクタ\n";
+		x = 200;
+		cout << "xを200に設定\n";
+	};
+};
+// B4_2、B4_3ひし形継承したC3
+class C3 :public B4_2, public B4_3
+{
+public:
+	void Show()
+	{
+		cout << "クラスC3のShow関数でxを表示:" << x << endl;
+	};
+};
+#endif
 int main()
 {
 #if false
@@ -111,7 +188,18 @@ int main()
 	// フレンド関数呼び出し
 	GetVoice(a, b);
 
+	// 実体作成
+	C2 der;
+	der.ShowB3_1();	// B3_1のメンバ関数
+	der.ShowB3_2();	// B3_2のメンバ関数
+	der.ShowC2();	// C2のメンバ関数
 
+	// 親に同じ名前の関数がある時は
+	// スコープ解決演算子を使う
+	der.B3_1::ShowB3_1();
+	der.B3_2::ShowB3_2();
+
+	C3 c3;
+	c3.Show();
 #endif
-
 }
