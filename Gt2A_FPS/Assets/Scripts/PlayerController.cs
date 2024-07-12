@@ -67,6 +67,21 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     GameManager gameManager;//ゲームマネージャー
 
+    ZoneManager zoneManager;//ゾーンマネージャー
+
+    float Zonetimer = 0;
+    bool SafeZone = true;
+
+    // 射程距離減衰(m)
+    float[] lenght = new float[3]
+    {
+       3.5f, 5.75f,10f
+    };
+    // 射程距離減衰率
+    float[] magnification = new float[3]
+    {
+        1.25f,1.0f,0.5f
+    };
 
     private void Awake()
     {
@@ -78,6 +93,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //タグからGameManagerを探す
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
+        zoneManager = GameObject.FindGameObjectWithTag("Zone").GetComponent<ZoneManager>();
     }
 
     private void Start()
@@ -143,7 +160,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
             //戻ってこれ以降の処理を行わない
             return;
         }
+        // 安置外ダメージ
+        Zone(SafeZone);
 
+
+        // 落下死
+        if (transform.position.y < -10)
+        {
+            Death("落下死", 00);
+        }
 
         //視点移動関数
         PlayerRotate();
@@ -216,6 +241,45 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //弾薬テキスト更新
         uIManager.SettingBulletsText(ammoClip[selectedGun], ammunition[selectedGun]);
+    }
+
+    void Zone(bool safe)
+    {
+        if (safe)
+        {
+            Zonetimer = 0;
+            return;
+        }
+        else
+        {
+            Debug.Log("安置外");
+            Zonetimer += Time.deltaTime;
+            if (Zonetimer > 5)
+            {
+                Debug.Log("安置外ダメージ");
+                photonView.RPC(nameof(ZoneDamage), RpcTarget.All);
+                Zonetimer = 0;
+            }
+        }
+    }
+
+    [PunRPC]
+    void ZoneDamage()
+    {
+        if (photonView.IsMine)//自分なら
+        {
+            int damage = zoneManager.ZoneDamage[zoneManager.ZoneSequence];
+            currentHp -= damage;//ダメージ
+
+
+            if (currentHp <= 0)//現在のHPが0以下の場合
+            {
+                Death("安置外ダメージ", 00);//死亡関数を呼ぶ
+            }
+
+            uIManager.UpdateHP(maxHP, currentHp);//HPをスライダーに反映
+
+        }
     }
 
     /// <summary>
@@ -644,8 +708,22 @@ public class PlayerController : MonoBehaviourPunCallbacks
             PhotonNetwork.LeaveRoom();//部屋を抜ける
 
         }
-
-
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Zone"))
+        {
+            // 安置外にいる
+            SafeZone = false;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Zone"))
+        {
+            // 安置内にいる
+            SafeZone = true;
+        }
     }
 
 }
