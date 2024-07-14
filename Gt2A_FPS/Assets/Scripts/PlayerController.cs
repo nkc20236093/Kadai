@@ -1,83 +1,91 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.Collections;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
-    public Transform viewPoint;//ƒJƒƒ‰‚ÌˆÊ’uƒIƒuƒWƒFƒNƒg
-    public float mouseSensitivity = 1f;//‹“_ˆÚ“®‚Ì‘¬“x
-    private Vector2 mouseInput;//ƒ†[ƒU[‚Ìƒ}ƒEƒX“ü—Í‚ğŠi”[
-    private float verticalMouseInput;//y²‚Ì‰ñ“]‚ğŠi”[@‰ñ“]‚ğ§ŒÀ‚µ‚½‚¢‚©‚ç
-    private Camera cam;//ƒJƒƒ‰
+    public Transform viewPoint;//ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    public float mouseSensitivity = 1f;//è¦–ç‚¹ç§»å‹•ã®é€Ÿåº¦
+    private Vector2 mouseInput;//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ãƒã‚¦ã‚¹å…¥åŠ›ã‚’æ ¼ç´
+    private float verticalMouseInput;//yè»¸ã®å›è»¢ã‚’æ ¼ç´ã€€å›è»¢ã‚’åˆ¶é™ã—ãŸã„ã‹ã‚‰
+    private Camera cam;//ã‚«ãƒ¡ãƒ©
 
 
 
-    private Vector3 moveDir;//ƒvƒŒƒCƒ„[‚Ì“ü—Í‚ğŠi”[iˆÚ“®j
-    private Vector3 movement;//i‚Ş•ûŒü‚ğŠi”[‚·‚é•Ï”
-    private float activeMoveSpeed = 4;//ÀÛ‚ÌˆÚ“®‘¬“x
+    private Vector3 moveDir;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ã‚’æ ¼ç´ï¼ˆç§»å‹•ï¼‰
+    private Vector3 movement;//é€²ã‚€æ–¹å‘ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°
+    private float activeMoveSpeed = 4;//å®Ÿéš›ã®ç§»å‹•é€Ÿåº¦
 
 
 
-    public Vector3 jumpForce = new Vector3(0, 6, 0);//ƒWƒƒƒ“ƒv—Í 
-    public Transform groundCheckPoint;//’n–Ê‚ÉŒü‚¯‚ÄƒŒƒC‚ğ”ò‚Î‚·ƒIƒuƒWƒFƒNƒg 
-    public LayerMask groundLayers;//’n–Ê‚¾‚Æ”F¯‚·‚éƒŒƒCƒ„[ 
+    public Vector3 jumpForce = new Vector3(0, 6, 0);//ã‚¸ãƒ£ãƒ³ãƒ—åŠ› 
+    public Transform groundCheckPoint;//åœ°é¢ã«å‘ã‘ã¦ãƒ¬ã‚¤ã‚’é£›ã°ã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ 
+    public LayerMask groundLayers;//åœ°é¢ã ã¨èªè­˜ã™ã‚‹ãƒ¬ã‚¤ãƒ¤ãƒ¼ 
     Rigidbody rb;//
 
 
-    public float walkSpeed = 4f, runSpeed = 8f;//•à‚«‚Ì‘¬“xA‘–‚è‚Ì‘¬“x
+    public float walkSpeed = 4f, runSpeed = 8f;//æ­©ãã®é€Ÿåº¦ã€èµ°ã‚Šã®é€Ÿåº¦
 
 
-    private bool cursorLock = true;//ƒJ[ƒ\ƒ‹‚Ì•\¦/”ñ•\¦ 
+    private bool cursorLock = true;//ã‚«ãƒ¼ã‚½ãƒ«ã®è¡¨ç¤º/éè¡¨ç¤º 
 
 
-    public List<Gun> guns = new List<Gun>();//•Ší‚ÌŠi”[”z—ñ
-    private int selectedGun = 0;//‘I‘ğ’†‚Ì•ŠíŠÇ——p”’l
+    public List<Gun> guns = new List<Gun>();//æ­¦å™¨ã®æ ¼ç´é…åˆ—
+    private int selectedGun = 0;//é¸æŠä¸­ã®æ­¦å™¨ç®¡ç†ç”¨æ•°å€¤
 
 
-    private float shotTimer;//ËŒ‚ŠÔŠu
-    [Tooltip("Š’e–ò")]
+    private float shotTimer;//å°„æ’ƒé–“éš”
+    [Tooltip("æ‰€æŒå¼¾è–¬")]
     public int[] ammunition;
-    [Tooltip("Å‚Š’e–ò”")]
+    [Tooltip("æœ€é«˜æ‰€æŒå¼¾è–¬æ•°")]
     public int[] maxAmmunition;
-    [Tooltip("ƒ}ƒKƒWƒ““à‚Ì’e”")]
+    [Tooltip("ãƒã‚¬ã‚¸ãƒ³å†…ã®å¼¾æ•°")]
     public int[] ammoClip;
-    [Tooltip("ƒ}ƒKƒWƒ“‚É“ü‚éÅ‘å‚Ì”")]
+    [Tooltip("ãƒã‚¬ã‚¸ãƒ³ã«å…¥ã‚‹æœ€å¤§ã®æ•°")]
     public int[] maxAmmoClip;
 
 
-    UIManager uIManager;//UIŠÇ—
+    UIManager uIManager;//UIç®¡ç†
 
 
-    SpawnManager spawnManager;//ƒXƒ|[ƒ“ƒ}ƒl[ƒWƒƒ[ŠÇ—
+    SpawnManager spawnManager;//ã‚¹ãƒãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç®¡ç†
 
 
-    public Animator animator;//ƒAƒjƒ[ƒ^[
+    public Animator animator;//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚¿ãƒ¼
 
 
-    public GameObject[] playerModel;//ƒvƒŒƒCƒ„[ƒ‚ƒfƒ‹‚ğŠi”[
-    public Gun[] gunsHolder, OtherGunsHolder;//eƒzƒ‹ƒ_[
+    public GameObject[] playerModel;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ¢ãƒ‡ãƒ«ã‚’æ ¼ç´
+    public Gun[] gunsHolder, OtherGunsHolder;//éŠƒãƒ›ãƒ«ãƒ€ãƒ¼
 
 
-    public int maxHP = 100;//Å‘åHP
-    private int currentHp;//Œ»İ‚ÌHP
+    public int maxHP = 100;//æœ€å¤§HP
+    private int currentHp;//ç¾åœ¨ã®HP
 
 
-    public GameObject hitEffect;//ŒŒ‚ÌƒGƒtƒFƒNƒg
+    public GameObject hitEffect;//è¡€ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 
 
-    GameManager gameManager;//ƒQ[ƒ€ƒ}ƒl[ƒWƒƒ[
+    GameManager gameManager;//ã‚²ãƒ¼ãƒ ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 
-    ZoneManager zoneManager;//ƒ][ƒ“ƒ}ƒl[ƒWƒƒ[
+    ZoneManager zoneManager;//ã‚¾ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 
     float Zonetimer = 0;
-    bool SafeZone = true;
+    bool SafeZone = false;
 
-    // Ë’ö‹——£Œ¸Š(m)
+    float InvincibilityTimer = 0;
+    bool Invincibility = true;
+
+    // ç„¡æ•µæ™‚é–“ã®ç‚¹æ»…ç”¨
+    SkinnedMeshRenderer Model1;
+    SkinnedMeshRenderer Model2;
+
+    // å°„ç¨‹è·é›¢æ¸›è¡°(m)
     float[] lenght = new float[3]
     {
        3.5f, 5.75f,10f
     };
-    // Ë’ö‹——£Œ¸Š—¦
+    // å°„ç¨‹è·é›¢æ¸›è¡°ç‡
     float[] magnification = new float[3]
     {
         1.25f,1.0f,0.5f
@@ -85,161 +93,183 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        //ƒ^ƒO‚©‚çUIManager‚ğ’T‚·
+        //ã‚¿ã‚°ã‹ã‚‰UIManagerã‚’æ¢ã™
         uIManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();
 
-        //ƒ^ƒO‚©‚çSpawnManager‚ğ’T‚·
+        //ã‚¿ã‚°ã‹ã‚‰SpawnManagerã‚’æ¢ã™
         spawnManager = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>();
 
-        //ƒ^ƒO‚©‚çGameManager‚ğ’T‚·
+        //ã‚¿ã‚°ã‹ã‚‰GameManagerã‚’æ¢ã™
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         zoneManager = GameObject.FindGameObjectWithTag("Zone").GetComponent<ZoneManager>();
+
+        Model1 = transform.Find("Ch49_nonPBR/Ch49_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
+        Model2 = transform.Find("Ch49_nonPBR/Ch49_body2").gameObject.GetComponent<SkinnedMeshRenderer>();
     }
 
     private void Start()
     {
-        currentHp = maxHP;//Œ»İ‚ÌHP‚ğMAXHP‚Ì”’l‚Éİ’è
+        currentHp = maxHP;//ç¾åœ¨ã®HPã‚’MAXHPã®æ•°å€¤ã«è¨­å®š
 
 
-        //•Ï”‚ÉƒƒCƒ“ƒJƒƒ‰‚ğŠi”[
+        //å¤‰æ•°ã«ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã‚’æ ¼ç´
         cam = Camera.main;
 
 
-        //Rigidbody‚ğŠi”[
+        //Rigidbodyã‚’æ ¼ç´
         rb = GetComponent<Rigidbody>();
 
 
-        //ƒJ[ƒ\ƒ‹”ñ•\¦
+        //ã‚«ãƒ¼ã‚½ãƒ«éè¡¨ç¤º
         UpdateCursorLock();
 
 
-        //’e–òƒeƒLƒXƒgXV
+        //å¼¾è–¬ãƒ†ã‚­ã‚¹ãƒˆæ›´æ–°
         uIManager.SettingBulletsText(ammoClip[selectedGun], ammunition[selectedGun]);
 
 
-        //ƒ‰ƒ“ƒ_ƒ€‚ÈˆÊ’u‚ÅƒXƒ|[ƒ“‚³‚¹‚é
+        //ãƒ©ãƒ³ãƒ€ãƒ ãªä½ç½®ã§ã‚¹ãƒãƒ¼ãƒ³ã•ã›ã‚‹
         //transform.position = spawnManager.GetSpawnPoint().position;
 
 
-        guns.Clear();//‰Šú‰»
+        guns.Clear();//åˆæœŸåŒ–
 
-        if (photonView.IsMine)//©•ª‚¾‚Á‚½‚ç
+        if (photonView.IsMine)//è‡ªåˆ†ã ã£ãŸã‚‰
         {
 
-            foreach (var model in playerModel)//ƒ‚ƒfƒ‹‚Ìƒp[ƒc•ªƒ‹[ƒv
+            foreach (var model in playerModel)//ãƒ¢ãƒ‡ãƒ«ã®ãƒ‘ãƒ¼ãƒ„åˆ†ãƒ«ãƒ¼ãƒ—
             {
-                model.SetActive(false);//”ñ•\¦
+                model.SetActive(false);//éè¡¨ç¤º
             }
 
 
-            foreach (Gun gun in gunsHolder)//e‚Ì”•ªƒ‹[ƒv
+            foreach (Gun gun in gunsHolder)//éŠƒã®æ•°åˆ†ãƒ«ãƒ¼ãƒ—
             {
-                guns.Add(gun);//ƒŠƒXƒg‚É’Ç‰Á
+                guns.Add(gun);//ãƒªã‚¹ãƒˆã«è¿½åŠ 
             }
 
-            uIManager.UpdateHP(maxHP, currentHp);//HP‚ğƒXƒ‰ƒCƒ_[‚É”½‰f
+            uIManager.UpdateHP(maxHP, currentHp);//HPã‚’ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã«åæ˜ 
 
         }
-        else//‘¼l‚¾‚Á‚½‚çOtherGunsHolder‚ğ•\¦‚³‚¹‚é
+        else//ä»–äººã ã£ãŸã‚‰OtherGunsHolderã‚’è¡¨ç¤ºã•ã›ã‚‹
         {
-            foreach (Gun gun in OtherGunsHolder)//e‚Ì”•ªƒ‹[ƒv
+            foreach (Gun gun in OtherGunsHolder)//éŠƒã®æ•°åˆ†ãƒ«ãƒ¼ãƒ—
             {
-                guns.Add(gun);//ƒŠƒXƒg‚É’Ç‰Á
+                guns.Add(gun);//ãƒªã‚¹ãƒˆã«è¿½åŠ 
             }
         }
 
-        switchGun();//e‚ğ•\¦‚³‚¹‚é‚½‚ß
+        switchGun();//éŠƒã‚’è¡¨ç¤ºã•ã›ã‚‹ãŸã‚
+
+        // ç„¡æ•µæ™‚é–“
+        StartCoroutine(nameof(InvincibilityTime));
     }
 
+    IEnumerator InvincibilityTime()
+    {
+        if (!Invincibility) yield break;
+
+        while (InvincibilityTimer < 3)
+        {
+            Model1.enabled = false;
+            Model2.enabled = false;
+            InvincibilityTimer += Time.deltaTime;
+            yield return new WaitForSeconds(0.2f);
+            Model1.enabled = true;
+            Model2.enabled = true;
+        }
+        Invincibility = false;
+        yield break;
+    }
     private void Update()
     {
-        //©•ªˆÈŠO‚Í
+        //è‡ªåˆ†ä»¥å¤–ã¯
         if (!photonView.IsMine)
         {
-            //–ß‚Á‚Ä‚±‚êˆÈ~‚Ìˆ—‚ğs‚í‚È‚¢
+            //æˆ»ã£ã¦ã“ã‚Œä»¥é™ã®å‡¦ç†ã‚’è¡Œã‚ãªã„
             return;
         }
-        // ˆÀ’uŠOƒ_ƒ[ƒW
+        // å®‰ç½®å¤–ãƒ€ãƒ¡ãƒ¼ã‚¸
         Zone(SafeZone);
 
 
-        // —‰º€
+        // è½ä¸‹æ­»
         if (transform.position.y < -10)
         {
-            Death("—‰º€", 00);
+            Death("è½ä¸‹æ­»", 00);
         }
 
-        //‹“_ˆÚ“®ŠÖ”
+        //è¦–ç‚¹ç§»å‹•é–¢æ•°
         PlayerRotate();
 
-        //ˆÚ“®ŠÖ”
+        //ç§»å‹•é–¢æ•°
         PlayerMove();
 
-        //’n–Ê‚É‚Â‚¢‚Ä‚¢‚é‚Ì‚©”»’è‚ğ‚·‚é
+        //åœ°é¢ã«ã¤ã„ã¦ã„ã‚‹ã®ã‹åˆ¤å®šã‚’ã™ã‚‹
         if (IsGround())
         {
-            //‘–‚è‚ÌŠÖ”‚ğŒÄ‚Ô
+            //èµ°ã‚Šã®é–¢æ•°ã‚’å‘¼ã¶
             Run();
 
-            //ƒWƒƒƒ“ƒvŠÖ”‚ğŒÄ‚Ô
+            //ã‚¸ãƒ£ãƒ³ãƒ—é–¢æ•°ã‚’å‘¼ã¶
             Jump();
         }
 
-        //e‚ÌØ‚è‘Ö‚¦
+        //éŠƒã®åˆ‡ã‚Šæ›¿ãˆ
         SwitchingGuns();
 
-        //”`‚«‚İ
+        //è¦—ãè¾¼ã¿
         Aim();
 
-        //ËŒ‚ŠÖ”
+        //å°„æ’ƒé–¢æ•°
         Fire();
 
-        //ƒŠƒ[ƒhŠÖ”
+        //ãƒªãƒ­ãƒ¼ãƒ‰é–¢æ•°
         Reload();
 
-        //ƒJ[ƒ\ƒ‹”ñ•\¦
+        //ã‚«ãƒ¼ã‚½ãƒ«éè¡¨ç¤º
         UpdateCursorLock();
 
-        //ƒAƒjƒ[ƒ^[‘JˆÚ
+        //ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚¿ãƒ¼é·ç§»
         AnimatorSet();
 
-        //ƒTƒEƒ“ƒh~‚ß‚éğŒ
+        //ã‚µã‚¦ãƒ³ãƒ‰æ­¢ã‚ã‚‹æ¡ä»¶
         if (Input.GetMouseButtonUp(0) || ammoClip[2] <= 0)
         {
-            //ƒTƒEƒ“ƒh~‚ß‚é
+            //ã‚µã‚¦ãƒ³ãƒ‰æ­¢ã‚ã‚‹
             photonView.RPC("SoundStop", RpcTarget.All);
         }
 
         OutGame();//
     }
 
-    //UpdateŠÖ”‚ªŒÄ‚Î‚ê‚½Œã‚ÉÀs‚³‚ê‚é
+    //Updateé–¢æ•°ãŒå‘¼ã°ã‚ŒãŸå¾Œã«å®Ÿè¡Œã•ã‚Œã‚‹
     private void LateUpdate()
     {
-        //©•ªˆÈŠO‚Í
+        //è‡ªåˆ†ä»¥å¤–ã¯
         if (!photonView.IsMine)
         {
-            //–ß‚Á‚Ä‚±‚êˆÈ~‚Ìˆ—‚ğs‚í‚È‚¢
+            //æˆ»ã£ã¦ã“ã‚Œä»¥é™ã®å‡¦ç†ã‚’è¡Œã‚ãªã„
             return;
         }
 
-        //ƒJƒƒ‰‚ğƒvƒŒƒCƒ„[‚Ìq‚É‚·‚é‚Ì‚Å‚Í‚È‚­AƒXƒNƒŠƒvƒg‚ÅˆÊ’u‚ğ‡‚í‚¹‚é
+        //ã‚«ãƒ¡ãƒ©ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å­ã«ã™ã‚‹ã®ã§ã¯ãªãã€ã‚¹ã‚¯ãƒªãƒ—ãƒˆã§ä½ç½®ã‚’åˆã‚ã›ã‚‹
         cam.transform.position = viewPoint.position;
         cam.transform.rotation = viewPoint.rotation;
     }
 
-    //‰Šúİ’è‚Å‚Í0.02•b‚²‚Æ‚ÉŒÄ‚Î‚ê‚é
+    //åˆæœŸè¨­å®šã§ã¯0.02ç§’ã”ã¨ã«å‘¼ã°ã‚Œã‚‹
     private void FixedUpdate()
     {
-        //©•ªˆÈŠO‚Í
+        //è‡ªåˆ†ä»¥å¤–ã¯
         if (!photonView.IsMine)
         {
-            //–ß‚Á‚Ä‚±‚êˆÈ~‚Ìˆ—‚ğs‚í‚È‚¢
+            //æˆ»ã£ã¦ã“ã‚Œä»¥é™ã®å‡¦ç†ã‚’è¡Œã‚ãªã„
             return;
         }
 
-        //’e–òƒeƒLƒXƒgXV
+        //å¼¾è–¬ãƒ†ã‚­ã‚¹ãƒˆæ›´æ–°
         uIManager.SettingBulletsText(ammoClip[selectedGun], ammunition[selectedGun]);
     }
 
@@ -252,11 +282,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.Log("ˆÀ’uŠO");
+            Debug.Log("å®‰ç½®å¤–");
             Zonetimer += Time.deltaTime;
-            if (Zonetimer > 5)
+            if (Zonetimer > 2)
             {
-                Debug.Log("ˆÀ’uŠOƒ_ƒ[ƒW");
+                Debug.Log("å®‰ç½®å¤–ãƒ€ãƒ¡ãƒ¼ã‚¸");
                 photonView.RPC(nameof(ZoneDamage), RpcTarget.All);
                 Zonetimer = 0;
             }
@@ -266,45 +296,45 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [PunRPC]
     void ZoneDamage()
     {
-        if (photonView.IsMine)//©•ª‚È‚ç
+        if (photonView.IsMine)//è‡ªåˆ†ãªã‚‰
         {
-            int damage = zoneManager.ZoneDamage[zoneManager.ZoneSequence];
-            currentHp -= damage;//ƒ_ƒ[ƒW
+            int damage = zoneManager.ZoneDamages[zoneManager.ZoneSequence];
+            currentHp -= damage;//ãƒ€ãƒ¡ãƒ¼ã‚¸
 
 
-            if (currentHp <= 0)//Œ»İ‚ÌHP‚ª0ˆÈ‰º‚Ìê‡
+            if (currentHp <= 0)//ç¾åœ¨ã®HPãŒ0ä»¥ä¸‹ã®å ´åˆ
             {
-                Death("ˆÀ’uŠOƒ_ƒ[ƒW", 00);//€–SŠÖ”‚ğŒÄ‚Ô
+                Death("å®‰ç½®å¤–ãƒ€ãƒ¡ãƒ¼ã‚¸", 1000);//æ­»äº¡é–¢æ•°ã‚’å‘¼ã¶
             }
 
-            uIManager.UpdateHP(maxHP, currentHp);//HP‚ğƒXƒ‰ƒCƒ_[‚É”½‰f
+            uIManager.UpdateHP(maxHP, currentHp);//HPã‚’ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã«åæ˜ 
 
         }
     }
 
     /// <summary>
-    /// Player‚Ì‰¡‰ñ“]‚Æc‚Ì‹“_ˆÚ“®‚ğs‚¤
+    /// Playerã®æ¨ªå›è»¢ã¨ç¸¦ã®è¦–ç‚¹ç§»å‹•ã‚’è¡Œã†
     /// </summary>
     public void PlayerRotate()
     {
-        //•Ï”‚Éƒ†[ƒU[‚Ìƒ}ƒEƒX‚Ì“®‚«‚ğŠi”[
+        //å¤‰æ•°ã«ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ãƒã‚¦ã‚¹ã®å‹•ãã‚’æ ¼ç´
         mouseInput = new Vector2(Input.GetAxisRaw("Mouse X") * mouseSensitivity,
             Input.GetAxisRaw("Mouse Y") * mouseSensitivity);
 
-        //‰¡‰ñ“]‚ğ”½‰f(transform.eulerAngles‚ÍƒIƒCƒ‰[Šp‚Æ‚µ‚Ä‚ÌŠp“x‚ª•Ô‚³‚ê‚é)
+        //æ¨ªå›è»¢ã‚’åæ˜ (transform.eulerAnglesã¯ã‚ªã‚¤ãƒ©ãƒ¼è§’ã¨ã—ã¦ã®è§’åº¦ãŒè¿”ã•ã‚Œã‚‹)
         transform.rotation = Quaternion.Euler
             (transform.eulerAngles.x,
-            transform.eulerAngles.y + mouseInput.x, //ƒ}ƒEƒX‚Ìx²‚Ì“ü—Í‚ğ‘«‚·
+            transform.eulerAngles.y + mouseInput.x, //ãƒã‚¦ã‚¹ã®xè»¸ã®å…¥åŠ›ã‚’è¶³ã™
             transform.eulerAngles.z);
 
 
-        //•Ï”‚Éy²‚Ìƒ}ƒEƒX“ü—Í•ª‚Ì”’l‚ğ‘«‚·
+        //å¤‰æ•°ã«yè»¸ã®ãƒã‚¦ã‚¹å…¥åŠ›åˆ†ã®æ•°å€¤ã‚’è¶³ã™
         verticalMouseInput += mouseInput.y;
 
-        //•Ï”‚Ì”’l‚ğŠÛ‚ß‚éiã‰º‚Ì‹“_§Œäj
+        //å¤‰æ•°ã®æ•°å€¤ã‚’ä¸¸ã‚ã‚‹ï¼ˆä¸Šä¸‹ã®è¦–ç‚¹åˆ¶å¾¡ï¼‰
         verticalMouseInput = Mathf.Clamp(verticalMouseInput, -60f, 60f);
 
-        //c‚Ì‹“_‰ñ“]‚ğ”½‰f(-‚ğ•t‚¯‚È‚¢‚Æã‰º”½“]‚µ‚Ä‚µ‚Ü‚¤)
+        //ç¸¦ã®è¦–ç‚¹å›è»¢ã‚’åæ˜ (-ã‚’ä»˜ã‘ãªã„ã¨ä¸Šä¸‹åè»¢ã—ã¦ã—ã¾ã†)
         viewPoint.rotation = Quaternion.Euler
             (-verticalMouseInput,
             viewPoint.transform.rotation.eulerAngles.y,
@@ -314,26 +344,26 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 
     /// <summary>
-    /// Player‚ÌˆÚ“®
+    /// Playerã®ç§»å‹•
     /// </summary>
     public void PlayerMove()
     {
-        //•Ï”‚Ì…•½‚Æ‚’¼‚Ì“ü—Í‚ğŠi”[‚·‚éiwasd‚â–îˆó‚Ì“ü—Íj
+        //å¤‰æ•°ã®æ°´å¹³ã¨å‚ç›´ã®å…¥åŠ›ã‚’æ ¼ç´ã™ã‚‹ï¼ˆwasdã‚„çŸ¢å°ã®å…¥åŠ›ï¼‰
         moveDir = new Vector3(Input.GetAxisRaw("Horizontal"),
             0, Input.GetAxisRaw("Vertical"));
 
-        //Debug.Log(moveDir);à–¾—p
+        //Debug.Log(moveDir);èª¬æ˜ç”¨
 
-        //ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì‚š²‚Æx²‚É“ü—Í‚³‚ê‚½’l‚ğ‚©‚¯‚é‚Æi‚Ş•ûŒü‚ªo‚¹‚é
+        //ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ï½šè»¸ã¨xè»¸ã«å…¥åŠ›ã•ã‚ŒãŸå€¤ã‚’ã‹ã‘ã‚‹ã¨é€²ã‚€æ–¹å‘ãŒå‡ºã›ã‚‹
         movement = ((transform.forward * moveDir.z) + (transform.right * moveDir.x)).normalized;
 
-        //Œ»İˆÊ’u‚Éi‚Ş•ûŒü–ˆÚ“®ƒXƒs[ƒh–ƒtƒŒ[ƒ€ŠÔ•b”‚ğ‘«‚·
+        //ç¾åœ¨ä½ç½®ã«é€²ã‚€æ–¹å‘ï¼Šç§»å‹•ã‚¹ãƒ”ãƒ¼ãƒ‰ï¼Šãƒ•ãƒ¬ãƒ¼ãƒ é–“ç§’æ•°ã‚’è¶³ã™
         transform.position += movement * activeMoveSpeed * Time.deltaTime;
     }
 
 
     /// <summary>
-    /// ’n–Ê‚É‚Â‚¢‚Ä‚¢‚é‚È‚çtrue
+    /// åœ°é¢ã«ã¤ã„ã¦ã„ã‚‹ãªã‚‰true
     /// </summary>
     /// <returns></returns>
     public bool IsGround()
@@ -344,10 +374,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void Jump()
     {
-        //ƒWƒƒƒ“ƒv‚Å‚«‚é‚Ì‚©”»’è
+        //ã‚¸ãƒ£ãƒ³ãƒ—ã§ãã‚‹ã®ã‹åˆ¤å®š
         if (IsGround() && Input.GetKeyDown(KeyCode.Space))
         {
-            //uŠÔ“I‚É^ã‚É—Í‚ğ‰Á‚¦‚é
+            //ç¬é–“çš„ã«çœŸä¸Šã«åŠ›ã‚’åŠ ãˆã‚‹
             rb.AddForce(jumpForce, ForceMode.Impulse);
         }
     }
@@ -355,7 +385,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void Run()
     {
-        //¶ƒVƒtƒg‚ğ‰Ÿ‚µ‚Ä‚¢‚é‚Æ‚«‚ÍƒXƒs[ƒh‚ğØ‚è‘Ö‚¦‚é
+        //å·¦ã‚·ãƒ•ãƒˆã‚’æŠ¼ã—ã¦ã„ã‚‹ã¨ãã¯ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
         if (Input.GetKey(KeyCode.LeftShift))
         {
             activeMoveSpeed = runSpeed;
@@ -369,7 +399,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void UpdateCursorLock()
     {
-        //“ü—Í‚µ‚¾‚¢‚ÅcursorLock‚ğØ‚è‘Ö‚¦‚é
+        //å…¥åŠ›ã—ã ã„ã§cursorLockã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             cursorLock = false;
@@ -379,70 +409,70 @@ public class PlayerController : MonoBehaviourPunCallbacks
             cursorLock = true;
         }
 
-        //cursorLockŸ‘æ‚ÅƒJ[ƒ\ƒ‹‚Ì•\¦‚ğØ‚è‘Ö‚¦‚é
+        //cursorLockæ¬¡ç¬¬ã§ã‚«ãƒ¼ã‚½ãƒ«ã®è¡¨ç¤ºã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
         if (cursorLock)
         {
-            //ƒJ[ƒ\ƒ‹‚ğ’†‰›‚ÉŒÅ’è‚µA”ñ•\¦@https://docs.unity3d.com/ScriptReference/CursorLockMode.html
+            //ã‚«ãƒ¼ã‚½ãƒ«ã‚’ä¸­å¤®ã«å›ºå®šã—ã€éè¡¨ç¤ºã€€https://docs.unity3d.com/ScriptReference/CursorLockMode.html
             Cursor.lockState = CursorLockMode.Locked;
         }
         else
         {
-            //•\¦
+            //è¡¨ç¤º
             Cursor.lockState = CursorLockMode.None;
         }
     }
 
 
     /// <summary>
-    /// e‚ÌØ‚è‘Ö‚¦ƒL[“ü—Í‚ğŒŸ’m‚·‚é
+    /// éŠƒã®åˆ‡ã‚Šæ›¿ãˆã‚­ãƒ¼å…¥åŠ›ã‚’æ¤œçŸ¥ã™ã‚‹
     /// </summary>
     public void SwitchingGuns()
     {
         if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
         {
-            selectedGun++;//ˆµ‚¤e‚ğŠÇ—‚·‚é”’l‚ğ‘‚â‚·
+            selectedGun++;//æ‰±ã†éŠƒã‚’ç®¡ç†ã™ã‚‹æ•°å€¤ã‚’å¢—ã‚„ã™
 
-            //ƒŠƒXƒg‚æ‚è‘å‚«‚¢”’l‚É‚È‚Á‚Ä‚¢‚È‚¢‚©Šm”F
+            //ãƒªã‚¹ãƒˆã‚ˆã‚Šå¤§ãã„æ•°å€¤ã«ãªã£ã¦ã„ãªã„ã‹ç¢ºèª
             if (selectedGun >= guns.Count)
             {
-                selectedGun = 0;//ƒŠƒXƒg‚æ‚è‘å‚«‚È”’l‚É‚È‚ê‚Î‚O‚É–ß‚·
+                selectedGun = 0;//ãƒªã‚¹ãƒˆã‚ˆã‚Šå¤§ããªæ•°å€¤ã«ãªã‚Œã°ï¼ã«æˆ»ã™
             }
 
-            //ÀÛ‚É•Ší‚ğØ‚è‘Ö‚¦‚éŠÖ”
+            //å®Ÿéš›ã«æ­¦å™¨ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹é–¢æ•°
             //switchGun();
 
-            //e‚ÌØ‚è‘Ö‚¦iƒ‹[ƒ€“à‚ÌƒvƒŒƒCƒ„[‘SˆõŒÄ‚Ño‚µj
+            //éŠƒã®åˆ‡ã‚Šæ›¿ãˆï¼ˆãƒ«ãƒ¼ãƒ å†…ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å…¨å“¡å‘¼ã³å‡ºã—ï¼‰
             photonView.RPC("SetGun", RpcTarget.All, selectedGun);
 
         }
         else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
         {
-            selectedGun--;//ˆµ‚¤e‚ğŠÇ—‚·‚é”’l‚ğŒ¸‚ç‚·
+            selectedGun--;//æ‰±ã†éŠƒã‚’ç®¡ç†ã™ã‚‹æ•°å€¤ã‚’æ¸›ã‚‰ã™
 
 
             if (selectedGun < 0)
             {
-                selectedGun = guns.Count - 1;//0‚æ‚è¬‚³‚¯‚ê‚ÎƒŠƒXƒg‚ÌÅ‘å”|‚P‚Ì”’l‚Éİ’è‚·‚é
+                selectedGun = guns.Count - 1;//0ã‚ˆã‚Šå°ã•ã‘ã‚Œã°ãƒªã‚¹ãƒˆã®æœ€å¤§æ•°ï¼ï¼‘ã®æ•°å€¤ã«è¨­å®šã™ã‚‹
             }
 
-            //ÀÛ‚É•Ší‚ğØ‚è‘Ö‚¦‚éŠÖ”
+            //å®Ÿéš›ã«æ­¦å™¨ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹é–¢æ•°
             //switchGun();
 
-            //e‚ÌØ‚è‘Ö‚¦iƒ‹[ƒ€“à‚ÌƒvƒŒƒCƒ„[‘SˆõŒÄ‚Ño‚µj
+            //éŠƒã®åˆ‡ã‚Šæ›¿ãˆï¼ˆãƒ«ãƒ¼ãƒ å†…ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å…¨å“¡å‘¼ã³å‡ºã—ï¼‰
             photonView.RPC("SetGun", RpcTarget.All, selectedGun);
         }
 
-        //”’lƒL[‚Ì“ü—ÍŒŸ’m‚Å•Ší‚ğØ‚è‘Ö‚¦‚é
+        //æ•°å€¤ã‚­ãƒ¼ã®å…¥åŠ›æ¤œçŸ¥ã§æ­¦å™¨ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
         for (int i = 0; i < guns.Count; i++)
         {
-            if (Input.GetKeyDown((i + 1).ToString()))//ƒ‹[ƒv‚Ì”’l{‚P‚ğ‚µ‚Ä•¶š—ñ‚É•ÏŠ·B‚»‚ÌŒãA‰Ÿ‚³‚ê‚½‚©”»’è
+            if (Input.GetKeyDown((i + 1).ToString()))//ãƒ«ãƒ¼ãƒ—ã®æ•°å€¤ï¼‹ï¼‘ã‚’ã—ã¦æ–‡å­—åˆ—ã«å¤‰æ›ã€‚ãã®å¾Œã€æŠ¼ã•ã‚ŒãŸã‹åˆ¤å®š
             {
-                selectedGun = i;//e‚ğˆµ‚¤”’l‚ğİ’è
+                selectedGun = i;//éŠƒã‚’æ‰±ã†æ•°å€¤ã‚’è¨­å®š
 
-                //ÀÛ‚É•Ší‚ğØ‚è‘Ö‚¦‚éŠÖ”
+                //å®Ÿéš›ã«æ­¦å™¨ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹é–¢æ•°
                 //switchGun();
 
-                //e‚ÌØ‚è‘Ö‚¦iƒ‹[ƒ€“à‚ÌƒvƒŒƒCƒ„[‘SˆõŒÄ‚Ño‚µj
+                //éŠƒã®åˆ‡ã‚Šæ›¿ãˆï¼ˆãƒ«ãƒ¼ãƒ å†…ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å…¨å“¡å‘¼ã³å‡ºã—ï¼‰
                 photonView.RPC("SetGun", RpcTarget.All, selectedGun);
 
             }
@@ -451,33 +481,33 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// e‚ÌØ‚è‘Ö‚¦
+    /// éŠƒã®åˆ‡ã‚Šæ›¿ãˆ
     /// </summary>
     void switchGun()
     {
-        foreach (Gun gun in guns)//ƒŠƒXƒg•ªƒ‹[ƒv‚ğ‰ñ‚·
+        foreach (Gun gun in guns)//ãƒªã‚¹ãƒˆåˆ†ãƒ«ãƒ¼ãƒ—ã‚’å›ã™
         {
-            gun.gameObject.SetActive(false);//e‚ğ”ñ•\¦
+            gun.gameObject.SetActive(false);//éŠƒã‚’éè¡¨ç¤º
         }
 
-        guns[selectedGun].gameObject.SetActive(true);//‘I‘ğ’†‚Ìe‚Ì‚İ•\¦
+        guns[selectedGun].gameObject.SetActive(true);//é¸æŠä¸­ã®éŠƒã®ã¿è¡¨ç¤º
     }
 
 
 
     /// <summary>
-    /// ‰EƒNƒŠƒbƒN‚Å”`‚«‚İ
+    /// å³ã‚¯ãƒªãƒƒã‚¯ã§è¦—ãè¾¼ã¿
     /// </summary>
     public void Aim()
     {
-        //  ƒ}ƒEƒX‰Eƒ{ƒ^ƒ“‰Ÿ‚µ‚Ä‚¢‚é‚Æ‚«
+        //  ãƒã‚¦ã‚¹å³ãƒœã‚¿ãƒ³æŠ¼ã—ã¦ã„ã‚‹ã¨ã
         if (Input.GetMouseButton(1))
         {
-            //fieldOfViewƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’l‚ğ•ÏX(ŠJn’n“_A–Ú“I’n“_A•âŠ®”’l)@@ŠJn’n“_‚©‚ç–Ú“I’n“_‚Ü‚Å•âŠ®”’l‚ÌŠ„‡‚Å™X‚É‹ß‚Ã‚¯‚é
+            //fieldOfViewã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å€¤ã‚’å¤‰æ›´(é–‹å§‹åœ°ç‚¹ã€ç›®çš„åœ°ç‚¹ã€è£œå®Œæ•°å€¤)ã€€ã€€é–‹å§‹åœ°ç‚¹ã‹ã‚‰ç›®çš„åœ°ç‚¹ã¾ã§è£œå®Œæ•°å€¤ã®å‰²åˆã§å¾ã€…ã«è¿‘ã¥ã‘ã‚‹
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, guns[selectedGun].adsZoom, guns[selectedGun].adsSpeed * Time.deltaTime);
         }
         else
-        {   //60‚Í‰Šúİ’è”’l
+        {   //60ã¯åˆæœŸè¨­å®šæ•°å€¤
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, 60f, guns[selectedGun].adsSpeed * Time.deltaTime);
         }
     }
@@ -485,7 +515,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 
     /// <summary>
-    /// ¶ƒNƒŠƒbƒN‚ÌŒŸ’m
+    /// å·¦ã‚¯ãƒªãƒƒã‚¯ã®æ¤œçŸ¥
     /// </summary>
     public void Fire()
     {
@@ -498,39 +528,39 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ’eŠÛ‚Ì”­Ë
+    /// å¼¾ä¸¸ã®ç™ºå°„
     /// </summary>
     private void FiringBullet()
     {
-        //‘I‘ğ’†‚Ìe‚Ì’e–òŒ¸‚ç‚·
+        //é¸æŠä¸­ã®éŠƒã®å¼¾è–¬æ¸›ã‚‰ã™
         ammoClip[selectedGun]--;
 
-        //Ray(Œõü)‚ğƒJƒƒ‰‚Ì’†‰›‚©‚ç‚Éİ’è
-        Ray ray = cam.ViewportPointToRay(new Vector2(.5f, .5f));//ƒJƒƒ‰‚Ì’†S‚ª‚±‚Ì”’l
+        //Ray(å…‰ç·š)ã‚’ã‚«ãƒ¡ãƒ©ã®ä¸­å¤®ã‹ã‚‰ã«è¨­å®š
+        Ray ray = cam.ViewportPointToRay(new Vector2(.5f, .5f));//ã‚«ãƒ¡ãƒ©ã®ä¸­å¿ƒãŒã“ã®æ•°å€¤
 
 
-        //ƒŒƒC‚ğ”ò‚Î‚·iŠJn’n“_‚Æ•ûŒüA“–‚½‚Á‚½ƒRƒ‰ƒCƒ_[‚Ìî•ñŠi”[j
+        //ãƒ¬ã‚¤ã‚’é£›ã°ã™ï¼ˆé–‹å§‹åœ°ç‚¹ã¨æ–¹å‘ã€å½“ãŸã£ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®æƒ…å ±æ ¼ç´ï¼‰
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            //Debug.Log("“–‚½‚Á‚½ƒIƒuƒWƒFƒNƒg‚Í" + hit.collider.gameObject.name);
+            //Debug.Log("å½“ãŸã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯" + hit.collider.gameObject.name);
 
-            if (hit.collider.gameObject.tag == "Player")//ƒvƒŒƒCƒ„[‚É‚Ô‚Â‚©‚Á‚½ê‡
+            if (hit.collider.gameObject.tag == "Player")//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã¶ã¤ã‹ã£ãŸå ´åˆ
             {
-                //ŒŒ‚ÌƒGƒtƒFƒNƒg‚ğƒlƒbƒgƒ[ƒNã‚É¶¬
+                //è¡€ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ä¸Šã«ç”Ÿæˆ
                 PhotonNetwork.Instantiate(hitEffect.name, hit.point, Quaternion.identity);
 
-                // ƒqƒbƒgŠÖ”‚ğ‘SƒvƒŒƒCƒ„[‚ÅŒÄ‚Ño‚µ‚ÄŒ‚‚½‚ê‚½ƒvƒŒƒCƒ„[‚ÌHP‚ğ“¯Šú‚·‚é
+                // ãƒ’ãƒƒãƒˆé–¢æ•°ã‚’å…¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã§å‘¼ã³å‡ºã—ã¦æ’ƒãŸã‚ŒãŸãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®HPã‚’åŒæœŸã™ã‚‹
                 hit.collider.gameObject.GetPhotonView().RPC("Hit", RpcTarget.All, guns[selectedGun].shotDamage, photonView.Owner.NickName, PhotonNetwork.LocalPlayer.ActorNumber);
 
             }
             else
             {
-                //’e­ƒGƒtƒFƒNƒg (hit.point‚ÍƒRƒ‰ƒCƒ_[‚Éƒqƒbƒg‚µ‚½ˆÊ’u)Fhit.point + (hit.normal * .002f)‚Í‚¿‚ç‚Â‚©‚È‚¢‚æ‚¤‚É­‚µã‚É‚µ‚Ä‚¢‚é
-                //hit normal‚Í“–‚½‚Á‚½ƒIƒuƒWƒFƒNƒg‚É‘Î‚µ‚Ä’¼Šp‚Ì•ûŒü‚ª•Ô‚³‚ê‚é
-                //LookRotation‚Íw’è‚µ‚½•ûŒü‚É‰ñ‚·
+                //å¼¾ç—•ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ (hit.pointã¯ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã«ãƒ’ãƒƒãƒˆã—ãŸä½ç½®)ï¼šhit.point + (hit.normal * .002f)ã¯ã¡ã‚‰ã¤ã‹ãªã„ã‚ˆã†ã«å°‘ã—ä¸Šã«ã—ã¦ã„ã‚‹
+                //hit normalã¯å½“ãŸã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾ã—ã¦ç›´è§’ã®æ–¹å‘ãŒè¿”ã•ã‚Œã‚‹
+                //LookRotationã¯æŒ‡å®šã—ãŸæ–¹å‘ã«å›ã™
                 GameObject bulletImpactObject = Instantiate(guns[selectedGun].bulletImpact, hit.point + (hit.normal * .002f), Quaternion.LookRotation(hit.normal, Vector3.up));
 
-                //ŠÔŒo‰ß‚ÅÁ‚¦‚é‚æ‚¤‚É‚·‚é
+                //æ™‚é–“çµŒéã§æ¶ˆãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
                 Destroy(bulletImpactObject, 10f);
             }
 
@@ -538,34 +568,34 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         }
 
-        //ËŒ‚ŠÔŠu‚ğİ’è
+        //å°„æ’ƒé–“éš”ã‚’è¨­å®š
         shotTimer = Time.time + guns[selectedGun].shootInterval;
 
-        //”­Ë‰¹
+        //ç™ºå°„éŸ³
         photonView.RPC("SoundGeneration", RpcTarget.All);
 
     }
 
 
     /// <summary>
-    /// ƒŠƒ[ƒh
+    /// ãƒªãƒ­ãƒ¼ãƒ‰
     /// </summary>
     private void Reload()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            //ƒŠƒ[ƒh‚Å•â[‚·‚é’e”‚ğæ“¾‚·‚é
+            //ãƒªãƒ­ãƒ¼ãƒ‰ã§è£œå……ã™ã‚‹å¼¾æ•°ã‚’å–å¾—ã™ã‚‹
             int amountNeed = maxAmmoClip[selectedGun] - ammoClip[selectedGun];
 
-            //•K—v‚È’e–ò—Ê‚ÆŠ’e–ò—Ê‚ğ”äŠr
+            //å¿…è¦ãªå¼¾è–¬é‡ã¨æ‰€æŒå¼¾è–¬é‡ã‚’æ¯”è¼ƒ
             int ammoAvailable = amountNeed < ammunition[selectedGun] ? amountNeed : ammunition[selectedGun];
 
-            //’e–ò‚ª–ƒ^ƒ“‚Ì‚ÍƒŠƒ[ƒh‚Å‚«‚È‚¢&’e–ò‚ğŠ‚µ‚Ä‚¢‚é‚Æ‚«
+            //å¼¾è–¬ãŒæº€ã‚¿ãƒ³ã®æ™‚ã¯ãƒªãƒ­ãƒ¼ãƒ‰ã§ããªã„&å¼¾è–¬ã‚’æ‰€æŒã—ã¦ã„ã‚‹ã¨ã
             if (amountNeed != 0 && ammunition[selectedGun] != 0)
             {
-                //Š’e–ò‚©‚çƒŠƒ[ƒh‚·‚é’e–ò•ª‚ğˆø‚­
+                //æ‰€æŒå¼¾è–¬ã‹ã‚‰ãƒªãƒ­ãƒ¼ãƒ‰ã™ã‚‹å¼¾è–¬åˆ†ã‚’å¼•ã
                 ammunition[selectedGun] -= ammoAvailable;
-                //e‚É‘•“U‚·‚é
+                //éŠƒã«è£…å¡«ã™ã‚‹
                 ammoClip[selectedGun] += ammoAvailable;
             }
         }
@@ -574,7 +604,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void AnimatorSet()
     {
-        //walk”»’è
+        //walkåˆ¤å®š
         if (moveDir != Vector3.zero)
         {
             animator.SetBool("walk", true);
@@ -585,7 +615,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             animator.SetBool("walk", false);
         }
 
-        //run”»’è
+        //runåˆ¤å®š
         if (Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetBool("run", true);
@@ -598,10 +628,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
 
 
-    [PunRPC]//i“¯‚¶ƒ‹[ƒ€‚É‚¢‚éjƒŠƒ‚[ƒgƒNƒ‰ƒCƒAƒ“ƒg‚É‘Î‚µ‚Ä‚Ìƒƒ\ƒbƒh‚ÌŒÄ‚Ño‚µ‚ª‰Â”\‚É
+    [PunRPC]//ï¼ˆåŒã˜ãƒ«ãƒ¼ãƒ ã«ã„ã‚‹ï¼‰ãƒªãƒ¢ãƒ¼ãƒˆã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã«å¯¾ã—ã¦ã®ãƒ¡ã‚½ãƒƒãƒ‰ã®å‘¼ã³å‡ºã—ãŒå¯èƒ½ã«
     public void SetGun(int gunNo)
     {
-        //e‚ÌØ‚è‘Ö‚¦
+        //éŠƒã®åˆ‡ã‚Šæ›¿ãˆ
         if (gunNo < guns.Count)
         {
             selectedGun = gunNo;
@@ -613,51 +643,51 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 
     /// <summary>
-    /// “G‚Ì’e‚É“–‚½‚Á‚½‚çŒÄ‚Î‚ê‚éŠÖ”i‘SƒvƒŒƒCƒ„[‚Å‹¤—L‚·‚é‚½‚ßPunRPCj
+    /// æ•µã®å¼¾ã«å½“ãŸã£ãŸã‚‰å‘¼ã°ã‚Œã‚‹é–¢æ•°ï¼ˆå…¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã§å…±æœ‰ã™ã‚‹ãŸã‚PunRPCï¼‰
     /// </summary>
     [PunRPC]
-    public void Hit(int damage, string name, int actor)//ƒ_ƒ[ƒWAŒ‚‚Á‚½“z‚Ì–¼‘OAŒ‚‚Á‚½“z‚Ì”Ô†
+    public void Hit(int damage, string name, int actor)//ãƒ€ãƒ¡ãƒ¼ã‚¸ã€æ’ƒã£ãŸå¥´ã®åå‰ã€æ’ƒã£ãŸå¥´ã®ç•ªå·
     {
-        ReceiveDamage(name, damage, actor);//ƒ_ƒ[ƒWŠÖ”ŒÄ‚Ño‚µ
+        ReceiveDamage(name, damage, actor);//ãƒ€ãƒ¡ãƒ¼ã‚¸é–¢æ•°å‘¼ã³å‡ºã—
 
     }
 
 
     /// <summary>
-    /// ƒ_ƒ[ƒW‚ğó‚¯‚éŠÖ”
+    /// ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ã‚‹é–¢æ•°
     /// </summary>
     public void ReceiveDamage(string name, int damage, int actor)
     {
-        if (photonView.IsMine)//©•ª‚È‚ç
+        if (photonView.IsMine)//è‡ªåˆ†ãªã‚‰
         {
-            currentHp -= damage;//ƒ_ƒ[ƒW
+            currentHp -= damage;//ãƒ€ãƒ¡ãƒ¼ã‚¸
 
 
-            if (currentHp <= 0)//Œ»İ‚ÌHP‚ª0ˆÈ‰º‚Ìê‡
+            if (currentHp <= 0)//ç¾åœ¨ã®HPãŒ0ä»¥ä¸‹ã®å ´åˆ
             {
-                Death(name, actor);//€–SŠÖ”‚ğŒÄ‚Ô
+                Death(name, actor);//æ­»äº¡é–¢æ•°ã‚’å‘¼ã¶
             }
 
-            uIManager.UpdateHP(maxHP, currentHp);//HP‚ğƒXƒ‰ƒCƒ_[‚É”½‰f
+            uIManager.UpdateHP(maxHP, currentHp);//HPã‚’ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã«åæ˜ 
 
         }
 
     }
 
-    //€–Sˆ—
+    //æ­»äº¡å‡¦ç†
     public void Death(string name, int actor)
     {
         currentHp = 0;
 
-        //€–SŠÖ”‚ğŒÄ‚Ô
+        //æ­»äº¡é–¢æ•°ã‚’å‘¼ã¶
         spawnManager.Die();
         uIManager.UpdateDeathUI(name);
 
 
-        //©•ª‚ÌƒfƒX”‚ğã¸‚³‚¹‚é(©•ª‚Ì¯•Ê”Ô†AƒfƒXA‰ÁZ”’l)
+        //è‡ªåˆ†ã®ãƒ‡ã‚¹æ•°ã‚’ä¸Šæ˜‡ã•ã›ã‚‹(è‡ªåˆ†ã®è­˜åˆ¥ç•ªå·ã€ãƒ‡ã‚¹ã€åŠ ç®—æ•°å€¤)
         gameManager.ScoreGet(PhotonNetwork.LocalPlayer.ActorNumber, 1, 1);
 
-        //Œ‚‚Á‚Ä‚«‚½‘Šè‚ÌƒLƒ‹”‚ğã¸‚·‚é(Œ‚‚Á‚Ä‚«‚½“G‚Ì¯•Ê”Ô†AƒLƒ‹A‰ÁZ”’l)
+        //æ’ƒã£ã¦ããŸç›¸æ‰‹ã®ã‚­ãƒ«æ•°ã‚’ä¸Šæ˜‡ã™ã‚‹(æ’ƒã£ã¦ããŸæ•µã®è­˜åˆ¥ç•ªå·ã€ã‚­ãƒ«ã€åŠ ç®—æ•°å€¤)
         gameManager.ScoreGet(actor, 0, 1);
 
     }
@@ -665,47 +695,47 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public override void OnDisable()
     {
-        //ƒ}ƒEƒX•\¦
+        //ãƒã‚¦ã‚¹è¡¨ç¤º
         cursorLock = false;
         Cursor.lockState = CursorLockMode.None;
     }
 
 
-    //‰¹‚Ì”­¶
+    //éŸ³ã®ç™ºç”Ÿ
     [PunRPC]
     public void SoundGeneration()
     {
-        if (selectedGun == 2)//ƒAƒTƒ‹ƒgƒ‰ƒCƒtƒ‹‚È‚ç
+        if (selectedGun == 2)//ã‚¢ã‚µãƒ«ãƒˆãƒ©ã‚¤ãƒ•ãƒ«ãªã‚‰
         {
-            guns[selectedGun].LoopON_SubmachineGun();//ƒ‹[ƒv‚µ‚Ä–Â‚ç‚·
+            guns[selectedGun].LoopON_SubmachineGun();//ãƒ«ãƒ¼ãƒ—ã—ã¦é³´ã‚‰ã™
         }
-        else//ˆá‚¤‚È‚ç
+        else//é•ã†ãªã‚‰
         {
-            guns[selectedGun].SoundGunShot();//’P”­‚Å–Â‚ç‚·
+            guns[selectedGun].SoundGunShot();//å˜ç™ºã§é³´ã‚‰ã™
         }
     }
 
-    //‰¹‚ğ~‚ß‚éŠÖ”
+    //éŸ³ã‚’æ­¢ã‚ã‚‹é–¢æ•°
     [PunRPC]
     public void SoundStop()
     {
-        guns[2].LoopOFF_SubmachineGun();//ƒAƒTƒ‹ƒgƒ‰ƒCƒtƒ‹‚ÌSEƒ‹[ƒv‚ğ~‚ß‚é
+        guns[2].LoopOFF_SubmachineGun();//ã‚¢ã‚µãƒ«ãƒˆãƒ©ã‚¤ãƒ•ãƒ«ã®SEãƒ«ãƒ¼ãƒ—ã‚’æ­¢ã‚ã‚‹
     }
 
 
     /// <summary>
-    /// M‚ğ‰Ÿ‚µ‚½‚çƒƒjƒ…[‚É–ß‚é
+    /// Mã‚’æŠ¼ã—ãŸã‚‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
     /// </summary>
     public void OutGame()
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            //ƒvƒŒƒCƒ„[ƒf[ƒ^íœ
+            //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ‡ãƒ¼ã‚¿å‰Šé™¤
             gameManager.OutPlayerGet(PhotonNetwork.LocalPlayer.ActorNumber);
 
-            PhotonNetwork.AutomaticallySyncScene = false;//“¯ŠúƒIƒt
+            PhotonNetwork.AutomaticallySyncScene = false;//åŒæœŸã‚ªãƒ•
 
-            PhotonNetwork.LeaveRoom();//•”‰®‚ğ”²‚¯‚é
+            PhotonNetwork.LeaveRoom();//éƒ¨å±‹ã‚’æŠœã‘ã‚‹
 
         }
     }
@@ -713,7 +743,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (other.gameObject.CompareTag("Zone"))
         {
-            // ˆÀ’uŠO‚É‚¢‚é
+            // å®‰ç½®å¤–ã«ã„ã‚‹
             SafeZone = false;
         }
     }
@@ -721,7 +751,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (other.gameObject.CompareTag("Zone"))
         {
-            // ˆÀ’u“à‚É‚¢‚é
+            // å®‰ç½®å†…ã«ã„ã‚‹
             SafeZone = true;
         }
     }

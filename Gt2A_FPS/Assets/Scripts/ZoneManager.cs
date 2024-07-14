@@ -5,8 +5,8 @@ using Photon.Pun;
 
 public class ZoneManager : MonoBehaviourPunCallbacks
 {
-    public int ZoneSequence = 0;
-    public int[] ZoneDamage = new int[8]
+    public int ZoneSequence;
+    public int[] ZoneDamages = new int[8]
     {
         1,1,2,2,3,3,4,5
     };
@@ -17,10 +17,6 @@ public class ZoneManager : MonoBehaviourPunCallbacks
     [SerializeField] float MinX, MaxX;
     [SerializeField] float MinZ, MaxZ;
     [SerializeField] float MaxSize, MinSize;
-    private void Awake()
-    {
-
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -65,7 +61,7 @@ public class ZoneManager : MonoBehaviourPunCallbacks
     }
     void Sequence()
     {
-        ZoneSequence = Mathf.Clamp(ZoneSequence, 0, ZoneDamage.Length);
+        ZoneSequence = Mathf.Clamp(ZoneSequence, 0, ZoneDamages.Length - 1);
         timer += Time.deltaTime;
         if (timer > 8)
         {

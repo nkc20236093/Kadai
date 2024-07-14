@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5903232855934877666}
   - component: {fileID: 971633790273340139}
   - component: {fileID: 8909308348487372420}
-  - component: {fileID: 1753217073826931032}
   - component: {fileID: 1846766422353789656}
   - component: {fileID: 8503033309138659399}
   m_Layer: 0
@@ -33,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 30, y: 20, z: 30}
+  m_LocalScale: {x: 300, y: 20, z: 300}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -51,15 +50,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ZoneSequence: 0
-  ZoneDamage:
-  - 0.5
-  - 1
-  - 1.5
-  - 2
-  - 2.5
-  - 3
-  - 3.5
-  - 4
+  ZoneDamages: 0100000001000000020000000200000003000000030000000400000005000000
+  TargetPos: {x: 0, y: 0, z: 0}
+  TargetSize: 0
+  Speed: 0.75
+  MinX: -8.85
+  MaxX: 100
+  MinZ: -100
+  MaxZ: 30
+  MaxSize: 50
+  MinSize: 15
 --- !u!33 &5903232855934877666
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -75,7 +75,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4713389793387245417}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -88,7 +88,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c97f9752921a7ad4bbe5a9355f5637d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -133,28 +133,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &1753217073826931032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4713389793387245417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdec9b6706d4ed94bb2d14b54ceb7ff7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ZoneSequence: 0
-  ZoneDamage:
-  - 0.5
-  - 1
-  - 1.5
-  - 2
-  - 2.5
-  - 3
-  - 3.5
-  - 4
 --- !u!114 &1846766422353789656
 MonoBehaviour:
   m_ObjectHideFlags: 0
