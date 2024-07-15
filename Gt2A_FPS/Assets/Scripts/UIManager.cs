@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject endPanel;//終了パネル
 
+    [SerializeField] GameObject ZoneWarning;
 
     /// <summary>
     /// 装備中の銃の弾数をテキストに反映
@@ -31,6 +32,11 @@ public class UIManager : MonoBehaviour
         bulletText.text = ammoClip + "/" + ammunition;
     }
 
+    public void ZoneWarningChage(bool b)
+    {
+        b = !b;
+        ZoneWarning.SetActive(b);
+    }
 
     //HPの更新
     public void UpdateHP(int maxhp, int currentHp)

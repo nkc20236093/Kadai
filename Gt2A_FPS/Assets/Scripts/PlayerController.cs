@@ -238,7 +238,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (Input.GetMouseButtonUp(0) || ammoClip[2] <= 0)
         {
             //サウンド止める
-            photonView.RPC("SoundStop", RpcTarget.All);
+            photonView.RPC(nameof(SoundStop), RpcTarget.All);
         }
 
         OutGame();//
@@ -275,6 +275,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     void Zone(bool safe)
     {
+        uIManager.ZoneWarningChage(safe);
         if (safe)
         {
             Zonetimer = 0;

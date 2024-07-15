@@ -52,19 +52,22 @@ public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
 
 
-
+    [Tooltip("クリアするまでのキル数")]
     public int TargetNumber = 3;//クリアするまでのキル数
 
 
 
+    [Tooltip("終了してからの待機時間")]
+    public float waitAfterEnding = 10f;//終了してからの待機時間
 
-    public float waitAfterEnding = 5f;//終了してからの待機時間
 
-
-
+    AudioSource audioSource;//オーディオソース
+    AudioClip Result;       //リザルト用BGM
 
     private void Awake()
     {
+        audioSource = GameObject.Find("BGM").GetComponent<AudioSource>();
+        Result = Resources.Load<AudioClip>("リザルト");
         uiManager = GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIManager>();//56
     }
 
@@ -498,8 +501,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
     /// </summary>
     void EndGame()
     {
-
-
+        audioSource.clip = Result;
+        audioSource.Play();
 
         if (PhotonNetwork.IsMasterClient)//マスターなら
         {
