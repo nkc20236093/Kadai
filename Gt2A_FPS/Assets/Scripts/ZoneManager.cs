@@ -30,19 +30,6 @@ public class ZoneManager : MonoBehaviourPunCallbacks
         Sequence();
         SizeMove();
     }
-    void ColorChage()
-    {
-        Renderer renderer = GetComponent<Renderer>();
-
-        Material material = new Material(Shader.Find("Transparent/Diffuse"));
-
-        Color color = renderer.material.color;
-        color.a = 0.5f;
-        color.r = 1f;
-        color.g = 1f;
-        color.b = 1f;
-        material.color = color;
-    }
     void SizeMove()
     {
         transform.position = Vector3.MoveTowards(transform.position, TargetPos, Speed * Time.deltaTime);

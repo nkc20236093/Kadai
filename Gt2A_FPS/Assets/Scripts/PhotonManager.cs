@@ -101,6 +101,24 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         nameInputPanel.SetActive(false);//名前入力パネル
     }
 
+    public void CloseCreateRoomUI()
+    {
+        loadingPanel.SetActive(false);//ロードパネル非表示
+
+        buttons.SetActive(true);//ボタン表示
+
+        createRoomPanel.SetActive(false);//ルーム作成パネル
+
+        roomPanel.SetActive(false);//ルームパネル
+
+        errorPanel.SetActive(false);//エラーパネル
+
+        roomListPanel.SetActive(false);//ルーム一覧パネル
+
+        nameInputPanel.SetActive(false);//名前入力パネル
+    }
+
+
 
 
     //継承元のメソッドでは「virtual」のキーワード
@@ -171,8 +189,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             loadingPanel.SetActive(true);
         }
     }
-
-
     //ルームに参加したら呼ばれる関数
     public override void OnJoinedRoom()
     {

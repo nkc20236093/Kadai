@@ -77,8 +77,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     bool Invincibility = true;
 
     // 無敵時間の点滅用
-    SkinnedMeshRenderer Model1;
-    SkinnedMeshRenderer Model2;
+    List<SkinnedMeshRenderer> renderers;
 
     // 射程距離減衰(m)
     float[] lenght = new float[3]
@@ -104,8 +103,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         zoneManager = GameObject.FindGameObjectWithTag("Zone").GetComponent<ZoneManager>();
 
-        Model1 = transform.Find("Ch49_nonPBR/Ch49_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
-        Model2 = transform.Find("Ch49_nonPBR/Ch49_body2").gameObject.GetComponent<SkinnedMeshRenderer>();
+        Transform child = transform.GetChild(2);
+        SkinnedMeshRenderer[] ChildSkin = child.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+        
+        foreach (SkinnedMeshRenderer renderer in ChildSkin)
+        {
+            // SkinnedMeshRendererコンポーネントが存在しない場合はスルーする
+            if (renderer != null)
+            {
+                renderers.Add(renderer);
+            }
+        }
     }
 
     private void Start()
@@ -172,12 +180,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         while (InvincibilityTimer < 3)
         {
-            Model1.enabled = false;
-            Model2.enabled = false;
+            foreach (SkinnedMeshRenderer renderer in renderers)
+            {
+                renderer.enabled = false;
+            }
             InvincibilityTimer += Time.deltaTime;
             yield return new WaitForSeconds(0.2f);
-            Model1.enabled = true;
-            Model2.enabled = true;
+            foreach (SkinnedMeshRenderer renderer in renderers)
+            {
+                renderer.enabled = true;
+            }
         }
         Invincibility = false;
         yield break;

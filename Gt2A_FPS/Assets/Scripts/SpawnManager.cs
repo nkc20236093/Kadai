@@ -7,7 +7,7 @@ public class SpawnManager : MonoBehaviour
     public Transform[] spawnPositons;
 
 
-    public GameObject playerPrefab;//生成オブジェクト
+    public GameObject[] playerPrefab = new GameObject[20];//生成オブジェクト
     private GameObject player;//生成したプレイヤーを格納
     public float respawnInterval = 5f;//復活までに要する時間
 
@@ -41,9 +41,10 @@ public class SpawnManager : MonoBehaviour
     public void SpawnPlayer()
     {
         Transform spawnPoint = GetSpawnPoint();
+        int r = Random.Range(0, playerPrefab.Length + 1);
 
         //ネットワーク上のプレイヤーを生成する：第一引数ではオブジェクトの名前が必要
-        player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);//後で削除するときのために格納
+        player = PhotonNetwork.Instantiate(playerPrefab[r].name, spawnPoint.position, spawnPoint.rotation);//後で削除するときのために格納
     }
 
 
