@@ -73,12 +73,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     float Zonetimer = 0;
     bool SafeZone = false;
 
-    float InvincibilityTimer = 0;
-    bool Invincibility = true;
-
-    // 無敵時間の点滅用
-    List<SkinnedMeshRenderer> renderers;
-
     // 射程距離減衰(m)
     float[] lenght = new float[3]
     {
@@ -102,18 +96,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         zoneManager = GameObject.FindGameObjectWithTag("Zone").GetComponent<ZoneManager>();
-
-        Transform child = transform.GetChild(2);
-        SkinnedMeshRenderer[] ChildSkin = child.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-        
-        foreach (SkinnedMeshRenderer renderer in ChildSkin)
-        {
-            // SkinnedMeshRendererコンポーネントが存在しない場合はスルーする
-            if (renderer != null)
-            {
-                renderers.Add(renderer);
-            }
-        }
     }
 
     private void Start()
@@ -145,7 +127,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         if (photonView.IsMine)//自分だったら
         {
-
             foreach (var model in playerModel)//モデルのパーツ分ループ
             {
                 model.SetActive(false);//非表示
@@ -169,31 +150,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         switchGun();//銃を表示させるため
-
-        // 無敵時間
-        StartCoroutine(nameof(InvincibilityTime));
     }
 
-    IEnumerator InvincibilityTime()
-    {
-        if (!Invincibility) yield break;
-
-        while (InvincibilityTimer < 3)
-        {
-            foreach (SkinnedMeshRenderer renderer in renderers)
-            {
-                renderer.enabled = false;
-            }
-            InvincibilityTimer += Time.deltaTime;
-            yield return new WaitForSeconds(0.2f);
-            foreach (SkinnedMeshRenderer renderer in renderers)
-            {
-                renderer.enabled = true;
-            }
-        }
-        Invincibility = false;
-        yield break;
-    }
     private void Update()
     {
         //自分以外は
@@ -295,11 +253,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.Log("安置外");
             Zonetimer += Time.deltaTime;
             if (Zonetimer > 2)
             {
-                Debug.Log("安置外ダメージ");
                 photonView.RPC(nameof(ZoneDamage), RpcTarget.All);
                 Zonetimer = 0;
             }
