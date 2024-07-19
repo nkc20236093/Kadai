@@ -183,9 +183,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
             Run();
 
             //ジャンプ関数を呼ぶ
-            Jump();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                StartCoroutine(nameof(Jump));
+            }
         }
-
+        Debug.Log(animator.GetBool("Jump"));
         //銃の切り替え
         SwitchingGuns();
 
@@ -337,20 +340,30 @@ public class PlayerController : MonoBehaviourPunCallbacks
     /// <returns></returns>
     public bool IsGround()
     {
-        return Physics.Raycast(groundCheckPoint.position, Vector3.down, 0.25f, groundLayers);
+        bool b;
+        if (Physics.Raycast(groundCheckPoint.position, Vector3.down, 0.15f, groundLayers))
+        {
+            b = true;
+        }
+        else
+        {
+            b = false;
+        }
+        return b;
     }
 
 
-    public void Jump()
+    IEnumerator Jump()
     {
         //ジャンプできるのか判定
-        if (IsGround() && Input.GetKeyDown(KeyCode.Space))
-        {
-            //瞬間的に真上に力を加える
-            rb.AddForce(jumpForce, ForceMode.Impulse);
-        }
+        animator.SetBool("Jump", true);
+        //瞬間的に真上に力を加える
+        rb.AddForce(jumpForce, ForceMode.Impulse);
+        yield return new WaitForSeconds(0.5f);
+        yield return new WaitUntil(() => IsGround());
+        animator.SetBool("Jump", false);
+        Debug.Log("着地");
     }
-
 
     public void Run()
     {
@@ -576,26 +589,40 @@ public class PlayerController : MonoBehaviourPunCallbacks
         //walk判定
         if (moveDir != Vector3.zero)
         {
-            animator.SetBool("walk", true);
-
+            //animator.SetBool("walk", true);
+            //run判定
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                if (moveDir.z > 0)
+                {
+                    animator.SetFloat("Move", 1.0f);
+                }
+                else if (moveDir.z < 0)
+                {
+                    animator.SetFloat("Move", 2.0f);
+                }
+                //animator.SetBool("run", true);
+            }
+            else
+            {
+                if (moveDir.z > 0)
+                {
+                    animator.SetFloat("Move", 0.5f);
+                }
+                else if (moveDir.z < 0)
+                {
+                    animator.SetFloat("Move", 1.5f);
+                }
+                //animator.SetBool("run", false);
+            }
         }
         else
         {
-            animator.SetBool("walk", false);
+            //animator.SetBool("walk", false);
+            animator.SetFloat("Move", 0.0f);
         }
-
-        //run判定
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            animator.SetBool("run", true);
-        }
-        else
-        {
-            animator.SetBool("run", false);
-        }
-
+        Debug.DrawRay(groundCheckPoint.position, Vector3.down * 0.15f, Color.red);
     }
-
 
     [PunRPC]//（同じルームにいる）リモートクライアントに対してのメソッドの呼び出しが可能に
     public void SetGun(int gunNo)
