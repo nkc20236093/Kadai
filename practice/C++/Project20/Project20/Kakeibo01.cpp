@@ -1,3 +1,4 @@
+#if false
 #include <iostream>
 #include <string>
 using namespace std;
@@ -37,7 +38,6 @@ int Menu()
 	return (ret[0] - '0');
 }
 
-#if false
 int main()
 {
 	Kakeibo MyKakeibo;

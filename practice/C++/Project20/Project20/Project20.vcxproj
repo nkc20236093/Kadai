@@ -130,6 +130,7 @@
     <ClCompile Include="File01.cpp" />
     <ClCompile Include="File02.cpp" />
     <ClCompile Include="Kakeibo01.cpp" />
+    <ClCompile Include="Kakeibo02.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
