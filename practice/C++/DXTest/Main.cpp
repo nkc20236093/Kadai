@@ -1,5 +1,66 @@
 #include "DxLib.h"
 
+class Object
+{
+    int x = 0, y = 0, gHandle;      // 座標、グラフィックハンドル
+    int cx = 0, cy = 0;             // 回転の元となる座標
+    double sclX = 1.0, sclY = 1.0;  // 拡大率
+    double radian = 0;              // 回転率
+    bool turnflag = false;          // 反転フラグ
+public:
+    // コンストラクタ
+    Object(int _gHandle) :x(0), y(0), gHandle(_gHandle) {}
+    // アクセサ
+    void SetX(int value) { x = value; }
+    int GetX() { return x; }
+    void SetY(int value) { y = value; }
+    int GetY() { return y; }
+    int GetgHandle() { return gHandle; }
+    void SetCX(int value) { cx = value; }
+    void SetCY(int value) { cy = value; }
+    void SetSclX(double value) { sclX = value; }double GetSclX() { return sclX; }
+    void SetSclY(double value) { sclY = value; }double GetSclY() { return sclY; }
+    void SetRadian(double value) { radian = value; }double GetRadian() { return radian; }
+    void SetTurnFlag(bool value) { turnflag = value; }bool GetTurnFlag() { return turnflag; }
+
+    // 描画処理
+    void Draw()
+    {
+        DrawRotaGraph3(x, y, cx, cy, sclX, sclY, radian, gHandle, TRUE, turnflag);
+    }
+    // 更新処理(仮数関数)
+    virtual void Update() {}
+};
+class Player :public Object
+{
+public:
+    // コンストラクタ
+    Player(int _gHandle) :Object(_gHandle) {}
+
+    // アップデート関数オーバーライド
+    void Update()
+    {
+        // プレイヤーの操作
+        if (CheckHitKey(KEY_INPUT_W)) { SetY(GetY() - 8); }
+        if (CheckHitKey(KEY_INPUT_S)) { SetY(GetY() + 8); }
+        if (CheckHitKey(KEY_INPUT_A)) { SetX(GetX() - 8); SetTurnFlag(true); }
+        if (CheckHitKey(KEY_INPUT_D)) { SetX(GetX() + 8); SetTurnFlag(false); }
+
+        // 拡大縮小のチェック
+        if (CheckHitKey(KEY_INPUT_UP)) { SetSclY(2.0); }
+        if (CheckHitKey(KEY_INPUT_DOWN)) { SetSclY(1.0); }
+        if (CheckHitKey(KEY_INPUT_LEFT)) { SetSclX(1.0); }
+        if (CheckHitKey(KEY_INPUT_RIGHT)) { SetSclX(2.0); }
+
+        // 回転のチェック
+        double rad = 2 * 3.14 / 180; // ディグリーをラジアンに変換(2度)
+        if (CheckHitKey(KEY_INPUT_Q)) { SetRadian(GetRadian() - rad); }
+        if (CheckHitKey(KEY_INPUT_E)) { SetRadian(GetRadian() + rad); }
+
+    }
+};
+
+
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -38,24 +99,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // 読み込んだ後の識別番号(グラフィックバンドル)として保存
     int graphHandle1 = LoadGraph("sprite/onepiece14_enel.png");
 
-    class Object
-    {
-        int x, y, gHandle;
-    public:
-        // コンストラクタ
-        Object(int _gHandle) :x(0), y(0), gHandle(_gHandle){}
-        // アクセサ
-        void SetX(int value) { x = value; }
-        int GetX() { return x; }
-        void SetY(int value) { y = value; }
-        int GetY() { return y; }
-        int GetgHandle() { return gHandle; }
-    };
     // クラスの実体作成
-    Object pl = Object(CharaNo::Luffy); pl.SetX(400); pl.SetY(600);
-    Object pl2 = Object(CharaNo::Zoro); pl2.SetX(200); pl2.SetY(100);
-    Object em = Object(CharaNo::Enel); em.SetX(800); em.SetY(100);
-    Object back = Object(CharaNo::Back); back.SetX(0); back.SetY(0);
+    Player pl = Player(gHandleTable[CharaNo::Luffy]); pl.SetX(400); pl.SetY(600); pl.SetCX(200); pl.SetCY(200);
+    Object pl2 = Object(gHandleTable[CharaNo::Zoro]); pl2.SetX(200); pl2.SetY(100);
+    Object em = Object(gHandleTable[CharaNo::Enel]); em.SetX(800); em.SetY(100);
+    Object back = Object(gHandleTable[CharaNo::Back]); back.SetX(0); back.SetY(0);
 
     int x = 0, y = 0;
     // ゲームループ
@@ -63,17 +111,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         // 画面を一度消す
         ClearDrawScreen();
-        // プレイヤーの操作
-        if (CheckHitKey(KEY_INPUT_W)) { pl.SetY(pl.GetY() - 8); }
-        if (CheckHitKey(KEY_INPUT_S)) { pl.SetY(pl.GetY() + 8); }
-        if (CheckHitKey(KEY_INPUT_A)) { pl.SetX(pl.GetX() - 8); }
-        if (CheckHitKey(KEY_INPUT_D)) { pl.SetX(pl.GetX() + 8); }
-        // 背景も表示
-        DrawGraph(back.GetX(), back.GetY(), gHandleTable[CharaNo::Back], TRUE);
-        // グラフィックハンドルから表示
-        DrawGraph(pl.GetX(), pl.GetY(), gHandleTable[CharaNo::Luffy], TRUE);
-        DrawGraph(pl2.GetX(), pl2.GetY(), gHandleTable[CharaNo::Zoro], TRUE);
-        DrawGraph(em.GetX(), em.GetY(), gHandleTable[CharaNo::Enel], TRUE);
+
+        // 更新処理
+        back.Update();
+        pl.Update();
+        pl2.Update();
+        em.Update();
+
+        // 描画関連(先に描画したやつが優先度低)
+        back.Draw();
+        pl.Draw();
+        pl2.Draw();
+        em.Draw();
+
+        //// 背景も表示
+        //DrawGraph(back.GetX(), back.GetY(), gHandleTable[CharaNo::Back], TRUE);
+        //// グラフィックハンドルから表示
+        //DrawGraph(pl.GetX(), pl.GetY(), gHandleTable[CharaNo::Luffy], TRUE);
+        //DrawGraph(pl2.GetX(), pl2.GetY(), gHandleTable[CharaNo::Zoro], TRUE);
+        //DrawGraph(em.GetX(), em.GetY(), gHandleTable[CharaNo::Enel], TRUE);
 
         // 画像読み込みして表示
         //LoadGraphScreen(x, y, "sprite/onepiece14_enel.png", FALSE);
