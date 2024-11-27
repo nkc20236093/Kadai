@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private Camera cam;//カメラ
 
     bool SafeZone = true;
+    bool UpWall = false;
+
 
     // 射程距離減衰(m)
     float[] lenght = new float[3]
@@ -314,8 +316,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public void PlayerMove()
     {
         //変数の水平と垂直の入力を格納する（wasdや矢印の入力）
-        moveDir = new Vector3(Input.GetAxisRaw("Horizontal"),
-            0, Input.GetAxisRaw("Vertical"));
+        moveDir = new Vector3(Input.GetAxisRaw("Horizontal"),0, Input.GetAxisRaw("Vertical"));
 
         //Debug.Log(moveDir);説明用
 
@@ -324,6 +325,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //現在位置に進む方向＊移動スピード＊フレーム間秒数を足す
         transform.position += movement * activeMoveSpeed * Time.deltaTime;
+
+        UpWallMove();
     }
 
 
@@ -458,7 +461,34 @@ public class PlayerController : MonoBehaviourPunCallbacks
         guns[selectedGun].gameObject.SetActive(true);//選択中の銃のみ表示
     }
 
+    // 壁登り
+    void UpWallMove()
+    {
+        if (Physics.Raycast(viewPoint.position, viewPoint.forward, out RaycastHit hit, 1f, LayerMask.NameToLayer("Ground"))) 
+        {
+            if (hit.collider.gameObject.CompareTag("Ladder")) 
+            {
+                UpWall = true;
+            }
+        }
+        else
+        {
+            UpWall = false;
+        }
 
+        if (UpWall)
+        {
+            float verticalInput = Input.GetAxis("Vertical");
+
+            Vector3 climbDirection = new Vector3(0, verticalInput, 0).normalized;
+            rb.MovePosition(transform.position + climbDirection * 5 * Time.deltaTime);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                UpWall = false;
+            }
+        }
+    }
 
     /// <summary>
     /// 右クリックで覗き込み
@@ -591,6 +621,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
             animator.SetBool("run", false);
         }
 
+        // 壁登り判定
+        if (UpWall)
+        {
+            animator.SetBool("UpWall", true);
+        }
+        else
+        {
+            animator.SetBool("UpWall", false);
+        }
     }
 
 
