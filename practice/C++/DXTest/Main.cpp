@@ -1,4 +1,17 @@
 #include "DxLib.h"
+#include <list>
+
+class Object;
+
+// オブジェクトクラスのリスト
+std::list<Object*> objList;
+// 列挙体
+enum CharaNo
+{
+    Luffy, Zoro, Enel, Back, Shell, Num
+};
+// グラフィックハンドルテーブル
+int gHandleTable[CharaNo::Num];
 
 class Object
 {
@@ -31,6 +44,19 @@ public:
     // 更新処理(仮数関数)
     virtual void Update() {}
 };
+// プレイヤー弾クラス
+class PLShell :public Object
+{
+public:
+    // コンストラクタ
+    PLShell(int _gHandle) : Object(_gHandle) {}
+    // アップデート関数オーバーライド
+    void Update() {
+        SetY(GetY() - 10);
+    }
+};
+
+
 class Player :public Object
 {
 public:
@@ -57,9 +83,17 @@ public:
         if (CheckHitKey(KEY_INPUT_Q)) { SetRadian(GetRadian() - rad); }
         if (CheckHitKey(KEY_INPUT_E)) { SetRadian(GetRadian() + rad); }
 
+        // Zキー入力で弾を発射
+        if (CheckHitKey(KEY_INPUT_Z))
+        {
+            auto ptr = new PLShell(gHandleTable[CharaNo::Shell]);
+            ptr->SetX(this->GetX());
+            ptr->SetY(this->GetY());
+            objList.push_back(ptr);
+        }
+
     }
 };
-
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -77,11 +111,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // 描画先を裏画面に(ダブルバッファリング)
     SetDrawScreen(DX_SCREEN_BACK);
 
-    // 列挙体
-    enum CharaNo 
-    {
-        Luffy,Zoro,Enel,Back,Num
-    };
     // データ読み込み用の配列
     static const char* filePathTable[CharaNo::Num] =
     {
@@ -89,8 +118,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         "sprite/onepiece02_zoro_bandana.png",
         "sprite/onepiece14_enel.png",
         "sprite/Nyaoha.png",
+        "sprite/shell01.png"
     };
-    int gHandleTable[CharaNo::Num];
+
     for (int i = 0; i < CharaNo::Num; i++)
     {
         gHandleTable[i] = LoadGraph(filePathTable[i]);
@@ -105,6 +135,38 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     Object em = Object(gHandleTable[CharaNo::Enel]); em.SetX(800); em.SetY(100);
     Object back = Object(gHandleTable[CharaNo::Back]); back.SetX(0); back.SetY(0);
 
+    // 仮
+    PLShell pshl = PLShell(gHandleTable[CharaNo::Shell]);
+    pshl.SetX(400); pshl.SetY(600);
+
+    // リスト登録
+    objList.push_back(&back);
+    objList.push_back(&pl);
+    objList.push_back(&pl2);
+    objList.push_back(&em);
+    objList.push_back(&pshl);
+
+    /*
+    Object obj // オブジェクトクラス
+    Objectクラスの機能を使える
+
+    Player pl; // オブジェクト機能を継承したPL
+    PlayerとObjectクラスの機能を使える
+
+    Object test = pl;
+    Playerをオブジェクトクラスにキャスト
+    testはPlayerの昨日は使えない
+
+    Object* ptr =&pl;
+    PlayerのポインタをObjectクラスのポインタにキャスト
+    ptrはPlayerを指している
+    基底クラスのポインタだけどプレイヤーの機能が使える
+
+    Object* prt2 &pshel;
+    ptr2はPLShellを指している
+    基底クラスのポインタだけどPLShellの機能が使える
+    */
+
     int x = 0, y = 0;
     // ゲームループ
     while (true)
@@ -112,17 +174,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // 画面を一度消す
         ClearDrawScreen();
 
-        // 更新処理
-        back.Update();
-        pl.Update();
-        pl2.Update();
-        em.Update();
+        // リストを使った更新処理
+        for (auto iObj = objList.begin(); iObj != objList.end(); ++iObj)
+        {
+            (*iObj)->Update();
+        }
 
-        // 描画関連(先に描画したやつが優先度低)
-        back.Draw();
-        pl.Draw();
-        pl2.Draw();
-        em.Draw();
+        // リストを使った描画関連(先に描画したやつが優先度低)
+        for (auto iObj = objList.begin(); iObj != objList.end(); ++iObj)
+        {
+            (*iObj)->Draw();
+        }
 
         //// 背景も表示
         //DrawGraph(back.GetX(), back.GetY(), gHandleTable[CharaNo::Back], TRUE);
