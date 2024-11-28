@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private float verticalMouseInput;//y軸の回転を格納　回転を制限したいから
     private Camera cam;//カメラ
 
+    bool UpWall = false;
 
 
     private Vector3 moveDir;//プレイヤーの入力を格納（移動）
@@ -188,7 +189,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 StartCoroutine(nameof(Jump));
             }
         }
-        Debug.Log(animator.GetBool("Jump"));
         //銃の切り替え
         SwitchingGuns();
 
@@ -331,6 +331,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         //現在位置に進む方向＊移動スピード＊フレーム間秒数を足す
         transform.position += movement * activeMoveSpeed * Time.deltaTime;
+
+        UpWallMove();
     }
 
 
@@ -362,7 +364,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(() => IsGround());
         animator.SetBool("Jump", false);
-        Debug.Log("着地");
     }
 
     public void Run()
@@ -474,8 +475,32 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         guns[selectedGun].gameObject.SetActive(true);//選択中の銃のみ表示
     }
+    // 壁登り
+    void UpWallMove()
+    {
+        if (!UpWall && Physics.Raycast(transform.position - new Vector3(0, 0.5f, 0.25f), transform.forward, out RaycastHit hit, 1.0f, LayerMask.GetMask("Ground")))  
+        {
+            if (hit.collider.gameObject.CompareTag("Ladder"))
+            {
+                Debug.Log("ヒット");
+                if (Input.GetButtonDown("Jump"))
+                {
+                    UpWall = true;
+                }
+            }
+        }
+        else if (UpWall && Input.GetButtonDown("Jump"))
+        {
+            UpWall = false;
+        }
 
-
+        if (UpWall)
+        {
+            Debug.Log("発動");
+            float verticalInput = Input.GetAxis("Vertical");
+            transform.Translate(Vector3.up * verticalInput * 5 * Time.deltaTime);
+        }
+    }
 
     /// <summary>
     /// 右クリックで覗き込み
@@ -622,6 +647,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
             animator.SetFloat("Move", 0.0f);
         }
         Debug.DrawRay(groundCheckPoint.position, Vector3.down * 0.15f, Color.red);
+
+        // 壁登り判定
+        if (UpWall)
+        {
+            animator.SetBool("UpWall", true);
+        }
+        else
+        {
+            animator.SetBool("UpWall", false);
+        }
     }
 
     [PunRPC]//（同じルームにいる）リモートクライアントに対してのメソッドの呼び出しが可能に
