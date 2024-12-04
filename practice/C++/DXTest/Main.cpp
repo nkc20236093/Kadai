@@ -1,373 +1,342 @@
 #include "DxLib.h"
 #include <list>
 
-class Object;
-
-// オブジェクトクラスのリスト
-std::list<Object*> objList;
 // 列挙体
-enum CharaNo
+enum CharNo { Luffy, Zoro, Sanji, Bg1, Shell1, Num };
+// データ読みこみ用のパスの配列
+static const char* filePathTable[CharNo::Num] =
 {
-    Luffy, Zoro, Enel, Back, Shell, Num
+	"sprite/onepiece01_luffy.png",
+	"sprite/onepiece02_zoro_bandana.png",
+	"sprite/onepiece14_enel.png",
+	"sprite/Nyaoha.png",
+	"sprite/shell01.png"
 };
+
+// 前方宣言
+class Object;
+class Player;
+class PLShell;
+void HitControl(Object* pl, Object* em);
+
+// オブジェクトクラスのポインタのリスト
+std::list<Object*> objList;
 // グラフィックハンドルテーブル
-int gHandleTable[CharaNo::Num];
+int gHandleTable[CharNo::Num];
 
-class Object
-{
-    int x = 0, y = 0, gHandle;      // 座標、グラフィックハンドル
-    int cx = 0, cy = 0;             // 回転の元となる座標
-    double sclX = 1.0, sclY = 1.0;  // 拡大率
-    double radian = 0;              // 回転率
-    bool turnflag = false;          // 反転フラグ
-    bool deleteFlag = false;        // 消去型フラグ
-public:
-    int hWide = 200, hHeight = 200; // ヒット用幅、高さ
-    bool hitAbleFlag = false;       // ヒット可能フラグ
-    int hitType;                    // 当たり判定のタイプ(0:プレイヤー,1;敵)
-
-    // コンストラクタ
-    Object(int _gHandle) :x(0), y(0), gHandle(_gHandle) {}
-    // アクセサ
-    void SetX(int value) { x = value; }
-    int GetX() { return x; }
-    void SetY(int value) { y = value; }
-    int GetY() { return y; }
-    int GetgHandle() { return gHandle; }
-    void SetCX(int value) { cx = value; }
-    void SetCY(int value) { cy = value; }
-    void SetSclX(double value) { sclX = value; }double GetSclX() { return sclX; }
-    void SetSclY(double value) { sclY = value; }double GetSclY() { return sclY; }
-    void SetRadian(double value) { radian = value; }double GetRadian() { return radian; }
-    void SetTurnFlag(bool value) { turnflag = value; }bool GetTurnFlag() { return turnflag; }
-    void SetDeleteFlag() { deleteFlag = true; }bool GetDeletFlag() { return deleteFlag; }
-    // 描画処理
-    void Draw()
-    {
-        DrawRotaGraph3(x, y, cx, cy, sclX, sclY, radian, gHandle, TRUE, turnflag);
-    }
-    // 更新処理(仮数関数)
-    virtual void Update() {}
-
-    void DebugHitDraw(int h, int w)
-    {
-        // ヒット確認用短形描画
-        int lx, rx, uy, dy;
-        lx = GetX(); rx = lx + w;
-        uy = GetY(); dy = uy + h;
-        DrawBox(lx, uy, rx, dy, GetColor(255, 0, 0), TRUE);
-    }
-};
-// プレイヤー弾クラス
-class PLShell :public Object
-{
-public:
-    // コンストラクタ
-    PLShell(int _gHandle) : Object(_gHandle) {}
-    // アップデート関数オーバーライド
-    void Update() {
-        SetY(GetY() - 10);
-        DebugHitDraw(40, 40);
-        hitAbleFlag = true;
-        hitType = 0;
-
-        // 画面上部へ行ったら消える処理
-        if (GetY() < 100)
-        {
-            // 自分も消える
-            SetDeleteFlag();
-            return;
-        }
-    }
-};
-
-
-class Player :public Object
-{
+// オブジェクトクラス（基底）
+class Object {
 private:
-    bool sButtonFlag = false; // 弾発射フラグ
+	int gHandle;					// グラフィックハンドル
+	int x = 0, y = 0;				// 座標
+	int cx = 0, cy = 0;				// 回転の元となる座標
+	double sclX = 1.0, sclY = 1.0;	// 拡大率
+	double radian = 0;				// 回転値
+	bool turnFlag = false;			// 反転フラグ
+	bool deleteFlag = false;		// 消去用フラグ
+public: // ヒット関連を仮で実装（面倒なのでpublic)
+	// ヒット用幅、高さ
+	int hitWide = 180, hitHeight = 180;
+	bool hitAbleFlag = false;	// ヒット可能フラグ
+	int hitType;				// 当たり判定のタイプ(0:プレイヤー,1が敵）
+
 public:
-    // コンストラクタ
-    Player(int _gHandle) :Object(_gHandle) {}
+	// コンストラクタ
+	Object(int _gHandle) : gHandle(_gHandle) {}
+	// アクセサ
+	int getGHandle() { return gHandle; }
+	void setX(int value) { x = value; } int getX() { return x; }
+	void setY(int value) { y = value; } int getY() { return y; }
+	void setCX(int value) { cx = value; }
+	void setCY(int value) { cy = value; }
+	void setSclX(double value) { sclX = value; } double getSclX() { return sclX; }
+	void setSclY(double value) { sclY = value; } double getSclY() { return sclY; }
+	void setRadian(double value) { radian = value; } double getRadian() { return radian; }
+	void setTurnFlag(bool value) { turnFlag = value; } bool getTrunFlag() { return turnFlag; }
+	void setDeleteFlag() { deleteFlag = true; }
+	bool getDeleteFlag() { return deleteFlag; }
+	// 描画処理
+	void Draw() {
+		// 回転拡大対応描画
+		DrawRotaGraph3(x, y,
+			cx, cy, sclX, sclY, radian,
+			gHandle, TRUE, turnFlag);
+	}
+	// ヒット用の矩形描画
+	void DebugHitDraw() {
+		// ヒット確認用矩形描画
+		int lx, rx, uy, dy;
+		lx = getX(); rx = lx + hitWide;
+		uy = getY(); dy = uy + hitHeight;
+		DrawBox(lx, uy, rx, dy,
+			GetColor(255, 0, 0),
+			TRUE);
+	}
 
-    // アップデート関数オーバーライド
-    void Update()
-    {
-        // プレイヤーの操作
-        if (CheckHitKey(KEY_INPUT_UP)) { SetY(GetY() - 8); }
-        if (CheckHitKey(KEY_INPUT_DOWN)) { SetY(GetY() + 8); }
-        if (CheckHitKey(KEY_INPUT_LEFT)) { SetX(GetX() - 8); SetTurnFlag(false); }
-        if (CheckHitKey(KEY_INPUT_RIGHT)) { SetX(GetX() + 8); SetTurnFlag(true); }
-
-        // 拡大縮小のチェック
-        //if (CheckHitKey(KEY_INPUT_UP)) { SetSclY(2.0); }
-        //if (CheckHitKey(KEY_INPUT_DOWN)) { SetSclY(1.0); }
-        //if (CheckHitKey(KEY_INPUT_LEFT)) { SetSclX(1.0); }
-        //if (CheckHitKey(KEY_INPUT_RIGHT)) { SetSclX(2.0); }
-
-        // 回転のチェック
-        double rad = 2 * 3.14 / 180; // ディグリーをラジアンに変換(2度)
-        if (CheckHitKey(KEY_INPUT_Q)) { SetRadian(GetRadian() - rad); }
-        if (CheckHitKey(KEY_INPUT_E)) { SetRadian(GetRadian() + rad); }
-
-        // Zキー入力で弾を発射
-        if (CheckHitKey(KEY_INPUT_Z))
-        {
-            // 発射ボタンが初回に押されたとき
-            if (!sButtonFlag)
-            {
-                auto ptr = new PLShell(gHandleTable[CharaNo::Shell]);
-                ptr->SetX(this->GetX());
-                ptr->SetY(this->GetY());
-                ptr->SetSclX(0.1);
-                ptr->SetSclY(0.1);
-                objList.push_back(ptr);
-            }
-            sButtonFlag = true;
-        }
-        else
-        {
-            // Zキーが押されてないとき
-            sButtonFlag = false;
-        }
-        DebugHitDraw(200,200);
-    }
+	// 更新処理（仮想関数）
+	virtual void Update() {}
 };
 
-// 敵クラスの作成
-class Enemy :public Object
-{
-    int moveType = 0;
+// プレイヤー弾クラス
+class PLShell : public Object {
 public:
-    Enemy(int _gHandle, int mType):Object(_gHandle),moveType(mType)
-    {
-        hitAbleFlag = true;
-        hitType = 1;
-    }
-    // アップデートのオーバーライド
-    void Update()
-    {
-        switch (moveType)
-        {
-            case 0: //直線移動
-                //SetY(GetY() + 4);
-                break;
-        }
+	// コンストラクタ
+	PLShell(int _gHandle) : Object(_gHandle) {
+		hitWide = 40; hitHeight = 40;
+		hitAbleFlag = true;	// 有効
+		hitType = 0;		// プレイヤー
+	}
+	// アップデート関数オーバーライド
+	void Update() {
+		// 上に移動
+		setY(getY() - 10);
+		// 画面上部へ行ったら消える処理
+		if (getY() < -100) {	// -100より↑の座標に行ったら消える
+			// 消える
+			setDeleteFlag();		// 消去フラグオン
+			return;					// これ以上の処理は行わない
+		}
 
-        // 画面外で消える
-        if (GetY() > 500)
-        {
-            SetDeleteFlag();
-            return;
-        }
-        DebugHitDraw(200, 200);
-    }
+		DebugHitDraw();
+	}
+};
+
+// プレイヤークラス	
+class Player : public Object {
+	bool sButtonFlag = false;	// 発射ボタン用フラグ
+
+public:
+	// コンストラクタ
+	Player(int _gHandle) : Object(_gHandle) {
+		//		setCX(175); setCY(175);
+	}
+	// アップデート関数オーバーライド
+	void Update() {
+		// プレイヤーの操作
+		if (CheckHitKey(KEY_INPUT_UP)) { setY(getY() - 8); }
+		if (CheckHitKey(KEY_INPUT_DOWN)) { setY(getY() + 8); }
+		if (CheckHitKey(KEY_INPUT_LEFT)) {
+			setX(getX() - 8); setTurnFlag(true);
+		}
+		if (CheckHitKey(KEY_INPUT_RIGHT)) {
+			setX(getX() + 8); setTurnFlag(false);
+		}
+		// 拡大縮小のチェック
+		//if (CheckHitKey(KEY_INPUT_UP)) { setSclY(getSclY() - 0.1); }
+		//if (CheckHitKey(KEY_INPUT_DOWN)) { setSclY(getSclY() + 0.1); }
+		//if (CheckHitKey(KEY_INPUT_LEFT)) { setSclX(getSclX() - 0.1); }
+		//if (CheckHitKey(KEY_INPUT_RIGHT)) { setSclX(getSclX() + 0.1); }
+		// 回転のチェック
+		double rad = 2 * 3.14 / 180;	// ディグリーをラジアンに変換（2度）
+		if (CheckHitKey(KEY_INPUT_Q)) { setRadian(getRadian() - rad); }
+		if (CheckHitKey(KEY_INPUT_E)) { setRadian(getRadian() + rad); }
+
+		// Zキー入力で弾を発射
+		if (CheckHitKey(KEY_INPUT_Z)) {
+			// 発射ボタンが初回に押されたとき
+			if (sButtonFlag == false) {
+				// 弾クラスを生成（newをしてポインタを取得）
+				auto ptr = new PLShell(gHandleTable[CharNo::Shell1]);
+				ptr->setX(this->getX());
+				ptr->setY(this->getY());
+				ptr->setSclX(0.1f);
+				ptr->setSclY(0.1f);
+				objList.push_back(ptr);
+			}
+			sButtonFlag = true;	// 発射ボタンが押された
+		}
+		else {// Zキーが押されていないとき
+			sButtonFlag = false;
+		}
+	}
+};
+
+// 敵クラス
+class Enemy : public Object {
+	int moveType = 0;		// 移動タイプ
+public:
+	// コンストラクタ
+	Enemy(int _gHandle, int mType) :
+		Object(_gHandle), moveType(mType)
+	{
+		hitAbleFlag = true;	// 有効
+		hitType = 1;		// 敵
+	}
+	// アップデートのオーバーライド
+	void Update() {
+		switch (moveType) {
+		case 0:	// 直線移動
+			//		setY(getY() + 4);
+			break;
+		}
+
+		// 画面外で消える
+		if (getY() > 800) {
+			setDeleteFlag(); return;
+		}
+
+		DebugHitDraw();
+	}
 };
 
 // 敵生成クラス
-class EnemyGenerator
-{
-    float timer = 0;
-    //コンストラクタ
-public:EnemyGenerator(){}
-      // 更新処理
-      void Update()
-      {
-          ++timer;
-          // 60フレーム毎
-          if (timer < 60)
-          {
-              // 敵を起動
-              int EnemyType = GetRand(1);
-              Object* ptr = nullptr;
-              switch (EnemyType)
-              {
-              case 0:
-                  ptr = new Enemy(gHandleTable[CharaNo::Enel], 0); break;
-              case 1:
-                  ptr = new Enemy(gHandleTable[CharaNo::Enel], 0); break;
-              }
-              // x座標もランダム
-              ptr->SetX(GetRand(1280)); // x座標もランダム
-              ptr->SetCX(100); ptr->SetCY(100);
-              objList.push_back(ptr);   // リストに登録
-              timer = 0;                // タイマー初期化
-          }
-      }
+class EnemyGenerator {
+	float timer = 0;
+public:
+	EnemyGenerator() {}		// コンストラクタ
+	// 更新処理
+	void Update() {
+		++timer;
+		if (timer == 60) {	// 60フレーム毎
+			// 敵を起動
+			int EnemyType = GetRand(1);
+			Object* ptr = nullptr;
+			switch (EnemyType) {
+			case 0:
+				ptr = new Enemy(gHandleTable[CharNo::Zoro], 0); break;
+			case 1:
+				ptr = new Enemy(gHandleTable[CharNo::Sanji], 0); break;
+			}
+			ptr->setX(GetRand(1280));	// x座標もランダム
+			ptr->setSclX(0.5f);
+			ptr->setSclY(0.5f);
+			objList.push_back(ptr);		// リストに登録
+			//timer = 0;					// タイマー初期化
+		}
+	}
 };
 
-// プログラムは WinMain から始まります
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+
+
+// ウィンドウズアプリケーション用のメイン関数
+int WINAPI WinMain(HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine, int nCmdShow)
 {
-    // 画面モードの設定
-    SetGraphMode(1280, 720, 32);
-    // ウィンドウモードに変更
-    ChangeWindowMode(TRUE);
+	SetGraphMode(1280, 720, 32);// 画面モードの設定
+	ChangeWindowMode(TRUE);		// ウィンドウモードに変更
+	// DXライブラリ初期化（失敗したら終了）
+	if (DxLib_Init() == -1) { return -1; }
+	// 描画先を裏画面に（ダブルバッファリング）
+	SetDrawScreen(DX_SCREEN_BACK);
 
-    if (DxLib_Init() == -1)        // ＤＸライブラリ初期化処理
-    {
-        return -1;            // エラーが起きたら直ちに終了
-    }
+	// グラフィックをメモリへ読み込み
+	// 読み込んだ後の識別番号（グラフィックハンドル）として保存
+	for (int i = 0; i < CharNo::Num; ++i) {
+		gHandleTable[i] = LoadGraph(filePathTable[i]);
+	}
 
-    // 描画先を裏画面に(ダブルバッファリング)
-    SetDrawScreen(DX_SCREEN_BACK);
+	// クラスの実体作成
+	//Object bg = Object(gHandleTable[CharNo::Bg1]);
+	//objList.push_back(&bg);
 
-    // データ読み込み用の配列
-    static const char* filePathTable[CharaNo::Num] =
-    {
-        "sprite/onepiece01_luffy.png",
-        "sprite/onepiece02_zoro_bandana.png",
-        "sprite/onepiece14_enel.png",
-        "sprite/Nyaoha.png",
-        "sprite/shell01.png"
-    };
+	Player pl = Player(gHandleTable[CharNo::Luffy]);
+	pl.setX(400); pl.setY(600); pl.setSclX(0.5); pl.setSclY(0.5);
+	objList.push_back(&pl);
 
-    for (int i = 0; i < CharaNo::Num; i++)
-    {
-        gHandleTable[i] = LoadGraph(filePathTable[i]);
-    }
-    // グラフィックをメモリへ読み込み
-    // 読み込んだ後の識別番号(グラフィックバンドル)として保存
-    int graphHandle1 = LoadGraph("sprite/onepiece14_enel.png");
+	// 敵の生成クラス作成
+	EnemyGenerator emGene;
 
-    // クラスの実体作成
-    Player pl = Player(gHandleTable[CharaNo::Luffy]); pl.SetX(400); pl.SetY(600); pl.SetCX(100); pl.SetCY(100);
-    Object pl2 = Object(gHandleTable[CharaNo::Zoro]); pl2.SetX(200); pl2.SetY(100); pl2.SetSclX(200); pl2.SetCY(200);
-    Object em = Object(gHandleTable[CharaNo::Enel]); em.SetX(800); em.SetY(100);
-    //Object back = Object(gHandleTable[CharaNo::Back]); back.SetX(0); back.SetY(0);
+	/*
+		Object obj;	 // オブジェクトクラス
+		Objectクラスの機能を使える
 
-    // リスト登録
-    //objList.push_back(&back);
-    objList.push_back(&pl);
-    objList.push_back(&pl2);
-    //objList.push_back(&em);
+		Player pl; 　// オブジェクトを継承したPL
+		PlayerとObjectクラスの機能を使える
 
-    /*
-    Object obj // オブジェクトクラス
-    Objectクラスの機能を使える
+		Object test = pl;
+		PlayerをObjectクラスにキャスト
+		testはPlayerの機能は使えない
 
-    Player pl; // オブジェクト機能を継承したPL
-    PlayerとObjectクラスの機能を使える
+		Object* ptr = &pl;
+		PlayerのポインタをObjectクラスのポインタにキャスト
+		ptrはPlayerを指している
+		基底クラスのポインタだけど、プレイヤーの機能が使える
 
-    Object test = pl;
-    Playerをオブジェクトクラスにキャスト
-    testはPlayerの昨日は使えない
+		Object* ptr2 = &pshl;
+		ptr2はPLShellを指している
+		基底クラスのポインタだけど、弾の機能が使える
+	*/
 
-    Object* ptr =&pl;
-    PlayerのポインタをObjectクラスのポインタにキャスト
-    ptrはPlayerを指している
-    基底クラスのポインタだけどプレイヤーの機能が使える
 
-    Object* prt2 &pshel;
-    ptr2はPLShellを指している
-    基底クラスのポインタだけどPLShellの機能が使える
-    */
+	// ゲームループ
+	while (true) {
+		ClearDrawScreen();		// 画面を一度消す
+		emGene.Update();		// 敵生成処理
 
-    //int x = 0, y = 0;
-    
-    EnemyGenerator emGene;
+		// リストを使った更新処理
+		for (auto iObj = objList.begin(); iObj != objList.end(); ) {
+			(*iObj)->Update();
 
-    // ゲームループ
-    while (true)
-    {
-        // 画面を一度消す
-        ClearDrawScreen();
+			// アップデートで消去フラグがONになったかチェック
+			if ((*iObj)->getDeleteFlag() == true) {
+				delete* iObj;	// メモリから削除
+				// リストから削除して、次の要素をイテレータに入れる
+				iObj = objList.erase(iObj);
+			}
+			else {
+				++iObj;	// 次の要素へ
+			}
+		}
 
-        emGene.Update();
+		// 描画関連（先に描画したやつが優先度低）
+		for (auto iObj = objList.begin();
+			iObj != objList.end(); ++iObj) {
+			(*iObj)->Draw();
+		}
 
-        // リストを使った更新処理
-        for (auto iObj = objList.begin(); iObj != objList.end();)
-        {
-            (*iObj)->Update();
-            // アップデートで消去フラグがONになったかチェック
-            if ((*iObj)->GetDeletFlag())
-            {
-                // メモリから削除
-                delete* iObj;
-                // リストから削除して次の要素をイテレータに入れる
-                iObj = objList.erase(iObj);
-            }
-            else
-            {
-                // 次の要素へ
-                ++iObj;
-            }
-        }
+		// ヒットのチェックをする
+		std::list<Object*> plHitList;
+		std::list<Object*> emHitList;
+		int plNum = 0, emNum = 0;
+		for (auto iObj = objList.begin();iObj != objList.end(); ++iObj)
+		{
+			if ((*iObj)->hitAbleFlag == true) 
+			{ // ヒット有効かチェック
+				if ((*iObj)->hitType == 0) 
+				{
+					// タイプ別確認
+					plHitList.push_back(*iObj);					
+				}
+				else
+				{
+					emHitList.push_back(*iObj);
+				}	
+			}
+		}
+		// ヒットのチェック
+		for (auto pltr = plHitList.begin(); pltr != plHitList.end(); ++pltr)
+		{
+			for (auto eItr = emHitList.begin(); eItr != emHitList.end(); ++eItr)
+			{
+				HitControl(*pltr, *eItr);
+			}
+		}
+		ScreenFlip();			// 裏画面を表に表示（ダブルバッファリング）
+		WaitTimer(20);			// 待機（20ms待つ
+		if (ProcessMessage() == -1) { break; }	// Xのボタンが押された終了
+		if (CheckHitKey(KEY_INPUT_ESCAPE)) { break; }	// ESCキーで終了
+	}
+	// DXライブラリ終了
+	DxLib_End();
+}
 
-        // リストを使った描画関連(先に描画したやつが優先度低)
-        for (auto iObj = objList.begin(); iObj != objList.end(); ++iObj)
-        {
-            (*iObj)->Draw();
-        }
-
-        // ヒットのチェック
-        int plNum = 0, emNum = 0;
-        Object* emHit = nullptr, * plHit = nullptr;
-        for (auto iObj = objList.begin(); iObj != objList.end(); ++iObj)
-        {
-            // ヒットが有効かチェック
-            if ((*iObj)->hitAbleFlag)
-            {
-                // プレイヤー
-                ++plNum;
-                plHit = *iObj; // 登録
-            }
-            else
-            {
-                // 敵
-                ++emNum;
-                emHit = *iObj; // 登録
-            }
-        }
-        DrawFormatString(0, 0, GetColor(255, 255, 255), "PLヒットタイプの数%d\n", plNum);
-        DrawFormatString(0, 30, GetColor(255, 255, 255), "敵ヒットタイプの数%d\n", emNum);
-        // 登録されたヒットの情報を表示
-        if (plHit != nullptr)
-        {
-            DrawFormatString(0, 40, GetColor(255, 255, 255), "登録されたヒットのX座標%d,Y座標%d\n", plHit->GetX(), plHit->GetY());
-        }
-        if (emHit != nullptr)
-        {
-            DrawFormatString(0, 50, GetColor(255, 255, 255), "登録されたヒットのX座標%d,Y座標%d\n", emHit->GetX(), emHit->GetY());
-        }
-        // 実際に当たってるか確認
-        if (plHit != nullptr && emHit != nullptr)
-        {
-            int plxl = plHit->GetX();
-            int plxr = plxl + emHit->hHeight;
-            int emxl = emHit->GetX();
-            int emxr = emxl + emHit->hHeight;
-            // PL右が敵左より大きいかつPL左が敵右より小さい
-            if (plxr > emxl && plxl < emxr)
-            {
-                DrawFormatString(0, 60, GetColor(255, 255, 255), "X軸はヒット\n");
-            }
-        }
-
-        //// 背景も表示
-        //DrawGraph(back.GetX(), back.GetY(), gHandleTable[CharaNo::Back], TRUE);
-        //// グラフィックハンドルから表示
-        //DrawGraph(pl.GetX(), pl.GetY(), gHandleTable[CharaNo::Luffy], TRUE);
-        //DrawGraph(pl2.GetX(), pl2.GetY(), gHandleTable[CharaNo::Zoro], TRUE);
-        //DrawGraph(em.GetX(), em.GetY(), gHandleTable[CharaNo::Enel], TRUE);
-
-        // 画像読み込みして表示
-        //LoadGraphScreen(x, y, "sprite/onepiece14_enel.png", FALSE);
-        // 裏画面を表に表示
-        ScreenFlip();
-        // 待機(20ms待つ)
-        WaitTimer(20);
-        // Xのボタンが押されたら終了
-        if (ProcessMessage() == -1) { break; }
-        // ESCキーで終了
-        if (CheckHitKey(KEY_INPUT_ESCAPE)) { break; }
-    }
-
-    //DrawPixel(320, 240, GetColor(255, 255, 255));    // 点を打つ
-
-    //WaitKey();                // キー入力待ち
-
-    DxLib_End();                // ＤＸライブラリ使用の終了処理
-
-    return 0;                // ソフトの終了 
+void HitControl(Object* pl, Object* em)
+{
+	if (pl != nullptr && em != nullptr) {
+		int plxl = pl->getX();
+		int plxr = plxl + pl->hitWide;
+		int emxl = em->getX();
+		int emxr = emxl + em->hitWide;
+		int plyu = pl->getY();
+		int plyd = plyu + pl->hitHeight;
+		int emyu = em->getY();
+		int emyd = emyu + pl->hitHeight;
+		// PL右が敵左より大きいかつ、PL左が敵右より小さい
+		if (plxr > emxl && plxl < emxr && plyd > emyu && plyu < emyd)
+		{
+			DrawFormatString(0, 80, GetColor(255, 255, 255),
+				"当たり判定は成功");
+		}
+	}
 }
