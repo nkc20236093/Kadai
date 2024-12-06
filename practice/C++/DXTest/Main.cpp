@@ -1,16 +1,19 @@
 #include "DxLib.h"
 #include <list>
+#include <random>
+#include <string>
+using namespace std;
 
 // 列挙体
-enum CharNo { Luffy, Zoro, Sanji, Bg1, Shell1, Num };
+enum CharNo { CrossBow, One, Five, Back, Bow, Num };
 // データ読みこみ用のパスの配列
 static const char* filePathTable[CharNo::Num] =
 {
-	"sprite/onepiece01_luffy.png",
-	"sprite/onepiece02_zoro_bandana.png",
-	"sprite/onepiece14_enel.png",
-	"sprite/Nyaoha.png",
-	"sprite/shell01.png"
+	"sprite/crossbow.png",
+	"sprite/1ten_mato.png",
+	"sprite/5ten_mato.png",
+	"sprite/back.jpg",
+	"sprite/bow.png"
 };
 
 // 前方宣言
@@ -23,6 +26,7 @@ void HitControl(Object* pl, Object* em);
 std::list<Object*> objList;
 // グラフィックハンドルテーブル
 int gHandleTable[CharNo::Num];
+int HitPoint = 0;
 
 // オブジェクトクラス（基底）
 class Object {
@@ -39,8 +43,7 @@ public: // ヒット関連を仮で実装（面倒なのでpublic)
 	int hitWide = 180, hitHeight = 180;
 	bool hitAbleFlag = false;	// ヒット可能フラグ
 	int hitType;				// 当たり判定のタイプ(0:プレイヤー,1が敵）
-
-public:
+	int score = 0;
 	// コンストラクタ
 	Object(int _gHandle) : gHandle(_gHandle) {}
 	// アクセサ
@@ -104,7 +107,7 @@ public:
 // プレイヤークラス	
 class Player : public Object {
 	bool sButtonFlag = false;	// 発射ボタン用フラグ
-
+	float timer = 10;
 public:
 	// コンストラクタ
 	Player(int _gHandle) : Object(_gHandle) {
@@ -132,21 +135,28 @@ public:
 		if (CheckHitKey(KEY_INPUT_E)) { setRadian(getRadian() + rad); }
 
 		// Zキー入力で弾を発射
-		if (CheckHitKey(KEY_INPUT_Z)) {
-			// 発射ボタンが初回に押されたとき
-			if (sButtonFlag == false) {
-				// 弾クラスを生成（newをしてポインタを取得）
-				auto ptr = new PLShell(gHandleTable[CharNo::Shell1]);
-				ptr->setX(this->getX());
-				ptr->setY(this->getY());
-				ptr->setSclX(0.1f);
-				ptr->setSclY(0.1f);
-				objList.push_back(ptr);
+		if (timer > 30)
+		{
+			if (CheckHitKey(KEY_INPUT_Z)) {
+				// 発射ボタンが初回に押されたとき
+				if (sButtonFlag == false) {
+					// 弾クラスを生成（newをしてポインタを取得）
+					auto ptr = new PLShell(gHandleTable[CharNo::Bow]);
+					ptr->setX(this->getX());
+					ptr->setY(this->getY());
+					ptr->setSclX(0.1f);
+					ptr->setSclY(0.1f);
+					objList.push_back(ptr);
+					timer = 0;
+				}
+				sButtonFlag = true;	// 発射ボタンが押された
 			}
-			sButtonFlag = true;	// 発射ボタンが押された
+			else {// Zキーが押されていないとき
+				sButtonFlag = false;
+			}
 		}
 		else {// Zキーが押されていないとき
-			sButtonFlag = false;
+			++timer;
 		}
 	}
 };
@@ -165,8 +175,19 @@ public:
 	// アップデートのオーバーライド
 	void Update() {
 		switch (moveType) {
-		case 0:	// 直線移動
-			//		setY(getY() + 4);
+		case 0:
+			score = 1;
+			if (getX() >= 0)
+			{
+				setX(getX() + 5);
+			}
+			break;
+		case 1:
+			score = 5;
+			if (getX() <= 1100)
+			{
+				setX(getX() - 15);
+			}
 			break;
 		}
 
@@ -177,31 +198,57 @@ public:
 
 		DebugHitDraw();
 	}
+	int GetMoveType()
+	{
+		return moveType;
+	}
 };
 
 // 敵生成クラス
 class EnemyGenerator {
 	float timer = 0;
+	int MaxY = 0, MinY = 300, SecondY = 100, ThirdY = 200;
+	int randomValueX = 0, randomValueY = 0;
 public:
 	EnemyGenerator() {}		// コンストラクタ
 	// 更新処理
 	void Update() {
 		++timer;
-		if (timer == 60) {	// 60フレーム毎
+		if (timer > 60) 
+		{	// 60フレーム毎
 			// 敵を起動
 			int EnemyType = GetRand(1);
 			Object* ptr = nullptr;
 			switch (EnemyType) {
 			case 0:
-				ptr = new Enemy(gHandleTable[CharNo::Zoro], 0); break;
+				ptr = new Enemy(gHandleTable[CharNo::One], 0);
+				randomValueX = 0;
+				break;
 			case 1:
-				ptr = new Enemy(gHandleTable[CharNo::Sanji], 0); break;
+				ptr = new Enemy(gHandleTable[CharNo::Five], 1);
+				randomValueX = 1100;
+				break;
 			}
-			ptr->setX(GetRand(1280));	// x座標もランダム
+			// 乱数生成器と分布を設定
+			std::random_device rd;  // 非決定的な乱数生成器
+			std::mt19937 gen(rd()); // メルセンヌ・ツイスタ
+			std::uniform_int_distribution<> dis(0, 3); // 0または1の一様分布
+
+			int randomIndex = dis(gen); // 0, 1, 2, 3 のいずれかを生成
+
+			switch (randomIndex) 
+			{
+			case 0: randomValueY = MaxY; break;
+			case 1: randomValueY = SecondY; break;
+			case 2: randomValueY = ThirdY; break;
+			case 3: randomValueY = MinY; break;
+			}			
+			ptr->setX(randomValueX);	// x座標もランダム
+			ptr->setY(randomValueY);
 			ptr->setSclX(0.5f);
 			ptr->setSclY(0.5f);
 			objList.push_back(ptr);		// リストに登録
-			//timer = 0;					// タイマー初期化
+			timer = 0;					// タイマー初期化
 		}
 	}
 };
@@ -230,10 +277,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	//Object bg = Object(gHandleTable[CharNo::Bg1]);
 	//objList.push_back(&bg);
 
-	Player pl = Player(gHandleTable[CharNo::Luffy]);
+	Player pl = Player(gHandleTable[CharNo::CrossBow]);
 	pl.setX(400); pl.setY(600); pl.setSclX(0.5); pl.setSclY(0.5);
+	Object back = Object(gHandleTable[CharNo::Back]);
+	back.setX(0); back.setY(0); back.setSclX(0.4); back.setSclY(0.3);
+	objList.push_back(&back);
 	objList.push_back(&pl);
-
 	// 敵の生成クラス作成
 	EnemyGenerator emGene;
 
@@ -312,6 +361,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 				HitControl(*pltr, *eItr);
 			}
 		}
+		string text = to_string(HitPoint);
+		DrawFormatString(0, 80, GetColor(255, 255, 255), text.c_str());
 		ScreenFlip();			// 裏画面を表に表示（ダブルバッファリング）
 		WaitTimer(20);			// 待機（20ms待つ
 		if (ProcessMessage() == -1) { break; }	// Xのボタンが押された終了
@@ -335,8 +386,10 @@ void HitControl(Object* pl, Object* em)
 		// PL右が敵左より大きいかつ、PL左が敵右より小さい
 		if (plxr > emxl && plxl < emxr && plyd > emyu && plyu < emyd)
 		{
-			DrawFormatString(0, 80, GetColor(255, 255, 255),
-				"当たり判定は成功");
+			HitPoint += em->score;
+			em->setDeleteFlag();
+			pl->setDeleteFlag();
+			//DrawFormatString(0, 80, GetColor(255, 255, 255),"当たり判定は成功");
 		}
 	}
 }
