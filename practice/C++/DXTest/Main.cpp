@@ -2,6 +2,7 @@
 #include <list>
 #include <random>
 #include <string>
+#include <windows.h>
 using namespace std;
 
 // 列挙体
@@ -177,16 +178,52 @@ public:
 		switch (moveType) {
 		case 0:
 			score = 1;
-			if (getX() >= 0)
+			if (getTrunFlag())
 			{
-				setX(getX() + 5);
+				if (getX() >= 0)
+				{
+					setX(getX() - 5);
+				}
+				else
+				{
+					setDeleteFlag(); break;
+				}
+			}
+			else
+			{
+				if (getX() <= 1100)
+				{
+					setX(getX() + 5);
+				}
+				else
+				{
+					setDeleteFlag(); break;
+				}
 			}
 			break;
 		case 1:
 			score = 5;
-			if (getX() <= 1100)
+			if (getTrunFlag())
 			{
-				setX(getX() - 15);
+				if (getX() <= 1100)
+				{
+					setX(getX() - 15);
+				}
+				else
+				{
+					setDeleteFlag(); break;
+				}
+			}
+			else
+			{
+				if (getX() >= 0)
+				{
+					setX(getX() + 15);
+				}
+				else
+				{
+					setDeleteFlag(); break;
+				}
 			}
 			break;
 		}
@@ -218,15 +255,14 @@ public:
 		{	// 60フレーム毎
 			// 敵を起動
 			int EnemyType = GetRand(1);
+			int EnemyDirection = GetRand(1);
 			Object* ptr = nullptr;
 			switch (EnemyType) {
 			case 0:
 				ptr = new Enemy(gHandleTable[CharNo::One], 0);
-				randomValueX = 0;
 				break;
 			case 1:
 				ptr = new Enemy(gHandleTable[CharNo::Five], 1);
-				randomValueX = 1100;
 				break;
 			}
 			// 乱数生成器と分布を設定
@@ -234,16 +270,36 @@ public:
 			std::mt19937 gen(rd()); // メルセンヌ・ツイスタ
 			std::uniform_int_distribution<> dis(0, 3); // 0または1の一様分布
 
-			int randomIndex = dis(gen); // 0, 1, 2, 3 のいずれかを生成
+			int randomIndexY = dis(gen); // 0, 1, 2, 3 のいずれかを生成
 
-			switch (randomIndex) 
+			switch (randomIndexY) 
 			{
 			case 0: randomValueY = MaxY; break;
 			case 1: randomValueY = SecondY; break;
 			case 2: randomValueY = ThirdY; break;
 			case 3: randomValueY = MinY; break;
 			}			
+
+			std::random_device rdB;  // 非決定的な乱数生成器
+			std::mt19937 genB(rdB()); // メルセンヌ・ツイスタ
+			std::uniform_int_distribution<> disB(0, 1); // 0または1の一様分布
+			int randomIndexX = disB(genB); // 0, 1のどちらかを生成
+
+			switch (randomIndexX)
+			{
+			case 0: randomValueX = 0; break;
+			case 1: randomValueX = 1100; break;
+			}
+
 			ptr->setX(randomValueX);	// x座標もランダム
+			if (randomValueX == 0)
+			{
+				ptr->setTurnFlag(false);
+			}
+			else
+			{
+				ptr->setTurnFlag(true);
+			}
 			ptr->setY(randomValueY);
 			ptr->setSclX(0.5f);
 			ptr->setSclY(0.5f);
@@ -253,124 +309,141 @@ public:
 	}
 };
 
+// ゲームモード（開始画面、ゲーム中、終了）
+enum GameState { StartScreen, InGame, GameOver };
+GameState currentState = StartScreen;  // 現在のゲーム状態を管理
 
+// ゲームタイマー
+int gameStartTime = 0;  // ゲーム開始時の時間（ミリ秒）
 
-// ウィンドウズアプリケーション用のメイン関数
 int WINAPI WinMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
-	SetGraphMode(1280, 720, 32);// 画面モードの設定
-	ChangeWindowMode(TRUE);		// ウィンドウモードに変更
-	// DXライブラリ初期化（失敗したら終了）
-	if (DxLib_Init() == -1) { return -1; }
-	// 描画先を裏画面に（ダブルバッファリング）
-	SetDrawScreen(DX_SCREEN_BACK);
+	SetGraphMode(1280, 720, 32);  // 画面モードの設定
+	ChangeWindowMode(TRUE);       // ウィンドウモードに変更
+	if (DxLib_Init() == -1) { return -1; }  // DXライブラリ初期化（失敗したら終了）
+	SetDrawScreen(DX_SCREEN_BACK);          // 描画先を裏画面に（ダブルバッファリング）
 
 	// グラフィックをメモリへ読み込み
-	// 読み込んだ後の識別番号（グラフィックハンドル）として保存
 	for (int i = 0; i < CharNo::Num; ++i) {
 		gHandleTable[i] = LoadGraph(filePathTable[i]);
 	}
 
 	// クラスの実体作成
-	//Object bg = Object(gHandleTable[CharNo::Bg1]);
-	//objList.push_back(&bg);
-
 	Player pl = Player(gHandleTable[CharNo::CrossBow]);
 	pl.setX(400); pl.setY(600); pl.setSclX(0.5); pl.setSclY(0.5);
 	Object back = Object(gHandleTable[CharNo::Back]);
 	back.setX(0); back.setY(0); back.setSclX(0.4); back.setSclY(0.3);
 	objList.push_back(&back);
 	objList.push_back(&pl);
-	// 敵の生成クラス作成
-	EnemyGenerator emGene;
 
-	/*
-		Object obj;	 // オブジェクトクラス
-		Objectクラスの機能を使える
+	EnemyGenerator emGene; // 敵の生成クラス作成
 
-		Player pl; 　// オブジェクトを継承したPL
-		PlayerとObjectクラスの機能を使える
-
-		Object test = pl;
-		PlayerをObjectクラスにキャスト
-		testはPlayerの機能は使えない
-
-		Object* ptr = &pl;
-		PlayerのポインタをObjectクラスのポインタにキャスト
-		ptrはPlayerを指している
-		基底クラスのポインタだけど、プレイヤーの機能が使える
-
-		Object* ptr2 = &pshl;
-		ptr2はPLShellを指している
-		基底クラスのポインタだけど、弾の機能が使える
-	*/
-
+	// フォントハンドルをゲーム開始時に作成
+	int fontHandle = CreateFontToHandle(NULL, 200, -1, DX_FONTTYPE_ANTIALIASING);
+	int fontHandle2 = CreateFontToHandle(NULL, 50, -1, DX_FONTTYPE_ANTIALIASING);
 
 	// ゲームループ
 	while (true) {
-		ClearDrawScreen();		// 画面を一度消す
-		emGene.Update();		// 敵生成処理
+		ClearDrawScreen();  // 画面を一度消す
 
-		// リストを使った更新処理
-		for (auto iObj = objList.begin(); iObj != objList.end(); ) {
-			(*iObj)->Update();
+		// 開始画面処理
+		if (currentState == StartScreen) {
+			// 開始画面の表示
+			DrawString(500, 300, "Press SPACE to Start", GetColor(255, 255, 255));
+			ScreenFlip();
 
-			// アップデートで消去フラグがONになったかチェック
-			if ((*iObj)->getDeleteFlag() == true) {
-				delete* iObj;	// メモリから削除
-				// リストから削除して、次の要素をイテレータに入れる
-				iObj = objList.erase(iObj);
+			// スペースキーでゲーム開始
+			if (CheckHitKey(KEY_INPUT_SPACE)) {
+				currentState = InGame;
+				gameStartTime = GetNowCount();  // ゲーム開始時の時間を記録
 			}
-			else {
-				++iObj;	// 次の要素へ
-			}
+			continue;
 		}
 
-		// 描画関連（先に描画したやつが優先度低）
-		for (auto iObj = objList.begin();
-			iObj != objList.end(); ++iObj) {
-			(*iObj)->Draw();
-		}
+		// ゲーム中の処理
+		if (currentState == InGame) {
+			// 60秒経過でゲーム終了
+			int elapsedTime = GetNowCount() - gameStartTime;
+			if (elapsedTime > 60000) {  // 60秒経過
+				currentState = GameOver;
+				continue;
+			}
 
-		// ヒットのチェックをする
-		std::list<Object*> plHitList;
-		std::list<Object*> emHitList;
-		int plNum = 0, emNum = 0;
-		for (auto iObj = objList.begin();iObj != objList.end(); ++iObj)
-		{
-			if ((*iObj)->hitAbleFlag == true) 
-			{ // ヒット有効かチェック
-				if ((*iObj)->hitType == 0) 
-				{
-					// タイプ別確認
-					plHitList.push_back(*iObj);					
+			// 敵生成処理
+			emGene.Update();
+
+			// リストを使った更新処理
+			for (auto iObj = objList.begin(); iObj != objList.end(); ) {
+				(*iObj)->Update();
+
+				// アップデートで消去フラグがONになったかチェック
+				if ((*iObj)->getDeleteFlag() == true) {
+					delete* iObj;  // メモリから削除
+					iObj = objList.erase(iObj);
 				}
-				else
-				{
-					emHitList.push_back(*iObj);
-				}	
+				else {
+					++iObj;
+				}
 			}
-		}
-		// ヒットのチェック
-		for (auto pltr = plHitList.begin(); pltr != plHitList.end(); ++pltr)
-		{
-			for (auto eItr = emHitList.begin(); eItr != emHitList.end(); ++eItr)
-			{
-				HitControl(*pltr, *eItr);
+
+			// 描画処理
+			for (auto iObj = objList.begin(); iObj != objList.end(); ++iObj) {
+				(*iObj)->Draw();
 			}
+
+			// ヒット判定チェック
+			std::list<Object*> plHitList;
+			std::list<Object*> emHitList;
+			for (auto iObj = objList.begin(); iObj != objList.end(); ++iObj) {
+				if ((*iObj)->hitAbleFlag == true) {
+					if ((*iObj)->hitType == 0) {
+						plHitList.push_back(*iObj);
+					}
+					else {
+						emHitList.push_back(*iObj);
+					}
+				}
+			}
+
+			// ヒット判定
+			for (auto pltr = plHitList.begin(); pltr != plHitList.end(); ++pltr) {
+				for (auto eItr = emHitList.begin(); eItr != emHitList.end(); ++eItr) {
+					HitControl(*pltr, *eItr);
+				}
+			}
+
+			// スコア描画
+			string text = to_string(HitPoint);
+			DrawStringToHandle(620, 500, text.c_str(), GetColor(255, 0, 255), fontHandle);
+
+			// 残り時間表示
+			string timeLeft = "Time: " + to_string(60 - elapsedTime / 1000) + "s";
+			//DrawString(50, 20, timeLeft.c_str(), GetColor(0, 0, 255));
+			DrawStringToHandle(50, 20, timeLeft.c_str(), GetColor(0, 0, 255), fontHandle2);
+
+			ScreenFlip();  // 裏画面を表に表示（ダブルバッファリング）
+			WaitTimer(20); // 待機（20ms待つ）
+			if (ProcessMessage() == -1) { break; }  // Xボタンで終了
+			if (CheckHitKey(KEY_INPUT_ESCAPE)) { break; }  // ESCキーで終了
 		}
-		string text = to_string(HitPoint);
-		DrawFormatString(0, 80, GetColor(255, 255, 255), text.c_str());
-		ScreenFlip();			// 裏画面を表に表示（ダブルバッファリング）
-		WaitTimer(20);			// 待機（20ms待つ
-		if (ProcessMessage() == -1) { break; }	// Xのボタンが押された終了
-		if (CheckHitKey(KEY_INPUT_ESCAPE)) { break; }	// ESCキーで終了
+
+		// ゲームオーバー画面処理
+		if (currentState == GameOver) {
+			ClearDrawScreen();
+			DrawString(500, 300, ("Your Score: " + to_string(HitPoint)).c_str(), GetColor(255, 255, 255));
+			DrawString(500, 400, "Press ESC to Exit", GetColor(255, 255, 255));
+			ScreenFlip();
+
+			// ESCキーで終了
+			if (CheckHitKey(KEY_INPUT_ESCAPE)) { break; }
+		}
 	}
-	// DXライブラリ終了
-	DxLib_End();
+
+	DxLib_End();  // DXライブラリ終了
 }
+
 
 void HitControl(Object* pl, Object* em)
 {
