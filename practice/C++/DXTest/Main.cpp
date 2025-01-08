@@ -351,6 +351,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		// 開始画面処理
 		if (currentState == StartScreen) {
 			// 開始画面の表示
+			DrawString(500, 250, "WASDで移動、Zで発射", GetColor(255, 255, 255));
 			DrawString(500, 300, "Press SPACE to Start", GetColor(255, 255, 255));
 			ScreenFlip();
 
