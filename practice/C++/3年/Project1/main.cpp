@@ -18,7 +18,7 @@ public:
 
 	void Attack()
 	{
-		cout << "問題6" << endl << offensive << "ダメージ与えた！" << endl;
+		cout << offensive << "ダメージ与えた！" << endl;
 	}
 
 	void SetOffensive(int32_t a) 
@@ -79,6 +79,7 @@ int main()
 	cout << "問題5" << endl << pos.x << "," << pos.y << "," << pos.z << endl;
 
 	// 問題6
+	cout << "問題6" << endl;
 	Player pl(100,100);
 	pl.Attack();
 	pl.SetOffensive(pl.defense);
