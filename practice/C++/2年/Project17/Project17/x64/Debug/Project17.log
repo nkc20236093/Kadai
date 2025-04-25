@@ -1,6 +1,0 @@
-﻿  Main.cpp
-C:\Github\kadai\practice\C++\Project17\Project17\MyDerived.h(2,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  MyDerived.cpp
-C:\Github\kadai\practice\C++\Project17\Project17\MyDerived.h(2,10): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  コードを生成中...
-  Project17.vcxproj -> C:\Github\kadai\practice\C++\Project17\x64\Debug\Project17.exe

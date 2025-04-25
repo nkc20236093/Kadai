@@ -1,4 +1,0 @@
-﻿  Main.cpp
-C:\Github\kadai\practice\C++\Project6\Project6\Main.cpp(20,25): warning C4101: 'c': ローカル変数は 1 度も使われていません。
-C:\Github\kadai\practice\C++\Project6\Project6\Main.cpp(29,5): error C2084: 関数 'int main(void)' は既に本体を持っています。
-C:\Github\kadai\practice\C++\Project6\Project6\Main.cpp(17,5): message : 'main' の以前の定義を確認してください

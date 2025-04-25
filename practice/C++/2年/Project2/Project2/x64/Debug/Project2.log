@@ -1,5 +1,0 @@
-﻿  Main.cpp
-C:\Github\kadai\practice\C++\Project2\Project2\Main.cpp(13,1): warning C4326: 'main' の戻り値の型には、'int' を使用してください。'void' は使用できません
-Main.obj : error LNK2019: 未解決の外部シンボル "void __cdecl Update(void)" (?Update@@YAXXZ) が関数 main で参照されました
-C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(1096,5): error MSB6006: "link.exe" はコード 1120 を伴って終了しました。
-C:\Github\kadai\practice\C++\Project2\x64\Debug\Project2.exe : fatal error LNK1120: 1 件の未解決の外部参照
