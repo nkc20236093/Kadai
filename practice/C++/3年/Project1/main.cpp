@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "TRC.h"
 using namespace std;
 
 
@@ -145,8 +146,8 @@ int main()
 	cout << "最大公約数: " << gcd << endl;
 	
 	int min1, min2;
-	std::cout << "2つの正の整数を入力してください" << endl;
-	std::cin >> min1 >> min2;
+	cout << "2つの正の整数を入力してください" << endl;
+	cin >> min1 >> min2;
 
 	int lcm = 1; 
 	int max = (min1 > min2) ? min1 : min2;
@@ -158,6 +159,21 @@ int main()
 		lcm++;
 	}
 
-	std::cout << "最小公倍数: " << lcm << std::endl;
+	cout << "最小公倍数: " << lcm << endl;
+
+	// 問題EX
+	// ABACABCBDA・DACABAABBC・CABDABABCA の様に、A40% ・B30% ・C20% ・D10% の分布で10文字のstd::stringを返す機能をもったクラスを作成する。
+
+	// クラスはTRC.cppで定義され、TRC.hをincludeして利用する
+
+	// クラス名 TRC
+	// メンバ関数  get(void) 指定の分布で10文字分のstringを返す。呼び出される毎に異なる配置になる。
+
+	//	使用例
+	TRC obj;
+	cout << "問題EX" << endl;
+	cout << obj.get() << endl;
+	cout << obj.get() << obj.get() << endl;
+
 	return 0;
 }
