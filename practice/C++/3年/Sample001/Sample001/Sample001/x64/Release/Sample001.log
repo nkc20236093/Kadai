@@ -1,0 +1,24 @@
+﻿  compilation object save succeeded; see C:\Users\user\Documents\DirectX11-2023\Sample001\x64\Release\PixelShader.cso
+C:\Users\user\Documents\DirectX11-2023\Sample001\Sample001\VertexShader.hlsl(30,11-24): warning X3578: Output value 'main' is not completely initialized
+  compilation object save succeeded; see C:\Users\user\Documents\DirectX11-2023\Sample001\x64\Release\VertexShader.cso
+  
+  App.cpp
+  Audio.cpp
+  Camera.cpp
+  ClearScene.cpp
+  GameScene.cpp
+C:\Users\user\Documents\DirectX11-2023\Sample001\Sample001\GameScene.cpp(46,29): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\user\Documents\DirectX11-2023\Sample001\Sample001\GameScene.cpp(48,13): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  Input.cpp
+  Matrix.cpp
+  Polygon.cpp
+  Shader.cpp
+  StartScene.cpp
+C:\Users\user\Documents\DirectX11-2023\Sample001\Sample001\StartScene.cpp(51,13): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  Texture.cpp
+  WinMain.cpp
+  コード生成しています。
+  Previous IPDB not found, fall back to full compilation.
+  All 533 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  コード生成が終了しました。
+  Sample001.vcxproj -> C:\Users\user\Documents\DirectX11-2023\Sample001\x64\Release\Sample001.exe

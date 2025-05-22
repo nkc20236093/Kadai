@@ -1,0 +1,2 @@
+C:\Users\user\Documents\DirectX11-2023\Sample001\Sample001\x64\Debug\Sample001.vcxproj.CopyComplete
+C:\Users\user\Desktop\個人フォルダー\授業\unityを使う科目\ゲームプログラミング\3年\Sample001\Sample001\Sample001\x64\Debug\Sample001.vcxproj.CopyComplete
