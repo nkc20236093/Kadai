@@ -16,14 +16,11 @@ class Matrix
 {
 public:
 	void Identity();
-	DirectX::XMFLOAT3& GetPos() { return pos; }
-	float GetAngle() { return angle; }
 	DirectX::XMMATRIX& GetWorld() { return cb.world; }
 	DirectX::XMMATRIX& GetView() { return cb.view; }
 	DirectX::XMMATRIX& GetProjection() { return cb.projection; }
 	ConstantBuffer& GetCB() { return cb; }
 
-	void SetAxis(float Axis);
 	void SetFirstPos(const DirectX::XMFLOAT3& pos);
 	void SetPos(const DirectX::XMFLOAT3& pos);
 	void SetRotationX(float rotX);
@@ -34,6 +31,4 @@ public:
 	void SetWorld(const DirectX::XMMATRIX& world);//’Ç‰Á
 private:
 	ConstantBuffer cb;
-	DirectX::XMFLOAT3 pos;
-	float angle;
 };

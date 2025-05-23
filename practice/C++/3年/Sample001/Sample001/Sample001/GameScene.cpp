@@ -22,6 +22,8 @@ Matrix		gameMatrix;
 Camera		gameCamera;
 CPolygon	gameObj;
 
+bool isUP = false;
+
 void GameScene::Init()
 {
 	gameMatrix.Identity();
@@ -55,28 +57,54 @@ SCENE GameScene::Update()
 	//gameMatrix.GetCB().world = XMMatrixRotationZ(60 * (180 * 3.14f)), XMMatrixTranslation(0.0, 0.5, 0.0);
 
 	// lesson06 ã‰ºˆÚ“®
-	//bool isUP = false;
-	//XMFLOAT3  pos = gameMatrix.GetPos();
-	//if (pos.y >= 1)
+	//XMFLOAT3 postion;
+	//XMStoreFloat3(&postion, gameMatrix.GetCB().world.r[3]);
+	//float posY = postion.y;
+	//if (posY > 1)
 	//{
 	//	isUP = false;
 	//}
-	//else if (pos.y <= -1)
+	//else if (posY < -1)
 	//{
 	//	isUP = true;
 	//}
-	//gameMatrix.GetCB().world = XMMatrixTranslation(0.0, isUP ? -1 * 0.0001 : 1 * 0.0001, 0.0);
+	//posY += isUP ? 0.001 : -0.001;
+	//gameMatrix.GetCB().world = XMMatrixTranslation(0.0, posY, 0.0);
 
 	// lesson08 Ž©“]‚ÆˆÚ“®
-	float angle = gameMatrix.GetAngle();
-	angle++;
-	if (angle >= 360)
-	{
-		angle = 0;
-	}
-	gameMatrix.SetAxis(angle);
+	//static float angle = 0.0f;
+	//angle++;
+	//if (angle >= 360)
+	//{
+	//	angle = 0;
+	//}
+	//XMMATRIX rotationMatrix = XMMatrixRotationZ(XMConvertToRadians(angle));
 
-	// lesson09 Ž©“]‚ÆˆÚ“®(Ž©“]–³‚µ)
+	//XMMATRIX translationMatrix = XMMatrixTranslation(0.0f, 1.0f, 0.0f);
+
+	//XMMATRIX worldMatrix = rotationMatrix * translationMatrix;
+
+	//gameMatrix.GetCB().world = worldMatrix;
+
+	// lesson09 Œö“]‚ÆˆÚ“®(Ž©“]–³‚µ)
+	//static float angle = 0.0f;
+	//float radius = 1.0f;       
+	//float speed = 0.1f;       
+
+	//
+	//angle += speed;
+	//if (angle >= 360.0f)
+	//{
+	//	angle -= 360.0f;
+	//}
+	//
+	//float posX = radius * cos(XMConvertToRadians(angle));
+	//float posY = radius * sin(XMConvertToRadians(angle));
+	//float posZ = 0.0f;
+
+	//XMMATRIX translationMatrix = XMMatrixTranslation(posX, posY, posZ);
+
+	//gameMatrix.GetCB().world = translationMatrix;
 
 	// lessonEX ‘¾—z‚ÆŒŽ‚Æ’n‹…
 

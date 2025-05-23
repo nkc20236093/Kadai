@@ -1,12 +1,8 @@
 #include "Matrix.h"
 
-void Matrix::SetAxis(float axis)
+void Matrix::SetFirstPos(const DirectX::XMFLOAT3& Pos)
 {
-	angle = axis;
-}
-void Matrix::SetFirstPos(const DirectX::XMFLOAT3& POS)
-{
-	pos = POS;
+	cb.world *= DirectX::XMMatrixTranslation(Pos.x, Pos.y, Pos.z);
 }
 void Matrix::Identity()
 {

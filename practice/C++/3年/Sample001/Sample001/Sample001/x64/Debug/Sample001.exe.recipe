@@ -2,15 +2,15 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\user\Desktop\個人フォルダー\授業\unityを使う科目\ゲームプログラミング\3年\Sample001\Sample001\x64\Debug\Sample001.exe</FullPath>
+      <FullPath>C:\Github\kadai\practice\C++\3年\Sample001\Sample001\x64\Debug\Sample001.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\user\Desktop\個人フォルダー\授業\unityを使う科目\ゲームプログラミング\3年\Sample001\Sample001\x64\Debug\PixelShader.cso</FullPath>
+      <FullPath>C:\Github\kadai\practice\C++\3年\Sample001\Sample001\x64\Debug\PixelShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\user\Desktop\個人フォルダー\授業\unityを使う科目\ゲームプログラミング\3年\Sample001\Sample001\x64\Debug\VertexShader.cso</FullPath>
+      <FullPath>C:\Github\kadai\practice\C++\3年\Sample001\Sample001\x64\Debug\VertexShader.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
