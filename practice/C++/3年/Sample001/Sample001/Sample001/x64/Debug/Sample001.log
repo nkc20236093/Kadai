@@ -1,2 +1,6 @@
 ﻿  GameScene.cpp
-  Sample001.vcxproj -> C:\Github\kadai\practice\C++\3年\Sample001\Sample001\x64\Debug\Sample001.exe
+C:\Github\kadai\Practice\practice\C++\3年\Sample001\Sample001\Sample001\GameScene.cpp(76,51): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Github\kadai\Practice\practice\C++\3年\Sample001\Sample001\Sample001\GameScene.cpp(91,47): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Github\kadai\Practice\practice\C++\3年\Sample001\Sample001\Sample001\GameScene.cpp(91,83): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Github\kadai\Practice\practice\C++\3年\Sample001\Sample001\Sample001\GameScene.cpp(111,13): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  Sample001.vcxproj -> C:\Github\kadai\Practice\practice\C++\3年\Sample001\Sample001\x64\Debug\Sample001.exe

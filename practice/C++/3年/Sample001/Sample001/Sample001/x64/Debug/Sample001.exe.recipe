@@ -2,15 +2,15 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Github\kadai\practice\C++\3年\Sample001\Sample001\x64\Debug\Sample001.exe</FullPath>
+      <FullPath>C:\Github\kadai\Practice\practice\C++\3年\Sample001\Sample001\x64\Debug\Sample001.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Github\kadai\practice\C++\3年\Sample001\Sample001\x64\Debug\PixelShader.cso</FullPath>
+      <FullPath>C:\Github\kadai\Practice\practice\C++\3年\Sample001\Sample001\x64\Debug\PixelShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Github\kadai\practice\C++\3年\Sample001\Sample001\x64\Debug\VertexShader.cso</FullPath>
+      <FullPath>C:\Github\kadai\Practice\practice\C++\3年\Sample001\Sample001\x64\Debug\VertexShader.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
