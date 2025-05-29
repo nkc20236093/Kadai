@@ -9,5 +9,6 @@ public:
 	SCENE Update() override;
 	void Render() override;
 	void Term() override;
+	void Reset();
 	//void SetViewProj(DirectX::XMMATRIX v, DirectX::XMMATRIX p) {};// ‰¼‚Å view‚Æproj‚ª‚Ù‚µ‚¢
 };

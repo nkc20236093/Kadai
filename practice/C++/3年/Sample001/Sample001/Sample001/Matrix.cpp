@@ -1,9 +1,5 @@
 #include "Matrix.h"
 
-void Matrix::SetFirstPos(const DirectX::XMFLOAT3& Pos)
-{
-	cb.world *= DirectX::XMMatrixTranslation(Pos.x, Pos.y, Pos.z);
-}
 void Matrix::Identity()
 {
 	cb.world = DirectX::XMMatrixIdentity();

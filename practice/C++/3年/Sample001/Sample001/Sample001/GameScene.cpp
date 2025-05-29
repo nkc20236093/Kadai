@@ -26,19 +26,39 @@ bool isUP = false;
 static float posYUP = 0;
 static float angle7 = 0.0f;
 static float angle8 = 0.0f;
-static float angle = 0.0f;
-static float posX = 0.0f;
-static float posY = 0.0f;
+static float angle8_2 = 0.0f;
+static float angle9 = 0.0f;
+static float posX7 = 0.0f;
+static float posY7 = 0.0f;
+static float posX8 = 0.0f;
+static float posY8 = 0.0f;
+static float posX9 = 0.0f;
+static float posY9 = 0.0f;
 static float radius = 1.0f;
 static float speed = 2.0f;
 
 void GameScene::Init()
 {
+	Reset();
 	gameMatrix.Identity();
 	gameCamera.SetViewPort();
 	int32_t n = Shader::GetInstance()->LoadShader("VertexShader.hlsl", "PixelShader.hlsl");
 	gameObj.Init(Shader::GetInstance()->GetShader(n));
 	gameMatrix.GetCB().world *= DirectX::XMMatrixTranslation(0, 0, 0);
+}
+void GameScene::Reset()
+{
+	posYUP = 0;
+	angle7 = 0.0f;
+	angle8 = 0.0f;
+	angle8_2 = 0.0f;
+	angle9 = 0.0f;
+	posX7 = 0.0f;
+	posY7 = 0.0f;
+	posX8 = 0.0f;
+	posY8 = 0.0f;
+	posX9 = 0.0f;
+	posY9 = 0.0f;
 }
 
 SCENE GameScene::Update()
@@ -51,21 +71,14 @@ SCENE GameScene::Update()
 	
 
 	static int mode = 0;
-	static int previousMode = -1;
-	static Input* input = Input::GetInstance();
+	auto input = Input::GetInstance();
 	for (int i = 1; i <= 9; ++i)
 	{
-		if (input->GetKeyDown('0' + i)) // '1' ‚Í 49, '2' ‚Í 50... ‚ÌASCIIƒR[ƒh
+		if (input->GetKeyDown('0' + i))
 		{
 			mode = i;
-			break; // Å‰‚Éƒ}ƒbƒ`‚µ‚½‚çƒ‹[ƒv‚ð”²‚¯‚é
+			break;
 		}
-	}
-
-	if (mode != previousMode)
-	{
-		gameMatrix.Identity();
-		previousMode = mode;
 	}
 
 	switch (mode)
@@ -83,7 +96,7 @@ SCENE GameScene::Update()
 	case 3:
 		// lesson03 ‰ñ“]
 		gameMatrix.Identity();
-		gameMatrix.GetCB().world *= XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), 45.0f * (180 * 3.14f));
+		gameMatrix.GetCB().world *= XMMatrixRotationY(XMConvertToRadians(45.0f));
 		break;
 	case 4:
 		// lesson04 Šg‘å‚ÆˆÚ“®
@@ -93,7 +106,7 @@ SCENE GameScene::Update()
 	case 5:
 		// lesson05 ‰ñ“]‚ÆˆÚ“®
 		gameMatrix.Identity();
-		gameMatrix.GetCB().world *= XMMatrixRotationZ(60 * (180 * 3.14f)), XMMatrixTranslation(0.0, 0.5, 0.0);
+		gameMatrix.GetCB().world *= XMMatrixRotationZ(XMConvertToRadians(60.0f)), XMMatrixTranslation(0.0, 0.5, 0.0);
 		break;
 	case 6:
 		//lesson06 ã‰ºˆÚ“®
@@ -114,50 +127,55 @@ SCENE GameScene::Update()
 		break;
 	case 7:
 		// lesson07 Ž©“]‚ÆˆÚ“®
-		angle7++;
+		gameMatrix.GetCB().world = XMMatrixTranslation(1.0, 0.0, 0.0);
+
+		angle7 ++;
 		if (angle7 >= 360)
 		{
 			angle7 = 0;
 		}
-		XMMATRIX rotationMatrix7 = XMMatrixRotationZ(XMConvertToRadians(angle7));
 
 		XMMATRIX translationMatrix7 = XMMatrixTranslation(1.0f, 0.0f, 0.0f);
 
-		XMMATRIX worldMatrix7 = rotationMatrix7 * translationMatrix7;
+		XMMATRIX rotationMatrix7 = XMMatrixRotationZ(XMConvertToRadians(angle7));
 
-		gameMatrix.GetCB().world = worldMatrix7;
+		gameMatrix.GetCB().world = rotationMatrix7 * translationMatrix7;
 		break;
 	case 8:
-		// lesson08 Ž©“]‚ÆˆÚ“®
+		// lesson08 Œö“]‚ÆŽ©“]
 		angle8++;
 		if (angle8 >= 360)
 		{
 			angle8 = 0;
 		}
+
+		posX8 = cos(XMConvertToRadians(angle8));
+		posY8 = sin(XMConvertToRadians(angle8));
+
+		XMMATRIX translationMatrix8 = XMMatrixTranslation(posX8, posY8, 0.0f);
+
 		XMMATRIX rotationMatrix8 = XMMatrixRotationZ(XMConvertToRadians(angle8));
 
-		XMMATRIX translationMatrix8 = XMMatrixTranslation(1.0f, 0.0f, 0.0f);
-
-		XMMATRIX worldMatrix = rotationMatrix8 * translationMatrix8;
-
-		gameMatrix.GetCB().world = worldMatrix;
-		break;
+		gameMatrix.GetCB().world = rotationMatrix8 * translationMatrix8;
+	break;
 	case 9:
 		// lesson09 Œö“]‚ÆˆÚ“®(Ž©“]–³‚µ)
-		angle += speed;
-		if (angle >= 360.0f)
+		angle9++;
+		if (angle9 >= 360)
 		{
-			angle -= 360.0f;
+			angle9 = 0;
 		}
 
-		posX = radius * cos(XMConvertToRadians(angle));
-		posY = radius * sin(XMConvertToRadians(angle));
+		posX9 = cos(XMConvertToRadians(angle9));
+		posY9 = sin(XMConvertToRadians(angle9));
 
-		XMMATRIX translationMatrix9 = XMMatrixTranslation(posX, posY, 0);
+		XMMATRIX translationMatrix9 = XMMatrixTranslation(posX9, posY9, 0.0f);
 
 		gameMatrix.GetCB().world = translationMatrix9;
 		break;
 	default:
+		gameMatrix.Identity();
+		Reset();
 		break;
 	}
 

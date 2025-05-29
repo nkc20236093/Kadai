@@ -21,7 +21,6 @@ public:
 	DirectX::XMMATRIX& GetProjection() { return cb.projection; }
 	ConstantBuffer& GetCB() { return cb; }
 
-	void SetFirstPos(const DirectX::XMFLOAT3& pos);
 	void SetPos(const DirectX::XMFLOAT3& pos);
 	void SetRotationX(float rotX);
 	void SetRotationY(float rotY);
