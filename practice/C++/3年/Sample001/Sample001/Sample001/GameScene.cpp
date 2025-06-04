@@ -23,10 +23,7 @@ Camera		gameCamera;
 CPolygon	gameObj;
 
 bool isUP = false;
-static float posYUP = 0;
 static float angle = 0.0f;
-static float posX = 0.0f;
-static float posY = 0.0f;
 static float radius = 1.0f;
 static float speed = 2.0f;
 static XMFLOAT3 postion;
@@ -43,10 +40,7 @@ void GameScene::Init()
 }
 void GameScene::Reset()
 {
-	posYUP = 0;
 	angle = 0.0f;
-	posX = 0.0f;
-	posY = 0.0f;
 	postion = XMFLOAT3(0, 0, 0);
 }
 
@@ -66,6 +60,7 @@ SCENE GameScene::Update()
 		if (input->GetKeyDown('0' + i))
 		{
 			mode = i;
+			Reset();
 			break;
 		}
 	}
@@ -99,20 +94,20 @@ SCENE GameScene::Update()
 		break;
 	case 6:
 		//lesson06 ã‰ºˆÚ“®
-
 		XMStoreFloat3(&postion, gameMatrix.GetCB().world.r[3]);
-		posYUP = postion.y;
-		if (posYUP > 1)
+		postion.y = postion.y;
+		if (postion.y > 1)
 		{
 			isUP = false;
 		}
-		else if (posYUP < -1)
+		else if (postion.y < -1)
 		{
 			isUP = true;
 		}
-		posYUP += isUP ? 0.01 : -0.01;
+		postion.y += isUP ? 0.01 : -0.01;
 		gameMatrix.Identity();
-		gameMatrix.GetCB().world *= XMMatrixTranslation(0.0, posYUP, 0.0);
+
+		gameMatrix.GetCB().world *= XMMatrixTranslation(0.0, postion.y, 0.0);
 		break;
 	case 7:
 		// lesson07 Ž©“]‚ÆˆÚ“®
@@ -142,10 +137,10 @@ SCENE GameScene::Update()
 			angle = 0;
 		}
 
-		posX = cos(XMConvertToRadians(angle));
-		posY = sin(XMConvertToRadians(angle));
+		postion.x = cos(XMConvertToRadians(angle));
+		postion.y = sin(XMConvertToRadians(angle));
 
-		XMMATRIX translationMatrix8 = XMMatrixTranslation(posX, posY, 0.0f);
+		XMMATRIX translationMatrix8 = XMMatrixTranslation(postion.x, postion.y, 0.0f);
 
 		XMMATRIX rotationMatrix8 = XMMatrixRotationZ(XMConvertToRadians(angle));
 
@@ -161,15 +156,16 @@ SCENE GameScene::Update()
 			angle = 0;
 		}
 
-		posX = cos(XMConvertToRadians(angle));
-		posY = sin(XMConvertToRadians(angle));
+		postion.x = cos(XMConvertToRadians(angle));
+		postion.y = sin(XMConvertToRadians(angle));
 
-		XMMATRIX translationMatrix9 = XMMatrixTranslation(posX, posY, 0.0f);
+		XMMATRIX translationMatrix9 = XMMatrixTranslation(postion.x, postion.y, 0.0f);
 
 		gameMatrix.GetCB().world = translationMatrix9;
 		break;
 	default:
 		gameMatrix.Identity();
+
 		break;
 	}
 
