@@ -24,18 +24,13 @@ CPolygon	gameObj;
 
 bool isUP = false;
 static float posYUP = 0;
-static float angle7 = 0.0f;
-static float angle8 = 0.0f;
-static float angle8_2 = 0.0f;
-static float angle9 = 0.0f;
-static float posX7 = 0.0f;
-static float posY7 = 0.0f;
-static float posX8 = 0.0f;
-static float posY8 = 0.0f;
-static float posX9 = 0.0f;
-static float posY9 = 0.0f;
+static float angle = 0.0f;
+static float posX = 0.0f;
+static float posY = 0.0f;
 static float radius = 1.0f;
 static float speed = 2.0f;
+static XMFLOAT3 postion;
+
 
 void GameScene::Init()
 {
@@ -49,16 +44,10 @@ void GameScene::Init()
 void GameScene::Reset()
 {
 	posYUP = 0;
-	angle7 = 0.0f;
-	angle8 = 0.0f;
-	angle8_2 = 0.0f;
-	angle9 = 0.0f;
-	posX7 = 0.0f;
-	posY7 = 0.0f;
-	posX8 = 0.0f;
-	posY8 = 0.0f;
-	posX9 = 0.0f;
-	posY9 = 0.0f;
+	angle = 0.0f;
+	posX = 0.0f;
+	posY = 0.0f;
+	postion = XMFLOAT3(0, 0, 0);
 }
 
 SCENE GameScene::Update()
@@ -110,7 +99,7 @@ SCENE GameScene::Update()
 		break;
 	case 6:
 		//lesson06 ã‰ºˆÚ“®
-		XMFLOAT3 postion;
+
 		XMStoreFloat3(&postion, gameMatrix.GetCB().world.r[3]);
 		posYUP = postion.y;
 		if (posYUP > 1)
@@ -127,55 +116,60 @@ SCENE GameScene::Update()
 		break;
 	case 7:
 		// lesson07 Ž©“]‚ÆˆÚ“®
+		gameMatrix.Identity();
+
 		gameMatrix.GetCB().world = XMMatrixTranslation(1.0, 0.0, 0.0);
 
-		angle7 ++;
-		if (angle7 >= 360)
+		angle ++;
+		if (angle >= 360)
 		{
-			angle7 = 0;
+			angle = 0;
 		}
 
 		XMMATRIX translationMatrix7 = XMMatrixTranslation(1.0f, 0.0f, 0.0f);
 
-		XMMATRIX rotationMatrix7 = XMMatrixRotationZ(XMConvertToRadians(angle7));
+		XMMATRIX rotationMatrix7 = XMMatrixRotationZ(XMConvertToRadians(angle));
 
 		gameMatrix.GetCB().world = rotationMatrix7 * translationMatrix7;
 		break;
 	case 8:
 		// lesson08 Œö“]‚ÆŽ©“]
-		angle8++;
-		if (angle8 >= 360)
+		gameMatrix.Identity();
+
+		angle++;
+		if (angle >= 360)
 		{
-			angle8 = 0;
+			angle = 0;
 		}
 
-		posX8 = cos(XMConvertToRadians(angle8));
-		posY8 = sin(XMConvertToRadians(angle8));
+		posX = cos(XMConvertToRadians(angle));
+		posY = sin(XMConvertToRadians(angle));
 
-		XMMATRIX translationMatrix8 = XMMatrixTranslation(posX8, posY8, 0.0f);
+		XMMATRIX translationMatrix8 = XMMatrixTranslation(posX, posY, 0.0f);
 
-		XMMATRIX rotationMatrix8 = XMMatrixRotationZ(XMConvertToRadians(angle8));
+		XMMATRIX rotationMatrix8 = XMMatrixRotationZ(XMConvertToRadians(angle));
 
 		gameMatrix.GetCB().world = rotationMatrix8 * translationMatrix8;
 	break;
 	case 9:
 		// lesson09 Œö“]‚ÆˆÚ“®(Ž©“]–³‚µ)
-		angle9++;
-		if (angle9 >= 360)
+		gameMatrix.Identity();
+
+		angle++;
+		if (angle >= 360)
 		{
-			angle9 = 0;
+			angle = 0;
 		}
 
-		posX9 = cos(XMConvertToRadians(angle9));
-		posY9 = sin(XMConvertToRadians(angle9));
+		posX = cos(XMConvertToRadians(angle));
+		posY = sin(XMConvertToRadians(angle));
 
-		XMMATRIX translationMatrix9 = XMMatrixTranslation(posX9, posY9, 0.0f);
+		XMMATRIX translationMatrix9 = XMMatrixTranslation(posX, posY, 0.0f);
 
 		gameMatrix.GetCB().world = translationMatrix9;
 		break;
 	default:
 		gameMatrix.Identity();
-		Reset();
 		break;
 	}
 
