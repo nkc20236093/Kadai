@@ -94,8 +94,6 @@ SCENE GameScene::Update()
 		break;
 	case 6:
 		//lesson06 ã‰ºˆÚ“®
-		XMStoreFloat3(&postion, gameMatrix.GetCB().world.r[3]);
-		postion.y = postion.y;
 		if (postion.y > 1)
 		{
 			isUP = false;
