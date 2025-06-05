@@ -13,7 +13,7 @@
 // シーン制御
 SceneManager* pScene;
 STATUS status = INIT;
-SCENE  scene = GAME;
+SCENE  scene = CLEAR; // 実行時に起動するシーン
 // FPS制御
 float frameTime = 0;
 LARGE_INTEGER timeStart = { 0 };
