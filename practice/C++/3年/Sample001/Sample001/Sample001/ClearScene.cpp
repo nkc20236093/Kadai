@@ -51,9 +51,6 @@ void ClearScene::Init()
 	bulletTexId = Texture::GetInstance()->LoadTexture("hand.png");
 	bulletWld = XMMatrixIdentity();
 	bulletPos = XMFLOAT3(0, 0, 0);
-	// スペースキーで玉を発射する処理
-	auto input = Input::GetInstance();
-	//if (input->GetKeyDown(VK_SPACE)
 }
 
 
@@ -64,6 +61,7 @@ SCENE ClearScene::Update()
 
 	// カメラ設定更新
 	clearCamera.Update(clearMatrix.GetView(), clearMatrix.GetProjection());
+	clearCamera.Update(bulletMatrix.GetView(), bulletMatrix.GetProjection());
 
 	clearMatrix.Identity();
 	playerWld = XMMatrixIdentity();
@@ -87,6 +85,22 @@ SCENE ClearScene::Update()
 	playerWld *= XMMatrixTranslation(playerPos.x, playerPos.y, playerPos.z);
 	clearMatrix.SetWorld(playerWld);
 
+	// スペースキーで玉を発射する処理
+	if (input->GetKeyDown(VK_SPACE))
+	{
+		// 弾の更新
+		// 単位行列で初期化
+		bulletMatrix.Identity();
+		bulletWld = XMMatrixIdentity();
+
+		// 弾を動かす
+		bulletPos.x += BULLET_SPEED;
+		bulletWld *= XMMatrixTranslation(bulletPos.x, bulletPos.y, bulletPos.z);
+
+		// 座標変換構造体にワールド行列を渡す
+		bulletMatrix.SetWorld(bulletWld);
+	}
+
 	// シーン読み込み
 	if (Input::GetInstance()->GetKeyDown(VK_RETURN))
 	{
@@ -99,6 +113,9 @@ SCENE ClearScene::Update()
 void ClearScene::Render()
 {
 	App::GetInstance()->RenderBegin(0.2f, 0.2f, 0.2f, 1.0f);
+
+	// 弾の描画
+	bulletObj.Render(bulletMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(bulletTexId));
 
 	// プレイヤーの描画
 	clearObj.Render(clearMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(playerTexId));
