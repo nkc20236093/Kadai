@@ -2,15 +2,15 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\user\Documents\2023\gt3agka\ゲームプログラミング\0714配布データ\Sample002\x64\Debug\Sample002.exe</FullPath>
+      <FullPath>C:\Github\kadai\practice\C++\3年\Sample002\Sample002\x64\Debug\Sample002.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\user\Documents\2023\gt3agka\ゲームプログラミング\0714配布データ\Sample002\x64\Debug\PixelShader.cso</FullPath>
+      <FullPath>C:\Github\kadai\practice\C++\3年\Sample002\Sample002\x64\Debug\PixelShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\user\Documents\2023\gt3agka\ゲームプログラミング\0714配布データ\Sample002\x64\Debug\VertexShader.cso</FullPath>
+      <FullPath>C:\Github\kadai\practice\C++\3年\Sample002\Sample002\x64\Debug\VertexShader.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

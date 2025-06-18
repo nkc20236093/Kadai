@@ -31,6 +31,7 @@ private:
 	std::vector<ID3D11ShaderResourceView*> pTextures;
 
 	vertex vertexList[4];
+	vertex vertexListEX[4];
 	DirectX::XMMATRIX	wld = DirectX::XMMatrixIdentity();
 	DirectX::XMFLOAT3	scale = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	DirectX::XMFLOAT3	axis = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -42,6 +43,8 @@ private:
 public:
 	void Init(ShaderResources* sr);
 	void Render(ConstantBuffer cb, TextureResources* tex = Texture::GetInstance()->GetTextureResource(0));
+	void InitEX(ShaderResources* sr);
+	void RenderEX(ConstantBuffer cb, TextureResources* tex = Texture::GetInstance()->GetTextureResource(0));
 
 	void Term();
 	void SetColor(float r, float g, float b, float a, int32_t v);
