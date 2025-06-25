@@ -1,11 +1,11 @@
-#include <tchar.h>			// テキストや文字列を扱うために必要なヘッダーファイル
-#include <Windows.h>		// Windowsプログラムで必要になるものが入っている
-#include <D3D11.h>			// DirectX11SDKを使うために必要なもの
-#include <d3dcompiler.h>	// シェーダーファイルをコンパイルするために必要
-#include <directxcolors.h>	// DirectX::ライブラリを利用するために必要
+#include <tchar.h>   // テキストや文字列を扱うために必要なヘッダーファイル
+#include <Windows.h>  // Windowsプログラムで必要になるものが入っている
+#include <D3D11.h>   // DirectX11SDKを使うために必要なもの
+#include <d3dcompiler.h> // シェーダーファイルをコンパイルするために必要
+#include <directxcolors.h> // DirectX::ライブラリを利用するために必要
 
-#pragma comment(lib, "d3d11.lib")		// DirectX11ライブラリを利用するために必要
-#pragma comment(lib, "d3dCompiler.lib")	// シェーダーコードをコンパイルするために必要
+#pragma comment(lib, "d3d11.lib")  // DirectX11ライブラリを利用するために必要
+#pragma comment(lib, "d3dCompiler.lib") // シェーダーコードをコンパイルするために必要
 
 #include "GameScene.h"
 #include "Input.h"
@@ -18,10 +18,10 @@
 using namespace std;
 using namespace DirectX;
 
-Matrix		gameMatrix;
-Camera		gameCamera;
-CPolygon	gameObj;
-int32_t		charTexId;
+Matrix  gameMatrix;
+Camera  gameCamera;
+CPolygon gameObj;
+int32_t  charTexId;
 
 
 void GameScene::Init()
@@ -55,7 +55,7 @@ SCENE GameScene::Update()
 void GameScene::Render()
 {
 	// RenderBeginの第1引数～第3引数が背景のRGB
-	App::GetInstance()->RenderBegin(0.9f, 0.2f, 0.4f, 1.0f);
+	App::GetInstance()->RenderBegin(0.2f, 0.2f, 0.2f, 1.0f);
 
 	gameObj.RenderEX(gameMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(charTexId));
 
