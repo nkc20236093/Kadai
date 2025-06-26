@@ -43,6 +43,10 @@ SCENE GameScene::Update()
 
 	gameMatrix.Identity();
 
+	static float rot = 0.0f;
+	gameMatrix.SetRotationY(rot);
+	rot += 0.05f;
+
 	gameObj.SetUV();
 
 	// ÉVÅ[Éìì«Ç›çûÇ›
