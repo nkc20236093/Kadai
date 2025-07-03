@@ -355,15 +355,16 @@ void CPolygon::SetColor(float r, float g, float b, float a, int32_t v)
 
 void CPolygon::SetUV()
 {
-	vertexList[0].uv.x = 0.0f;
-	vertexList[0].uv.y = 1.0f;
-
-	vertexList[1].uv.x = 0.0f;
-	vertexList[1].uv.y = 0.0f;
-
-	vertexList[2].uv.x = 1.0f;
-	vertexList[2].uv.y = 1.0f;
-
-	vertexList[3].uv.x = 1.0f;
-	vertexList[3].uv.y = 0.0f;
+	// ç∂â∫
+	vertexList[0].uv.x = 624.0f / 1024.0f;
+	vertexList[0].uv.y = 320.0f / 1024.0f;
+	// ç∂è„
+	vertexList[1].uv.x = 624.0f / 1024.0f;
+	vertexList[1].uv.y = (256.0f - 16.0f) / 1024.0f;
+	// âE
+	vertexList[2].uv.x = 688.0f / 1024.0f;
+	vertexList[2].uv.y = 320.0f / 1024.0f;
+	// âEè„
+	vertexList[3].uv.x = 688.0f / 1024.0f;
+	vertexList[3].uv.y = 256.0f / 1024.0f;
 }

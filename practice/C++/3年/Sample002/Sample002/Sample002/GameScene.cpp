@@ -29,8 +29,8 @@ void GameScene::Init()
 	gameMatrix.Identity();
 	gameCamera.SetViewPort();
 	int32_t n = Shader::GetInstance()->LoadShader("VertexShader.hlsl", "PixelShader.hlsl");
-	gameObj.InitEX(Shader::GetInstance()->GetShader(n));
-	charTexId = Texture::GetInstance()->LoadTexture("MyChar.png");
+	gameObj.Init(Shader::GetInstance()->GetShader(n));
+	charTexId = Texture::GetInstance()->LoadTexture("ui.png");
 }
 
 SCENE GameScene::Update()
@@ -42,10 +42,6 @@ SCENE GameScene::Update()
 	gameCamera.Update(gameMatrix.GetView(), gameMatrix.GetProjection());
 
 	gameMatrix.Identity();
-
-	static float rot = 0.0f;
-	gameMatrix.SetRotationY(rot);
-	rot += 0.05f;
 
 	gameObj.SetUV();
 
@@ -61,7 +57,7 @@ void GameScene::Render()
 	// RenderBegin‚Ì‘æ1ˆø”`‘æ3ˆø”‚ª”wŒi‚ÌRGB
 	App::GetInstance()->RenderBegin(0.2f, 0.2f, 0.2f, 1.0f);
 
-	gameObj.RenderEX(gameMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(charTexId));
+	gameObj.Render(gameMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(charTexId));
 
 	App::GetInstance()->RenderEnd();
 }

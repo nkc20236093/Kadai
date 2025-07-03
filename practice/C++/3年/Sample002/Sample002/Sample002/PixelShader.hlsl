@@ -14,5 +14,5 @@ float4 main(PS_IN input) : SV_TARGET
 {
 	float4 tex = float4(0.0f, 0.5f, 1.0f, 1.0f);
 	tex = g_Texture.Sample(g_Sampler, input.tex);
-	return input.col;
+	return tex;
 }
