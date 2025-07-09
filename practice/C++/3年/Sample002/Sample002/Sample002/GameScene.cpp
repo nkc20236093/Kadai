@@ -26,6 +26,7 @@ int32_t		charTexId;
 XMFLOAT2	uvPos[4];
 float timer = 0;
 XMFLOAT2 movePos;
+XMFLOAT3 Position;
 
 void GameScene::Init()
 {
@@ -54,6 +55,7 @@ SCENE GameScene::Update()
 			num = i;
 			timer = 0;
 			movePos = XMFLOAT2(0, 0);
+			Position = XMFLOAT3(0, 0, 0);
 			break;
 		}
 	}
@@ -123,9 +125,50 @@ SCENE GameScene::Update()
 			gameObj.SetUV(uvPos);
 			break;
 		case 4:
+			timer += 0.225f;
+			if (timer > 1)
+			{
+				timer = 0;
+				movePos.x += 256.0f;
+			}
+
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePos.y = 256.0f * 2;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePos.y = 256.0f;
+			if (!input->GetKey('A') && !input->GetKey(VK_LEFT) &&
+				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePos.y = 0.0f;
+
+			// ç∂â∫
+			uvPos[0].x = movePos.x / 1024.0f;
+			uvPos[0].y = (movePos.y + 256.0f) / 1024.0f;
+			// ç∂è„
+			uvPos[1].x = movePos.x / 1024.0f;
+			uvPos[1].y = movePos.y / 1024.0f;
+			// âEâ∫
+			uvPos[2].x = (movePos.x + 256.0f) / 1024.0f;
+			uvPos[2].y = (movePos.y + 256.0f) / 1024.0f;
+			// âEè„
+			uvPos[3].x = (movePos.x + 256.0f) / 1024.0f;
+			uvPos[3].y = movePos.y / 1024.0f;
+			gameObj.SetUV(uvPos);
+
+			if (input->GetKey('W') || input->GetKey(VK_UP))  Position.y += 1.0f * 0.1f;
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) Position.x += -1.0f * 0.1f;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) Position.x += 1.0f * 0.1f;
+			if (input->GetKey('S') || input->GetKey(VK_DOWN)) Position.y += -1.0f * 0.1f;
+			gameMatrix.SetPos(Position);
+			break;
+		case 5:
 
 			break;
+		case 6:
 
+			break;
+		case 7:
+
+			break;
+		case 8:
+
+			break;
 		default:
 			// ç∂â∫
 			uvPos[0].x = 0.0f;
