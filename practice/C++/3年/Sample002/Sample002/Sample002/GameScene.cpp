@@ -20,21 +20,63 @@ using namespace std;
 using namespace DirectX;
 
 Matrix		gameMatrix;
+Matrix		backMatrix;
+Matrix		shotMatrix;
 Camera		gameCamera;
 CPolygon	gameObj;
+CPolygon	backObj;
 int32_t		charTexId;
+int32_t		backTexId;
+int32_t		shotTexId;
 XMFLOAT2	uvPos[4];
-float timer = 0;
-XMFLOAT2 movePos;
-XMFLOAT3 Position;
+XMFLOAT2	bgPos[4];
+XMFLOAT2	shPos[4];
+float		timer = 0;
+float		screenW;
+float		screenH;
+XMFLOAT2	movePos;
+XMFLOAT3	PlayPos;
+XMFLOAT3	ShotPos;
+
+void Reset()
+{
+	// ¶‰º
+	uvPos[0].x = 0.0f;
+	uvPos[0].y = 1.0f;
+	// ¶ã
+	uvPos[1].x = 0.0f;
+	uvPos[1].y = 0.0f;
+	// ‰E‰º
+	uvPos[2].x = 1.0f;
+	uvPos[2].y = 1.0f;
+	// ‰Eã
+	uvPos[3].x = 1.0f;
+	uvPos[3].y = 0.0f;
+	gameObj.SetUV(uvPos);
+
+	timer = 0;
+	movePos = XMFLOAT2(0, 0);
+	PlayPos = XMFLOAT3(0, 0, 0);
+	ShotPos = XMFLOAT3(0, 0, 0);
+
+	gameMatrix.Identity();
+	backMatrix.Identity();
+
+	backObj.SetColor(1, 1, 1, 0, 1);
+}
 
 void GameScene::Init()
 {
 	gameMatrix.Identity();
+	backMatrix.Identity();
 	gameCamera.SetViewPort();
 	int32_t n = Shader::GetInstance()->LoadShader("VertexShader.hlsl", "PixelShader.hlsl");
 	gameObj.Init(Shader::GetInstance()->GetShader(n));
+	backObj.Init(Shader::GetInstance()->GetShader(n));
 	charTexId = Texture::GetInstance()->LoadTexture("MyChar.png");
+	backTexId = Texture::GetInstance()->LoadTexture("GBackTex.png");
+	shotTexId = Texture::GetInstance()->LoadTexture("MyShot.png");
+	Reset();
 }
 
 SCENE GameScene::Update()
@@ -53,9 +95,7 @@ SCENE GameScene::Update()
 		if (input->GetKeyDown('0' + i))
 		{
 			num = i;
-			timer = 0;
-			movePos = XMFLOAT2(0, 0);
-			Position = XMFLOAT3(0, 0, 0);
+			Reset();
 			break;
 		}
 	}
@@ -151,14 +191,30 @@ SCENE GameScene::Update()
 			uvPos[3].y = movePos.y / 1024.0f;
 			gameObj.SetUV(uvPos);
 
-			if (input->GetKey('W') || input->GetKey(VK_UP))  Position.y += 1.0f * 0.1f;
-			if (input->GetKey('A') || input->GetKey(VK_LEFT)) Position.x += -1.0f * 0.1f;
-			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) Position.x += 1.0f * 0.1f;
-			if (input->GetKey('S') || input->GetKey(VK_DOWN)) Position.y += -1.0f * 0.1f;
-			gameMatrix.SetPos(Position);
+			if (input->GetKey('W') || input->GetKey(VK_UP))  PlayPos.y += 1.0f * 0.1f;
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) PlayPos.x += -1.0f * 0.1f;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) PlayPos.x += 1.0f * 0.1f;
+			if (input->GetKey('S') || input->GetKey(VK_DOWN)) PlayPos.y += -1.0f * 0.1f;
+			gameMatrix.SetPos(PlayPos);
 			break;
 		case 5:
+			// ¶‰º
+			uvPos[0].x = 0.0f / 1024.0f;
+			uvPos[0].y = 256.0f / 1024.0f;
+			// ¶ã
+			uvPos[1].x = 0.0f / 1024.0f;
+			uvPos[1].y = 0.0f / 1024.0f;
+			// ‰E‰º
+			uvPos[2].x = 256.0f / 1024.0f;
+			uvPos[2].y = 256.0f / 1024.0f;
+			// ‰Eã
+			uvPos[3].x = 256.0f / 1024.0f;
+			uvPos[3].y = 0.0f / 1024.0f;
+			gameObj.SetUV(uvPos);
 
+			XMFLOAT3 scale = XMFLOAT3(10, 10, 1);
+			backMatrix.SetScale(scale);
+			backObj.SetUV(bgPos);
 			break;
 		case 6:
 
@@ -170,19 +226,7 @@ SCENE GameScene::Update()
 
 			break;
 		default:
-			// ¶‰º
-			uvPos[0].x = 0.0f;
-			uvPos[0].y = 1.0f;
-			// ¶ã
-			uvPos[1].x = 0.0f;
-			uvPos[1].y = 0.0f;
-			// ‰E‰º
-			uvPos[2].x = 1.0f;
-			uvPos[2].y = 1.0f;
-			// ‰Eã
-			uvPos[3].x = 1.0f;
-			uvPos[3].y = 0.0f;
-			gameObj.SetUV(uvPos);
+			Reset();
 			break;
 	}
 
@@ -198,6 +242,8 @@ void GameScene::Render()
 {
 	// RenderBegin‚Ì‘æ1ˆø”`‘æ3ˆø”‚ª”wŒi‚ÌRGB
 	App::GetInstance()->RenderBegin(0.2f, 0.2f, 0.2f, 1.0f);
+
+	backObj.Render(backMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(backTexId));
 
 	gameObj.Render(gameMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(charTexId));
 
