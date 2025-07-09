@@ -1,3 +1,2 @@
 ﻿  GameScene.cpp
-C:\Github\kadai\practice\C++\3年\Sample002\Sample002\Sample002\GameScene.cpp(100,2): error C2361: 'timer' の初期化が 'default' ラベルによって行われませんでした。
-C:\Github\kadai\practice\C++\3年\Sample002\Sample002\Sample002\GameScene.cpp(74,10): message : 'timer' の宣言を確認してください
+  Sample002.vcxproj -> C:\Github\kadai\Practice\practice\C++\3年\Sample002\Sample002\x64\Debug\Sample002.exe

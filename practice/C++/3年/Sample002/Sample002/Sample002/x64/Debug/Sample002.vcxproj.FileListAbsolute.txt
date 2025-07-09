@@ -1,2 +1,3 @@
 C:\Users\user\Documents\2023\gt3agka\ゲームプログラミング\0714配布データ\Sample002\Sample002\x64\Debug\Sample002.vcxproj.CopyComplete
 C:\Github\kadai\practice\C++\3年\Sample002\Sample002\Sample002\x64\Debug\Sample002.vcxproj.CopyComplete
+C:\Github\kadai\Practice\practice\C++\3年\Sample002\Sample002\Sample002\x64\Debug\Sample002.vcxproj.Up2Date

@@ -25,6 +25,7 @@ CPolygon	gameObj;
 int32_t		charTexId;
 XMFLOAT2	uvPos[4];
 float timer = 0;
+XMFLOAT2 movePos;
 
 void GameScene::Init()
 {
@@ -52,6 +53,7 @@ SCENE GameScene::Update()
 		{
 			num = i;
 			timer = 0;
+			movePos = XMFLOAT2(0, 0);
 			break;
 		}
 	}
@@ -73,46 +75,72 @@ SCENE GameScene::Update()
 			gameObj.SetUV(uvPos);
 			break;
 		case 2:
-			float x;
-			timer += 0.02f;
+			timer += 0.225f;
 			if (timer > 1)
 			{
 				timer = 0;
-				x += 256.0f;
+				movePos.x += 256.0f;
 			}
 			// 左下
-			uvPos[0].x = x / 1024.0f;
+			uvPos[0].x = movePos.x / 1024.0f;
 			uvPos[0].y = 256.0f / 1024.0f;
 			// 左上
-			uvPos[1].x = x / 1024.0f;
+			uvPos[1].x = movePos.x / 1024.0f;
 			uvPos[1].y = 0.0f / 1024.0f;
 			// 右下
-			uvPos[2].x = (x + 256.0f) / 1024.0f;
+			uvPos[2].x = (movePos.x + 256.0f) / 1024.0f;
 			uvPos[2].y = 256.0f / 1024.0f;
 			// 右上
-			uvPos[3].x = (x + 256.0f) / 1024.0f;
+			uvPos[3].x = (movePos.x + 256.0f) / 1024.0f;
 			uvPos[3].y = 0.0f / 1024.0f;
-			if (uvPos[3].x > 1 || uvPos[4].x > 1)
-			{
-				x = 0;
-			}
 			gameObj.SetUV(uvPos);
 			break;
-	default:
-		// 左下
-		uvPos[0].x = 0.0f;
-		uvPos[0].y = 1.0f;
-		// 左上
-		uvPos[1].x = 0.0f;
-		uvPos[1].y = 0.0f;
-		// 右下
-		uvPos[2].x = 1.0f;
-		uvPos[2].y = 1.0f;
-		// 右上
-		uvPos[3].x = 1.0f;
-		uvPos[3].y = 0.0f;
-		gameObj.SetUV(uvPos);
-		break;
+		case 3:			
+			timer += 0.225f;
+			if (timer > 1)
+			{
+				timer = 0;
+				movePos.x += 256.0f;
+			}
+
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePos.y = 256.0f * 2;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePos.y = 256.0f;
+			if (!input->GetKey('A') && !input->GetKey(VK_LEFT) && 
+				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePos.y = 0.0f;
+
+			// 左下
+			uvPos[0].x = movePos.x / 1024.0f;
+			uvPos[0].y = (movePos.y + 256.0f) / 1024.0f;
+			// 左上
+			uvPos[1].x = movePos.x / 1024.0f;
+			uvPos[1].y = movePos.y / 1024.0f;
+			// 右下
+			uvPos[2].x = (movePos.x + 256.0f) / 1024.0f;
+			uvPos[2].y = (movePos.y + 256.0f) / 1024.0f;
+			// 右上
+			uvPos[3].x = (movePos.x + 256.0f) / 1024.0f;
+			uvPos[3].y = movePos.y / 1024.0f;
+			gameObj.SetUV(uvPos);
+			break;
+		case 4:
+
+			break;
+
+		default:
+			// 左下
+			uvPos[0].x = 0.0f;
+			uvPos[0].y = 1.0f;
+			// 左上
+			uvPos[1].x = 0.0f;
+			uvPos[1].y = 0.0f;
+			// 右下
+			uvPos[2].x = 1.0f;
+			uvPos[2].y = 1.0f;
+			// 右上
+			uvPos[3].x = 1.0f;
+			uvPos[3].y = 0.0f;
+			gameObj.SetUV(uvPos);
+			break;
 	}
 
 
