@@ -235,7 +235,7 @@ bool App::InitD3D()
 	{
 		D3D11_RASTERIZER_DESC descRast = {
 			D3D11_FILL_SOLID,	// レンダリング時に使用する描画モードを設定
-			D3D11_CULL_BACK,	// カリングの設定
+			D3D11_CULL_NONE,	// カリングの設定
 			FALSE,				// 三角形が前向きか後ろ向きかを設定する
 			0,					// 指定のピクセルに加算する深度値
 			0.0f,				// ピクセルの最大深度バイアス

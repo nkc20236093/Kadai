@@ -1,0 +1,18 @@
+﻿  compilation object save succeeded; see C:\Github\kadai\practice\C++\3年\Sample002__\Sample002\x64\Debug\PixelShader.cso
+C:\Github\kadai\practice\C++\3�N\Sample002__\Sample002\Sample002\VertexShader.hlsl(30,11-24): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Github\kadai\practice\C++\3年\Sample002__\Sample002\x64\Debug\VertexShader.cso
+  App.cpp
+  Audio.cpp
+  Camera.cpp
+  ClearScene.cpp
+  GameScene.cpp
+  Input.cpp
+  Matrix.cpp
+  Polygon.cpp
+  Shader.cpp
+  StartScene.cpp
+  Texture.cpp
+  WinMain.cpp
+  コードを生成中...
+  Sample002.vcxproj -> C:\Github\kadai\practice\C++\3年\Sample002__\Sample002\x64\Debug\Sample002.exe
