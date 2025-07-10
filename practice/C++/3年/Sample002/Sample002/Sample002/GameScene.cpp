@@ -20,6 +20,7 @@ using namespace std;
 using namespace DirectX;
 
 constexpr int MAX_LENGHT = 20;
+constexpr float SHOT_INTERVAL = 1.5f;
 Matrix		gameMatrix;
 Matrix		backMatrix;
 Matrix		shotMatrix[MAX_LENGHT];
@@ -34,10 +35,14 @@ XMFLOAT2	plPos[4];
 XMFLOAT2	bgPos[4];
 XMFLOAT2	shPos[4];
 XMFLOAT3	bgScale;
-XMFLOAT2	movePos;
+XMFLOAT2	movePLPos;
+XMFLOAT2	moveSHPos;
 XMFLOAT3	PlayPos;
 XMFLOAT3	ShotPos[MAX_LENGHT];
-float		timer = 0;
+XMFLOAT3	shotScale = XMFLOAT3(0.4f, 0.4f, 1.0f);
+float		animPLTimer = 0;
+float		animSHTimer = 0;
+float		shotTimer = 0;
 bool		bgActive = false;
 bool		shotAlives[MAX_LENGHT];
 
@@ -58,18 +63,23 @@ void Reset()
 	gameObj.SetUV(plPos);
 	gameMatrix.Identity();
 
-	timer = 0;
-	movePos = XMFLOAT2(0, 0);
+	shotTimer = 0;
+	animPLTimer = 0;
+	animSHTimer = 0;
+	movePLPos = XMFLOAT2(0, 0);
 	PlayPos = XMFLOAT3(0, 0, 0);
 	for (int i = 0; i < MAX_LENGHT; i++)
 	{
 		shotMatrix[i].Identity();
 		ShotPos[i] = PlayPos;
 		shotAlives[i] = false;
+		shotMatrix[i].SetScale(shotScale);
 	}
 
 	bgActive = false;
 	backMatrix.Identity();
+
+	backObj.SetUV(plPos);
 	bgScale = XMFLOAT3(1.0f, 1.0f, 1);
 	backMatrix.SetScale(bgScale);
 }
@@ -81,6 +91,7 @@ void GameScene::Init()
 	gameCamera.SetViewPort();
 	int32_t n = Shader::GetInstance()->LoadShader("VertexShader.hlsl", "PixelShader.hlsl");
 	gameObj.Init(Shader::GetInstance()->GetShader(n));
+	shotObj.Init(Shader::GetInstance()->GetShader(n));
 	backObj.Init(Shader::GetInstance()->GetShader(n));
 	charTexId = Texture::GetInstance()->LoadTexture("MyChar.png");
 	backTexId = Texture::GetInstance()->LoadTexture("GBackTex.png");
@@ -139,82 +150,82 @@ SCENE GameScene::Update()
 			//問題2
 			//キャラクター画像の1行目を用いてアイドリング状態（コマアニメーション）を描画しよう
 			//※アニメーションの秒数に指定はない
-			timer += 0.225f;
-			if (timer > 1)
+			animPLTimer += 0.225f;
+			if (animPLTimer > 1)
 			{
-				timer = 0;
-				movePos.x += 256.0f;
+				animPLTimer = 0;
+				movePLPos.x += 256.0f;
 			}
 			// 左下
-			plPos[0].x = movePos.x / 1024.0f;
+			plPos[0].x = movePLPos.x / 1024.0f;
 			plPos[0].y = 256.0f / 1024.0f;
 			// 左上
-			plPos[1].x = movePos.x / 1024.0f;
+			plPos[1].x = movePLPos.x / 1024.0f;
 			plPos[1].y = 0.0f / 1024.0f;
 			// 右下
-			plPos[2].x = (movePos.x + 256.0f) / 1024.0f;
+			plPos[2].x = (movePLPos.x + 256.0f) / 1024.0f;
 			plPos[2].y = 256.0f / 1024.0f;
 			// 右上
-			plPos[3].x = (movePos.x + 256.0f) / 1024.0f;
+			plPos[3].x = (movePLPos.x + 256.0f) / 1024.0f;
 			plPos[3].y = 0.0f / 1024.0f;
 			gameObj.SetUV(plPos);
 			break;
 		case 3:
 			//問題3
 			//左右キーの入力に応じて画像の2行目、3行目を用いてキャラクターの傾きアニメーションを描画しよう
-			timer += 0.225f;
-			if (timer > 1)
+			animPLTimer += 0.225f;
+			if (animPLTimer > 1)
 			{
-				timer = 0;
-				movePos.x += 256.0f;
+				animPLTimer = 0;
+				movePLPos.x += 256.0f;
 			}
 
-			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePos.y = 256.0f * 2;
-			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePos.y = 256.0f;
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePLPos.y = 256.0f * 2;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePLPos.y = 256.0f;
 			if (!input->GetKey('A') && !input->GetKey(VK_LEFT) && 
-				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePos.y = 0.0f;
+				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePLPos.y = 0.0f;
 
 			// 左下
-			plPos[0].x = movePos.x / 1024.0f;
-			plPos[0].y = (movePos.y + 256.0f) / 1024.0f;
+			plPos[0].x = movePLPos.x / 1024.0f;
+			plPos[0].y = (movePLPos.y + 256.0f) / 1024.0f;
 			// 左上
-			plPos[1].x = movePos.x / 1024.0f;
-			plPos[1].y = movePos.y / 1024.0f;
+			plPos[1].x = movePLPos.x / 1024.0f;
+			plPos[1].y = movePLPos.y / 1024.0f;
 			// 右下
-			plPos[2].x = (movePos.x + 256.0f) / 1024.0f;
-			plPos[2].y = (movePos.y + 256.0f) / 1024.0f;
+			plPos[2].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[2].y = (movePLPos.y + 256.0f) / 1024.0f;
 			// 右上
-			plPos[3].x = (movePos.x + 256.0f) / 1024.0f;
-			plPos[3].y = movePos.y / 1024.0f;
+			plPos[3].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[3].y = movePLPos.y / 1024.0f;
 			gameObj.SetUV(plPos);
 			break;
 		case 4:
 			//問題4
 			//上下左右キーの入力に応じてキャラクターのアニメーションと移動を実装しよう
-			timer += 0.225f;
-			if (timer > 1)
+			animPLTimer += 0.225f;
+			if (animPLTimer > 1)
 			{
-				timer = 0;
-				movePos.x += 256.0f;
+				animPLTimer = 0;
+				movePLPos.x += 256.0f;
 			}
 
-			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePos.y = 256.0f * 2;
-			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePos.y = 256.0f;
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePLPos.y = 256.0f * 2;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePLPos.y = 256.0f;
 			if (!input->GetKey('A') && !input->GetKey(VK_LEFT) &&
-				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePos.y = 0.0f;
+				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePLPos.y = 0.0f;
 
 			// 左下
-			plPos[0].x = movePos.x / 1024.0f;
-			plPos[0].y = (movePos.y + 256.0f) / 1024.0f;
+			plPos[0].x = movePLPos.x / 1024.0f;
+			plPos[0].y = (movePLPos.y + 256.0f) / 1024.0f;
 			// 左上
-			plPos[1].x = movePos.x / 1024.0f;
-			plPos[1].y = movePos.y / 1024.0f;
+			plPos[1].x = movePLPos.x / 1024.0f;
+			plPos[1].y = movePLPos.y / 1024.0f;
 			// 右下
-			plPos[2].x = (movePos.x + 256.0f) / 1024.0f;
-			plPos[2].y = (movePos.y + 256.0f) / 1024.0f;
+			plPos[2].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[2].y = (movePLPos.y + 256.0f) / 1024.0f;
 			// 右上
-			plPos[3].x = (movePos.x + 256.0f) / 1024.0f;
-			plPos[3].y = movePos.y / 1024.0f;
+			plPos[3].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[3].y = movePLPos.y / 1024.0f;
 			gameObj.SetUV(plPos);
 
 			if (input->GetKey('W') || input->GetKey(VK_UP))  PlayPos.y += 1.0f * 0.1f;
@@ -265,25 +276,25 @@ SCENE GameScene::Update()
 			gameObj.SetUV(plPos);
 
 			// 背景
-			timer += 0.225f;
-			if (timer > 1)
+			animPLTimer += 0.225f;
+			if (animPLTimer > 1)
 			{
-				timer = 0;
-				movePos.y -= 0.02f;
+				animPLTimer = 0;
+				movePLPos.y -= 0.02f;
 			}
 
 			// 左下
 			bgPos[0].x = 0.0f / 1024.0f;
-			bgPos[0].y = (256.0f / 1024.0f) + movePos.y;
+			bgPos[0].y = (256.0f / 1024.0f) + movePLPos.y;
 			// 左上
 			bgPos[1].x = 0.0f / 1024.0f;
-			bgPos[1].y = (0.0f / 1024.0f) + movePos.y;
+			bgPos[1].y = (0.0f / 1024.0f) + movePLPos.y;
 			// 右下
 			bgPos[2].x = 256.0f / 1024.0f;
-			bgPos[2].y = (256.0f / 1024.0f) + movePos.y;
+			bgPos[2].y = (256.0f / 1024.0f) + movePLPos.y;
 			// 右上
 			bgPos[3].x = 256.0f / 1024.0f;
-			bgPos[3].y = (0.0f / 1024.0f) + movePos.y;
+			bgPos[3].y = (0.0f / 1024.0f) + movePLPos.y;
 
 			backObj.SetUV(bgPos);
 			break;
@@ -295,30 +306,30 @@ SCENE GameScene::Update()
 			bgScale = XMFLOAT3(7.5f, 4.5f, 1.0f);
 			backMatrix.SetScale(bgScale);
 
-			timer += 0.225f;
-			if (timer > 1)
+			animPLTimer += 0.225f;
+			if (animPLTimer > 1)
 			{
-				timer = 0;
-				movePos.x += 256.0f;
+				animPLTimer = 0;
+				movePLPos.x += 256.0f;
 			}
 
-			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePos.y = 256.0f * 2;
-			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePos.y = 256.0f;
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePLPos.y = 256.0f * 2;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePLPos.y = 256.0f;
 			if (!input->GetKey('A') && !input->GetKey(VK_LEFT) &&
-				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePos.y = 0.0f;
+				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePLPos.y = 0.0f;
 
 			// 左下
-			plPos[0].x = movePos.x / 1024.0f;
-			plPos[0].y = (movePos.y + 256.0f) / 1024.0f;
+			plPos[0].x = movePLPos.x / 1024.0f;
+			plPos[0].y = (movePLPos.y + 256.0f) / 1024.0f;
 			// 左上
-			plPos[1].x = movePos.x / 1024.0f;
-			plPos[1].y = movePos.y / 1024.0f;
+			plPos[1].x = movePLPos.x / 1024.0f;
+			plPos[1].y = movePLPos.y / 1024.0f;
 			// 右下
-			plPos[2].x = (movePos.x + 256.0f) / 1024.0f;
-			plPos[2].y = (movePos.y + 256.0f) / 1024.0f;
+			plPos[2].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[2].y = (movePLPos.y + 256.0f) / 1024.0f;
 			// 右上
-			plPos[3].x = (movePos.x + 256.0f) / 1024.0f;
-			plPos[3].y = movePos.y / 1024.0f;
+			plPos[3].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[3].y = movePLPos.y / 1024.0f;
 			gameObj.SetUV(plPos);
 
 			if (input->GetKey('W') || input->GetKey(VK_UP))  PlayPos.y += 1.0f * 0.1f;
@@ -327,8 +338,10 @@ SCENE GameScene::Update()
 			if (input->GetKey('S') || input->GetKey(VK_DOWN)) PlayPos.y += -1.0f * 0.1f;
 			gameMatrix.SetPos(PlayPos);
 
-			if (input->GetKey(VK_SPACE))
+			shotTimer += 0.02f;
+			if (input->GetKey(VK_SPACE) && shotTimer >= SHOT_INTERVAL)
 			{
+				shotTimer = 0;
 				for (int i = 0; i < MAX_LENGHT; i++)
 				{
 					if (!shotAlives[i])
@@ -347,17 +360,19 @@ SCENE GameScene::Update()
 				{
 					// 左下
 					shPos[0].x = 0 / 1024.0f;
-					shPos[0].y = 160.0f / 1024.0f;
+					shPos[0].y = 1040.0f / 1024.0f;
 					// 左上
 					shPos[1].x = 0 / 1024.0f;
 					shPos[1].y = 0 / 1024.0f;
 					// 右下
-					shPos[2].x = 160.0f / 1024.0f;
-					shPos[2].y = 160.0f / 1024.0f;
+					shPos[2].x = 240.0f / 1024.0f;
+					shPos[2].y = 1040.0f / 1024.0f;
 					// 右上
-					shPos[3].x = 160.0f / 1024.0f;
+					shPos[3].x = 240.0f / 1024.0f;
 					shPos[3].y = 0 / 1024.0f;
 					shotObj.SetUV(shPos);
+
+					shotMatrix[i].SetScale(shotScale);
 
 					ShotPos[i].y += 0.2f;
 
@@ -372,6 +387,94 @@ SCENE GameScene::Update()
 		case 8:
 			//問題8
 			//弾のアニメーションを実装しよう
+			bgActive = true;
+			bgScale = XMFLOAT3(7.5f, 4.5f, 1.0f);
+			backMatrix.SetScale(bgScale);
+
+			animPLTimer += 0.225f;
+			if (animPLTimer > 1)
+			{
+				animPLTimer = 0;
+				movePLPos.x += 256.0f;
+			}
+
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePLPos.y = 256.0f * 2;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePLPos.y = 256.0f;
+			if (!input->GetKey('A') && !input->GetKey(VK_LEFT) &&
+				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePLPos.y = 0.0f;
+
+			// 左下
+			plPos[0].x = movePLPos.x / 1024.0f;
+			plPos[0].y = (movePLPos.y + 256.0f) / 1024.0f;
+			// 左上
+			plPos[1].x = movePLPos.x / 1024.0f;
+			plPos[1].y = movePLPos.y / 1024.0f;
+			// 右下
+			plPos[2].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[2].y = (movePLPos.y + 256.0f) / 1024.0f;
+			// 右上
+			plPos[3].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[3].y = movePLPos.y / 1024.0f;
+			gameObj.SetUV(plPos);
+
+			if (input->GetKey('W') || input->GetKey(VK_UP))  PlayPos.y += 1.0f * 0.1f;
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) PlayPos.x += -1.0f * 0.1f;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) PlayPos.x += 1.0f * 0.1f;
+			if (input->GetKey('S') || input->GetKey(VK_DOWN)) PlayPos.y += -1.0f * 0.1f;
+			gameMatrix.SetPos(PlayPos);
+
+			shotTimer += 0.2f;
+			if (input->GetKey(VK_SPACE) && shotTimer >= SHOT_INTERVAL)
+			{
+				shotTimer = 0;
+				for (int i = 0; i < MAX_LENGHT; i++)
+				{
+					if (!shotAlives[i])
+					{
+						shotAlives[i] = true;
+						ShotPos[i] = PlayPos;
+						break;
+					}
+				}
+			}
+			for (int i = 0; i < MAX_LENGHT; i++)
+			{
+				shotMatrix[i].Identity();
+				shotMatrix[i].SetScale(shotScale);
+
+				if (shotAlives[i])
+				{
+					animSHTimer += 0.255f;
+					if (animSHTimer >= 0.5f)
+					{
+						animSHTimer = 0;
+						moveSHPos.y += 1040.0f;
+					}
+						
+					// 左下
+					shPos[0].x = moveSHPos.x / 1024.0f;
+					shPos[0].y = (moveSHPos.y + 1040.0f) / 1024.0f;
+					// 左上
+					shPos[1].x = moveSHPos.x / 1024.0f;
+					shPos[1].y = moveSHPos.y / 1024.0f;
+					// 右下
+					shPos[2].x = (moveSHPos.x + 240.0f) / 1024.0f;
+					shPos[2].y = (moveSHPos.y + 1040.0f) / 1024.0f;
+					// 右上
+					shPos[3].x = (moveSHPos.x + 240.0f) / 1024.0f;
+					shPos[3].y = moveSHPos.y / 1024.0f;
+					shotObj.SetUV(shPos);
+
+
+					ShotPos[i].y += 0.02f;
+
+					if (ShotPos[i].y > 4.5f)
+					{
+						shotAlives[i] = false;
+					}
+				}
+				shotMatrix[i].SetPos(ShotPos[i]);
+			}
 
 			break;
 	}
@@ -389,10 +492,6 @@ void GameScene::Render()
 	// RenderBeginの第1引数～第3引数が背景のRGB
 	App::GetInstance()->RenderBegin(0.2f, 0.2f, 0.2f, 1.0f);
 	
-	gameObj.Render(gameMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(charTexId));
-
-	if(bgActive)	backObj.Render(backMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(backTexId));
-
 	for (int i = 0; i < MAX_LENGHT; ++i)
 	{
 		if (shotAlives[i])
@@ -400,6 +499,11 @@ void GameScene::Render()
 			shotObj.Render(shotMatrix[i].GetCB(), Texture::GetInstance()->GetTextureResource(shotTexId));
 		}
 	}
+
+	gameObj.Render(gameMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(charTexId));
+
+	if(bgActive)	backObj.Render(backMatrix.GetCB(), Texture::GetInstance()->GetTextureResource(backTexId));
+
 	App::GetInstance()->RenderEnd();
 }
 
