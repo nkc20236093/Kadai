@@ -37,11 +37,13 @@ XMFLOAT2	shPos[4];
 XMFLOAT3	bgScale;
 XMFLOAT2	movePLPos;
 XMFLOAT2	moveSHPos;
+XMFLOAT2	moveBGPos;
 XMFLOAT3	PlayPos;
 XMFLOAT3	ShotPos[MAX_LENGHT];
 XMFLOAT3	shotScale = XMFLOAT3(0.4f, 0.4f, 1.0f);
 float		animPLTimer = 0;
 float		animSHTimer = 0;
+float		animBGTimer = 0;
 float		shotTimer = 0;
 bool		bgActive = false;
 bool		shotAlives[MAX_LENGHT];
@@ -93,9 +95,9 @@ void GameScene::Init()
 	gameObj.Init(Shader::GetInstance()->GetShader(n));
 	shotObj.Init(Shader::GetInstance()->GetShader(n));
 	backObj.Init(Shader::GetInstance()->GetShader(n));
-	charTexId = Texture::GetInstance()->LoadTexture("MyChar.png");
-	backTexId = Texture::GetInstance()->LoadTexture("GBackTex.png");
-	shotTexId = Texture::GetInstance()->LoadTexture("MyShot.png");
+	charTexId = Texture::GetInstance()->LoadTexture("tex/MyChar.png");
+	backTexId = Texture::GetInstance()->LoadTexture("tex/GBackTex.png");
+	shotTexId = Texture::GetInstance()->LoadTexture("tex/MyShot.png");
 	Reset();
 }
 
@@ -261,40 +263,58 @@ SCENE GameScene::Update()
 			bgScale = XMFLOAT3(7.5f, 4.5f, 1.0f);
 			backMatrix.SetScale(bgScale);
 
-			// ¶‰º
-			plPos[0].x = 0.0f / 1024.0f;
-			plPos[0].y = 256.0f / 1024.0f;
-			// ¶ã
-			plPos[1].x = 0.0f / 1024.0f;
-			plPos[1].y = 0.0f / 1024.0f;
-			// ‰E‰º
-			plPos[2].x = 256.0f / 1024.0f;
-			plPos[2].y = 256.0f / 1024.0f;
-			// ‰Eã
-			plPos[3].x = 256.0f / 1024.0f;
-			plPos[3].y = 0.0f / 1024.0f;
-			gameObj.SetUV(plPos);
-
-			// ”wŒi
 			animPLTimer += 0.225f;
 			if (animPLTimer > 1)
 			{
 				animPLTimer = 0;
-				movePLPos.y -= 0.02f;
+				movePLPos.x += 256.0f;
+			}
+
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePLPos.y = 256.0f * 2;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePLPos.y = 256.0f;
+			if (!input->GetKey('A') && !input->GetKey(VK_LEFT) &&
+				!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePLPos.y = 0.0f;
+
+			// ¶‰º
+			plPos[0].x = movePLPos.x / 1024.0f;
+			plPos[0].y = (movePLPos.y + 256.0f) / 1024.0f;
+			// ¶ã
+			plPos[1].x = movePLPos.x / 1024.0f;
+			plPos[1].y = movePLPos.y / 1024.0f;
+			// ‰E‰º
+			plPos[2].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[2].y = (movePLPos.y + 256.0f) / 1024.0f;
+			// ‰Eã
+			plPos[3].x = (movePLPos.x + 256.0f) / 1024.0f;
+			plPos[3].y = movePLPos.y / 1024.0f;
+			gameObj.SetUV(plPos);
+
+			if (input->GetKey('W') || input->GetKey(VK_UP))  PlayPos.y += 1.0f * 0.1f;
+			if (input->GetKey('A') || input->GetKey(VK_LEFT)) PlayPos.x += -1.0f * 0.1f;
+			if (input->GetKey('D') || input->GetKey(VK_RIGHT)) PlayPos.x += 1.0f * 0.1f;
+			if (input->GetKey('S') || input->GetKey(VK_DOWN)) PlayPos.y += -1.0f * 0.1f;
+			gameMatrix.SetPos(PlayPos);
+
+			// ”wŒi
+			animBGTimer += 0.225f;
+			if (animBGTimer > 1)
+			{
+				animBGTimer = 0;
+				moveBGPos.y -= 0.02f;
 			}
 
 			// ¶‰º
 			bgPos[0].x = 0.0f / 1024.0f;
-			bgPos[0].y = (256.0f / 1024.0f) + movePLPos.y;
+			bgPos[0].y = (1024.0f / 1024.0f) + moveBGPos.y;
 			// ¶ã
 			bgPos[1].x = 0.0f / 1024.0f;
-			bgPos[1].y = (0.0f / 1024.0f) + movePLPos.y;
+			bgPos[1].y = (0.0f / 1024.0f) + moveBGPos.y;
 			// ‰E‰º
-			bgPos[2].x = 256.0f / 1024.0f;
-			bgPos[2].y = (256.0f / 1024.0f) + movePLPos.y;
+			bgPos[2].x = 1024.0 / 1024.0f;
+			bgPos[2].y = (1024.0f / 1024.0f) + moveBGPos.y;
 			// ‰Eã
-			bgPos[3].x = 256.0f / 1024.0f;
-			bgPos[3].y = (0.0f / 1024.0f) + movePLPos.y;
+			bgPos[3].x = 1024.0f / 1024.0f;
+			bgPos[3].y = (0.0f / 1024.0f) + moveBGPos.y;
 
 			backObj.SetUV(bgPos);
 			break;
@@ -338,6 +358,30 @@ SCENE GameScene::Update()
 			if (input->GetKey('S') || input->GetKey(VK_DOWN)) PlayPos.y += -1.0f * 0.1f;
 			gameMatrix.SetPos(PlayPos);
 
+			// ”wŒi
+			animBGTimer += 0.225f;
+			if (animBGTimer > 1)
+			{
+				animBGTimer = 0;
+				moveBGPos.y -= 0.02f;
+			}
+
+			// ¶‰º
+			bgPos[0].x = 0.0f / 1024.0f;
+			bgPos[0].y = (1024.0f / 1024.0f) + moveBGPos.y;
+			// ¶ã
+			bgPos[1].x = 0.0f / 1024.0f;
+			bgPos[1].y = (0.0f / 1024.0f) + moveBGPos.y;
+			// ‰E‰º
+			bgPos[2].x = 1024.0 / 1024.0f;
+			bgPos[2].y = (1024.0f / 1024.0f) + moveBGPos.y;
+			// ‰Eã
+			bgPos[3].x = 1024.0f / 1024.0f;
+			bgPos[3].y = (0.0f / 1024.0f) + moveBGPos.y;
+
+			backObj.SetUV(bgPos);
+
+			// ’e
 			shotTimer += 0.02f;
 			if (input->GetKey(VK_SPACE) && shotTimer >= SHOT_INTERVAL)
 			{
@@ -374,7 +418,7 @@ SCENE GameScene::Update()
 
 					shotMatrix[i].SetScale(shotScale);
 
-					ShotPos[i].y += 0.2f;
+					ShotPos[i].y += 0.02f;
 
 					if (ShotPos[i].y > 4.5f)
 					{
@@ -423,7 +467,31 @@ SCENE GameScene::Update()
 			if (input->GetKey('S') || input->GetKey(VK_DOWN)) PlayPos.y += -1.0f * 0.1f;
 			gameMatrix.SetPos(PlayPos);
 
-			shotTimer += 0.2f;
+			// ”wŒi
+			animBGTimer += 0.225f;
+			if (animBGTimer > 1)
+			{
+				animBGTimer = 0;
+				moveBGPos.y -= 0.02f;
+			}
+
+			// ¶‰º
+			bgPos[0].x = 0.0f / 1024.0f;
+			bgPos[0].y = (1024.0f / 1024.0f) + moveBGPos.y;
+			// ¶ã
+			bgPos[1].x = 0.0f / 1024.0f;
+			bgPos[1].y = (0.0f / 1024.0f) + moveBGPos.y;
+			// ‰E‰º
+			bgPos[2].x = 1024.0 / 1024.0f;
+			bgPos[2].y = (1024.0f / 1024.0f) + moveBGPos.y;
+			// ‰Eã
+			bgPos[3].x = 1024.0f / 1024.0f;
+			bgPos[3].y = (0.0f / 1024.0f) + moveBGPos.y;
+
+			backObj.SetUV(bgPos);
+
+			// ’e
+			shotTimer += 0.02f;
 			if (input->GetKey(VK_SPACE) && shotTimer >= SHOT_INTERVAL)
 			{
 				shotTimer = 0;
