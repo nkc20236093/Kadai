@@ -260,7 +260,7 @@ bool App::InitD3D()
 	{
 		D3D11_BLEND_DESC descBlend;
 		ZeroMemory(&descBlend, sizeof(descBlend));
-		descBlend.AlphaToCoverageEnable = FALSE;		// ピクセルをレンダーターゲットに設定するときに、アルファトゥカバレッジをマルチサンプリングテクニックとして使用するかどうかを決定
+		descBlend.AlphaToCoverageEnable = TRUE;		// ピクセルをレンダーターゲットに設定するときに、アルファトゥカバレッジをマルチサンプリングテクニックとして使用するかどうかを決定
 		descBlend.IndependentBlendEnable = FALSE;		// 同時処理のレンダーターゲットで独立したブレンディングを有効にするかどうか
 		descBlend.RenderTarget[0].BlendEnable = TRUE;	// ブレンディングを有効にする
 		descBlend.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;		// 最初のRGBデータソースを指定
