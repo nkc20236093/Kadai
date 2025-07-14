@@ -19,34 +19,34 @@
 using namespace std;
 using namespace DirectX;
 
-constexpr int MAX_LeNGTH = 20;
+constexpr int MAX_LENGTH = 20;
 constexpr float SHOT_INTERVAL = 1.5f;
 Matrix		gameMatrix;
 Matrix		backMatrix;
-Matrix		shotMatrix[MAX_LeNGTH];
+Matrix		shotMatrix[MAX_LENGTH];
 Camera		gameCamera;
 CPolygon	gameObj;
 CPolygon	backObj;
-CPolygon	shotObj[MAX_LeNGTH];
+CPolygon	shotObj[MAX_LENGTH];
 int32_t		charTexId;
 int32_t		backTexId;
 int32_t		shotTexId;
 XMFLOAT2	plPos[4];
 XMFLOAT2	bgPos[4];
-XMFLOAT2	shPos[MAX_LeNGTH][4];
+XMFLOAT2	shPos[MAX_LENGTH][4];
 XMFLOAT3	bgScale;
 XMFLOAT2	movePLPos;
-XMFLOAT2	moveSHPos[MAX_LeNGTH];
+XMFLOAT2	moveSHPos[MAX_LENGTH];
 XMFLOAT2	moveBGPos;
 XMFLOAT3	PlayPos;
-XMFLOAT3	ShotPos[MAX_LeNGTH];
+XMFLOAT3	ShotPos[MAX_LENGTH];
 XMFLOAT3	shotScale = XMFLOAT3(0.4f, 0.4f, 1.0f);
 float		animPLTimer = 0;
-float		animSHTimer[MAX_LeNGTH];
+float		animSHTimer[MAX_LENGTH];
 float		animBGTimer = 0;
 float		shotTimer = 0;
 bool		bgActive = false;
-bool		shotAlives[MAX_LeNGTH];
+bool		shotAlives[MAX_LENGTH];
 
 void Reset()
 {
@@ -69,14 +69,14 @@ void Reset()
 	animPLTimer = 0;
 	movePLPos = XMFLOAT2(0, 0);
 	PlayPos = XMFLOAT3(0, 0, 0);
-	for (int i = 0; i < MAX_LeNGTH; i++)
+	for (int i = 0; i < MAX_LENGTH; i++)
 	{
 		shotMatrix[i].Identity();
 		for (int a = 0; a < 4; a++)
 		{
 			shPos[i][a] = XMFLOAT2(0, 0);
 		}
-		ShotPos[i] = PlayPos;
+		ShotPos[i] = XMFLOAT3(0, 0, 0);
 		shotAlives[i] = false;
 		shotMatrix[i].SetScale(shotScale);
 		moveSHPos[i] = XMFLOAT2(0, 0);
@@ -98,7 +98,7 @@ void GameScene::Init()
 	gameCamera.SetViewPort();
 	int32_t n = Shader::GetInstance()->LoadShader("VertexShader.hlsl", "PixelShader.hlsl");
 	gameObj.Init(Shader::GetInstance()->GetShader(n));
-	for (int i = 0; i < MAX_LeNGTH; i++)
+	for (int i = 0; i < MAX_LENGTH; i++)
 	{
 		shotObj[i].Init(Shader::GetInstance()->GetShader(n));
 	}
@@ -117,7 +117,7 @@ SCENE GameScene::Update()
 	// ÉJÉÅÉâê›íËçXêV
 	gameCamera.Update(gameMatrix.GetView(), gameMatrix.GetProjection());
 	gameCamera.Update(backMatrix.GetView(), backMatrix.GetProjection());
-	for (int i = 0; i < MAX_LeNGTH; ++i)
+	for (int i = 0; i < MAX_LENGTH; ++i)
 	{
 		gameCamera.Update(shotMatrix[i].GetView(), shotMatrix[i].GetProjection());
 	}
@@ -394,7 +394,7 @@ SCENE GameScene::Update()
 			if (input->GetKey(VK_SPACE) && shotTimer >= SHOT_INTERVAL)
 			{
 				shotTimer = 0;
-				for (int i = 0; i < MAX_LeNGTH; i++)
+				for (int i = 0; i < MAX_LENGTH; i++)
 				{
 					if (!shotAlives[i])
 					{
@@ -404,7 +404,7 @@ SCENE GameScene::Update()
 					}
 				}
 			}
-			for (int i = 0; i < MAX_LeNGTH; i++)
+			for (int i = 0; i < MAX_LENGTH; i++)
 			{
 				shotMatrix[i].Identity();
 
@@ -453,7 +453,7 @@ case 8:
 	if (input->GetKey('A') || input->GetKey(VK_LEFT)) movePLPos.y = 256.0f * 2;
 	if (input->GetKey('D') || input->GetKey(VK_RIGHT)) movePLPos.y = 256.0f;
 	if (!input->GetKey('A') && !input->GetKey(VK_LEFT) &&
-		!input->GetKey('D') && !input->GetKey(VK_RIGHT)) movePLPos.y = 0.0f;
+		!input->GetKey('D') && !input->GetKey(VK_RIGHT))movePLPos.y = 0.0f;
 
 	// ç∂â∫
 	plPos[0].x = movePLPos.x / 1024.0f;
@@ -469,7 +469,7 @@ case 8:
 	plPos[3].y = movePLPos.y / 1024.0f;
 	gameObj.SetUV(plPos);
 
-	if (input->GetKey('W') || input->GetKey(VK_UP)) PlayPos.y += 1.0f * 0.1f;
+	if (input->GetKey('W') || input->GetKey(VK_UP))  PlayPos.y += 1.0f * 0.1f;
 	if (input->GetKey('A') || input->GetKey(VK_LEFT)) PlayPos.x += -1.0f * 0.1f;
 	if (input->GetKey('D') || input->GetKey(VK_RIGHT)) PlayPos.x += 1.0f * 0.1f;
 	if (input->GetKey('S') || input->GetKey(VK_DOWN)) PlayPos.y += -1.0f * 0.1f;
@@ -503,20 +503,24 @@ case 8:
 	if (input->GetKey(VK_SPACE) && shotTimer >= SHOT_INTERVAL)
 	{
 		shotTimer = 0;
-		for (int i = 0; i < MAX_LeNGTH; i++)
+		for (int i = 0; i < MAX_LENGTH; i++)
 		{
 			if (!shotAlives[i])
 			{
 				shotAlives[i] = true;
 				ShotPos[i] = PlayPos;
-				moveSHPos[i].x = 0;
+				moveSHPos[i] = XMFLOAT2(0, 0);
+				shotAlives[i] = true;
 				break;
 			}
 		}
 	}
 
-	for (int i = 0; i < MAX_LeNGTH; i++)
+	for (int i = 0; i < MAX_LENGTH; i++)
 	{
+		shotMatrix[i].Identity();
+		shotMatrix[i].SetScale(shotScale);
+
 		if (shotAlives[i])
 		{
 			animSHTimer[i] += 0.1255f; 
@@ -541,18 +545,19 @@ case 8:
 			shPos[i][3].y = 0.0f / 1024.0f;
 			shotObj[i].SetUV(shPos[i]);
 
-			ShotPos[i].y += 0.002f; 
+			ShotPos[i].y += 0.02f; 
 
 			if (ShotPos[i].y > 4.5f)
 			{
 				shotAlives[i] = false;
 				animSHTimer[i] = 0;
-				moveSHPos[i] = XMFLOAT2(0, 0);
+				break;
 			}
+			shotMatrix[i].SetPos(ShotPos[i]);
 		}
-		shotMatrix[i].SetPos(ShotPos[i]);
 	}
-	break;	}
+	break;	
+}
 
 
 	// ÉVÅ[Éìì«Ç›çûÇ›
@@ -567,7 +572,7 @@ void GameScene::Render()
 	// RenderBeginÇÃëÊ1à¯êîÅ`ëÊ3à¯êîÇ™îwåiÇÃRGB
 	App::GetInstance()->RenderBegin(0.2f, 0.2f, 0.2f, 1.0f);
 
-	for (int i = 0; i < MAX_LeNGTH; ++i)
+	for (int i = 0; i < MAX_LENGTH; ++i)
 	{
 		if (shotAlives[i])
 		{
