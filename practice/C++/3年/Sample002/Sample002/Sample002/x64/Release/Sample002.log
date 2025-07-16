@@ -1,0 +1,21 @@
+﻿  compilation object save succeeded; see C:\Github\kadai\practice\C++\3年\Sample002\Sample002\x64\Release\PixelShader.cso
+C:\Github\kadai\practice\C++\3�N\Sample002\Sample002\Sample002\VertexShader.hlsl(30,11-24): warning X3578: Output value 'main' is not completely initialized
+  
+  compilation object save succeeded; see C:\Github\kadai\practice\C++\3年\Sample002\Sample002\x64\Release\VertexShader.cso
+  App.cpp
+  Audio.cpp
+  Camera.cpp
+  ClearScene.cpp
+  GameScene.cpp
+  Input.cpp
+  Matrix.cpp
+  Polygon.cpp
+  Shader.cpp
+  StartScene.cpp
+  Texture.cpp
+  WinMain.cpp
+  コード生成しています。
+  Previous IPDB not found, fall back to full compilation.
+  All 511 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  コード生成が終了しました。
+  Sample002.vcxproj -> C:\Github\kadai\practice\C++\3年\Sample002\Sample002\x64\Release\Sample002.exe
