@@ -523,11 +523,11 @@ case 8:
 
 		if (shotAlives[i])
 		{
-			animSHTimer[i] += 0.1255f; 
+			animSHTimer[i] += 0.1255f;
 			if (animSHTimer[i] >= 1)
 			{
-				animSHTimer[i] = 0; 
-				moveSHPos[i].x += 256.0f; 
+				animSHTimer[i] = 0;
+				moveSHPos[i].x += 256.0f;
 			}
 
 			// UV‚ÌÝ’è
@@ -545,7 +545,7 @@ case 8:
 			shPos[i][3].y = 0.0f / 1024.0f;
 			shotObj[i].SetUV(shPos[i]);
 
-			ShotPos[i].y += 0.02f; 
+			ShotPos[i].y += 0.02f;
 
 			if (ShotPos[i].y > 4.5f)
 			{
@@ -556,7 +556,7 @@ case 8:
 			shotMatrix[i].SetPos(ShotPos[i]);
 		}
 	}
-	break;	
+	break;
 }
 
 
