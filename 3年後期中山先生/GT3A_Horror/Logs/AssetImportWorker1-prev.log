@@ -1,0 +1,1061 @@
+Using pre-set license
+Built from '6000.0/respin/6000.0.60f1-f02d6f9f9009' branch; Version is '6000.0.60f1 (61dfb374e36f) revision 6414259'; Using compiler version '193933523'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'ja' Physical Memory: 16086 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2025-11-05T05:04:50Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.0.60f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker1
+-projectPath
+C:/Github/kadai/3年後期中山先生/GT3A_Horror
+-logFile
+Logs/AssetImportWorker1.log
+-srvPort
+56714
+-job-worker-count
+3
+-background-job-worker-count
+8
+-gc-helper-count
+1
+-name
+AssetImport
+Successfully changed project path to: C:/Github/kadai/3年後期中山先生/GT3A_Horror
+C:/Github/kadai/3年後期中山先生/GT3A_Horror
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [20388]  Target information:
+
+Player connection [20388]  * "[IP] 10.18.13.198 [Port] 0 [Flags] 2 [Guid] 3971371779 [EditorId] 3971371779 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-MH3M7B4) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [20388] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [20388] Host joined alternative multi-casting on [225.0.0.222:34997]...
+JobSystem: Creating JobQueue using job-worker-count value 3
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 7.93 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.60f1 (61dfb374e36f)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.0.60f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Github/kadai/3年後期中山先生/GT3A_Horror/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) Iris(R) Xe Graphics (ID=0x9a49)
+    Vendor:   Intel
+    VRAM:     8043 MB
+    Driver:   32.0.101.7040
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.0.60f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.0.60f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.0.60f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56004
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.0.60f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.003709 seconds.
+- Loaded All Assemblies, in  0.564 seconds
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.451 seconds
+Domain Reload Profiling: 1012ms
+	BeginReloadAssembly (183ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (53ms)
+	RebuildNativeTypeToScriptingClass (17ms)
+	initialDomainReloadingComplete (69ms)
+	LoadAllAssembliesAndSetupDomain (240ms)
+		LoadAssemblies (179ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (234ms)
+			TypeCache.Refresh (232ms)
+				TypeCache.ScanAssembly (213ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (452ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (384ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (87ms)
+			SetLoadedEditorAssemblies (8ms)
+			BeforeProcessingInitializeOnLoad (64ms)
+			ProcessInitializeOnLoadAttributes (149ms)
+			ProcessInitializeOnLoadMethodAttributes (75ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+========================================================================
+Worker process is ready to serve import requests
+Import Worker Mode flag is 0x00
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.811 seconds
+Refreshing native plugins compatible for Editor in 8.50 ms, found 6 plugins.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 6.58 ms, found 6 plugins.
+Package Manager log level set to [2]
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.977 seconds
+Domain Reload Profiling: 1786ms
+	BeginReloadAssembly (189ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (5ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (32ms)
+	RebuildCommonClasses (67ms)
+	RebuildNativeTypeToScriptingClass (16ms)
+	initialDomainReloadingComplete (41ms)
+	LoadAllAssembliesAndSetupDomain (496ms)
+		LoadAssemblies (355ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (244ms)
+			TypeCache.Refresh (185ms)
+				TypeCache.ScanAssembly (165ms)
+			BuildScriptInfoCaches (47ms)
+			ResolveRequiredComponents (7ms)
+	FinalizeReload (978ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (770ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (21ms)
+			SetLoadedEditorAssemblies (9ms)
+			BeforeProcessingInitializeOnLoad (152ms)
+			ProcessInitializeOnLoadAttributes (530ms)
+			ProcessInitializeOnLoadMethodAttributes (51ms)
+			AfterProcessingInitializeOnLoad (7ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (11ms)
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+Refreshing native plugins compatible for Editor in 8.30 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3905 unused Assets / (6.0 MB). Loaded Objects now: 4385.
+Memory consumption went from 101.6 MB to 95.6 MB.
+Total: 11.510800 ms (FindLiveObjects: 0.688800 ms CreateObjectMapping: 0.355200 ms MarkObjects: 6.818100 ms  DeleteObjects: 3.646500 ms)
+
+========================================================================
+Received Prepare
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+Refreshing native plugins compatible for Editor in 2.70 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3870 unused Assets / (6.2 MB). Loaded Objects now: 4371.
+Memory consumption went from 99.9 MB to 93.7 MB.
+Total: 14.652400 ms (FindLiveObjects: 0.553100 ms CreateObjectMapping: 0.731200 ms MarkObjects: 7.698700 ms  DeleteObjects: 5.667100 ms)
+
+Prepare: number of updated asset objects reloaded= 13
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.879 seconds
+Refreshing native plugins compatible for Editor in 5.32 ms, found 6 plugins.
+Native extension for WindowsStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.737 seconds
+Domain Reload Profiling: 1617ms
+	BeginReloadAssembly (239ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (9ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (53ms)
+	RebuildCommonClasses (53ms)
+	RebuildNativeTypeToScriptingClass (21ms)
+	initialDomainReloadingComplete (35ms)
+	LoadAllAssembliesAndSetupDomain (532ms)
+		LoadAssemblies (416ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (231ms)
+			TypeCache.Refresh (13ms)
+				TypeCache.ScanAssembly (1ms)
+			BuildScriptInfoCaches (203ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (737ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (584ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (18ms)
+			SetLoadedEditorAssemblies (9ms)
+			BeforeProcessingInitializeOnLoad (148ms)
+			ProcessInitializeOnLoadAttributes (382ms)
+			ProcessInitializeOnLoadMethodAttributes (23ms)
+			AfterProcessingInitializeOnLoad (3ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-BothFaces-Transparent-Edge' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+WARNING: Shader Unsupported: 'MMD4Mecanim/MMDLit-Tess-NoShadowCasting-BothFaces-Transparent' - All subshaders removed
+WARNING: Shader Did you use #pragma only_renderers and omit this platform?
+WARNING: Shader If subshaders removal was intentional, you may have forgotten turning Fallback off?
+Refreshing native plugins compatible for Editor in 5.43 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3903 unused Assets / (6.6 MB). Loaded Objects now: 4386.
+Memory consumption went from 102.1 MB to 95.5 MB.
+Total: 8.389900 ms (FindLiveObjects: 0.390100 ms CreateObjectMapping: 0.283200 ms MarkObjects: 3.893800 ms  DeleteObjects: 3.821000 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+========================================================================
+Received Import Request.
+  Time since last request: 19793.339872 seconds.
+  path: Assets/MMD/Zundamon_2025_MMD_A.extra.bytes
+  artifactKey: Guid(0074e36b52a3d1347810ca36575cad65) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/Zundamon_2025_MMD_A.extra.bytes using Guid(0074e36b52a3d1347810ca36575cad65) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '64f7fcef6738a8f1b1848271fd6cfcf2') in 0.1109366 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-AutoLight.cginc
+  artifactKey: Guid(1b213a190706f0f459d1f11604850db3) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-AutoLight.cginc using Guid(1b213a190706f0f459d1f11604850db3) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'de7c82c7ac6e1714cd2136ceeb592b11') in 0.0191941 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000075 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess.shader
+  artifactKey: Guid(d1ede65ef53525e44819593516efa063) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess.shader using Guid(d1ede65ef53525e44819593516efa063) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '559483d87bc6534aed4bc42e10ac4f55') in 0.0606694 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000089 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-NoShadowCasting-BothFaces-Edge.shader
+  artifactKey: Guid(9308e8e96f0308a4592001d97da5d664) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-NoShadowCasting-BothFaces-Edge.shader using Guid(9308e8e96f0308a4592001d97da5d664) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '11fbfb40e051adf6624877141c221b55') in 0.0309518 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Lighting.cginc
+  artifactKey: Guid(eeea4bff2f11a7a4782d8c24c109d256) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Lighting.cginc using Guid(eeea4bff2f11a7a4782d8c24c109d256) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'e4e2283b907ba0786d30d80f6e621692') in 0.0229673 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000108 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-BothFaces-Transparent.shader
+  artifactKey: Guid(ce30c458c6721a7448c5039c3ed34350) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-BothFaces-Transparent.shader using Guid(ce30c458c6721a7448c5039c3ed34350) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '9c4eee76cfa6337af9258447a90a6bd1') in 0.0242999 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000103 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimRigidBodyInspector.cs
+  artifactKey: Guid(6615465d54628e147b076ba468726da6) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimRigidBodyInspector.cs using Guid(6615465d54628e147b076ba468726da6) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '22b3e8c1820e0f7fbffe623c877b57d2') in 0.0340237 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000141 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-ShadowCollector.cginc
+  artifactKey: Guid(59d1e24e3186ef146b0e4def2db9cef0) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-ShadowCollector.cginc using Guid(59d1e24e3186ef146b0e4def2db9cef0) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '5cdec109afcebdb6ce1182cb33477767') in 0.0214051 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000125 seconds.
+  path: Assets/MMD/MMD4Mecanim/Textures/toon02.bmp
+  artifactKey: Guid(4b27dfac70974dd4f86f75f1f56d0af6) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Textures/toon02.bmp using Guid(4b27dfac70974dd4f86f75f1f56d0af6) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'a7e11563786b47b101d78c0737aa892b') in 0.2596021 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000079 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-NoShadowCasting-BothFaces-Transparent.shader
+  artifactKey: Guid(5b74ac82ea5011745b540feb6287e39f) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-NoShadowCasting-BothFaces-Transparent.shader using Guid(5b74ac82ea5011745b540feb6287e39f) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '4c3a52afb4f845d9f47229ce6e42fea5') in 0.0243216 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000077 seconds.
+  path: Assets/MMD/MMD4Mecanim/Scripts/MMD4MecanimBone.cs
+  artifactKey: Guid(482af93b30da7a048816a8ecabda762d) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Scripts/MMD4MecanimBone.cs using Guid(482af93b30da7a048816a8ecabda762d) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '0410575d9a4573c469178f46272b797f') in 0.0251099 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000144 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimEditor.dll
+  artifactKey: Guid(1eb6477d79ea83b4d81fd3ef090262dd) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimEditor.dll using Guid(1eb6477d79ea83b4d81fd3ef090262dd) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '566f85fa2669b06401f7157088f6bb2b') in 0.0414319 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000127 seconds.
+  path: Assets/MMD/Zundamon_2025_MMD_A.index.bytes
+  artifactKey: Guid(25a209e673cf12f46a35b7dc64f72613) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/Zundamon_2025_MMD_A.index.bytes using Guid(25a209e673cf12f46a35b7dc64f72613) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'd7cfe97a75368ed4e51d21b5a85adab3') in 0.0193984 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000106 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-SurfaceEdge-ForwardBase.cginc
+  artifactKey: Guid(0e37d1e12b15b5d4989a89a7e174509e) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-SurfaceEdge-ForwardBase.cginc using Guid(0e37d1e12b15b5d4989a89a7e174509e) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '36fee61f3d0255d4ee332f9852e7724a') in 0.0218026 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000096 seconds.
+  path: Assets/MMD/Zundamon_2025_MMD_A.model.bytes
+  artifactKey: Guid(9ff784efe0562ba409b4d34ab9455851) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/Zundamon_2025_MMD_A.model.bytes using Guid(9ff784efe0562ba409b4d34ab9455851) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'cfac2e682971f2202842a2fabfb30f38') in 0.0214176 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000187 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-ShadowCaster.cginc
+  artifactKey: Guid(3670c074d4c1bb949baffe3a27abde2c) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-ShadowCaster.cginc using Guid(3670c074d4c1bb949baffe3a27abde2c) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'd88481b9ae574a2256bcfe8d1edc4a02') in 0.0219289 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000086 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-SurfaceEdge-Lighting.cginc
+  artifactKey: Guid(32eafbb07c3fdc344842ba53bc769536) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-SurfaceEdge-Lighting.cginc using Guid(32eafbb07c3fdc344842ba53bc769536) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '38ddc8c3bfa2693ae0de187a1bb6ee0a') in 0.0203206 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000270 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/pmx2fbx_275.exe
+  artifactKey: Guid(47bf9f6ed0389af4983405f1018b00ab) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/pmx2fbx_275.exe using Guid(47bf9f6ed0389af4983405f1018b00ab) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '4319dacc5dfbfb7adde96d831625d045') in 0.0215316 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000207 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Dummy.shader
+  artifactKey: Guid(bb51e9ce98e4d0e4caaa9b1defcd0dd6) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Dummy.shader using Guid(bb51e9ce98e4d0e4caaa9b1defcd0dd6) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'ceff2f133652b9f6289a1befeeeb3545') in 0.0226257 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-NoShadowCasting-BothFaces-Transparent-Edge.shader
+  artifactKey: Guid(c881da8827dabec4ebf250989bd8dd7d) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-NoShadowCasting-BothFaces-Transparent-Edge.shader using Guid(c881da8827dabec4ebf250989bd8dd7d) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '7d30818b2f68cf72e54c1ba380e9b0a8') in 0.0303642 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimModelInspector.cs
+  artifactKey: Guid(70984c264cd77b540a8860f30558d7a4) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimModelInspector.cs using Guid(70984c264cd77b540a8860f30558d7a4) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '8024f0ab11f9b862779e7ff3e89c849c') in 0.0207808 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000129 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-BothFaces.shader
+  artifactKey: Guid(ae09191cd96c0714a96680c175993e98) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-BothFaces.shader using Guid(ae09191cd96c0714a96680c175993e98) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'da7b16a46621e31b42711c0178045c77') in 0.0230146 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000100 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/libfbxsdk.dylib
+  artifactKey: Guid(904ff880d86e0457fbb0c91916499641) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/libfbxsdk.dylib using Guid(904ff880d86e0457fbb0c91916499641) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '63f488d7ab7e83fbec4a7c90121e6ffe') in 0.0221898 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000142 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-NoShadowCasting.shader
+  artifactKey: Guid(cab9343d043f13c469ffe14598d9df1a) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-NoShadowCasting.shader using Guid(cab9343d043f13c469ffe14598d9df1a) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '6095dbc8f7d85aca0552911fb0c820c3') in 0.0248087 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000115 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimBoneInspector.cs
+  artifactKey: Guid(a005b6406a1ec1c46b36c1ef6b51d0c5) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimBoneInspector.cs using Guid(a005b6406a1ec1c46b36c1ef6b51d0c5) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '28e893c96abcd8f6e26ce797342d3800') in 0.021905 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000111 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-BothFaces.shader
+  artifactKey: Guid(0de21faf11b184640b1c180861b10340) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-BothFaces.shader using Guid(0de21faf11b184640b1c180861b10340) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'fe1d168b3f2822b6374c11907c876444') in 0.0237419 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000088 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimAnimationClipNameFixer.cs
+  artifactKey: Guid(66655fb7550184b43b47959f506cf512) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimAnimationClipNameFixer.cs using Guid(66655fb7550184b43b47959f506cf512) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'a02e05f5b2020fa481fa113208fe9d28') in 0.0211202 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000183 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/Android/libs/arm64-v8a/libMMD4MecanimBulletPhysics.so
+  artifactKey: Guid(3a86b97003e5d2044ae3c68f24b8ee0c) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/Android/libs/arm64-v8a/libMMD4MecanimBulletPhysics.so using Guid(3a86b97003e5d2044ae3c68f24b8ee0c) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '5985818b1b11e329050e04f7119c9b94') in 0.0223088 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000103 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/x86/MMD4MecanimBulletPhysics.dll
+  artifactKey: Guid(d0b1bbb76c486414e8f2f8e43ad09321) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/x86/MMD4MecanimBulletPhysics.dll using Guid(d0b1bbb76c486414e8f2f8e43ad09321) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '1f48cae68ea0067cfd2cb06a296b1338') in 0.0235226 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000123 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/WSA/ARM/MMD4MecanimBulletPhysics.dll
+  artifactKey: Guid(1e0b0b5fe0a5f094f8affed11179b192) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/WSA/ARM/MMD4MecanimBulletPhysics.dll using Guid(1e0b0b5fe0a5f094f8affed11179b192) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '5437cc9edbefe7ded40c2f10383eb30f') in 0.0218173 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000113 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/Unity2019/MMD4MecanimEditor.dll_
+  artifactKey: Guid(476a180de8a5ebd438892f8b82c27e09) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/Unity2019/MMD4MecanimEditor.dll_ using Guid(476a180de8a5ebd438892f8b82c27e09) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '7c99dcc0215c4935c7f8361f96b34fa1') in 0.0200444 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000094 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-Transparent-Edge.shader
+  artifactKey: Guid(6c882f5a64d9c784f83e89c820a3f77d) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-Transparent-Edge.shader using Guid(6c882f5a64d9c784f83e89c820a3f77d) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'a9c271df90179615eb9945adaf1f69df') in 0.0262805 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/MMD/MMD4Mecanim/Textures/toon05.bmp
+  artifactKey: Guid(1ed709cb11bedcc47a6674885ca9df07) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Textures/toon05.bmp using Guid(1ed709cb11bedcc47a6674885ca9df07) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'b97b56c89e0e7fdbee3cce465b449ad0') in 0.0299591 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000118 seconds.
+  path: Assets/MMD/MMD4Mecanim/Scripts/MMD4Mecanim.dll
+  artifactKey: Guid(237a2ace0fe23084c9cdd0d1311ed775) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Scripts/MMD4Mecanim.dll using Guid(237a2ace0fe23084c9cdd0d1311ed775) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '19f012e9b41e5f7474e8b0006ae47a89') in 0.0277253 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000139 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/x86_64/MMD4MecanimBulletPhysics.dll
+  artifactKey: Guid(499a725dea977024895608e082ab3f82) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/x86_64/MMD4MecanimBulletPhysics.dll using Guid(499a725dea977024895608e082ab3f82) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'e7e383f997d730ae65b839fb462c9fa8') in 0.0210673 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000147 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-NoShadowCasting-Transparent.shader
+  artifactKey: Guid(301a969dfbb6e3a4db6d7564b6fd329b) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-NoShadowCasting-Transparent.shader using Guid(301a969dfbb6e3a4db6d7564b6fd329b) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'e94331be813ab7074dee31c44130e8d9') in 0.0232 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000145 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/Android/libs/armeabi-v7a/libMMD4MecanimBulletPhysics.so
+  artifactKey: Guid(40755fa04ab4c28428bdaa5a811af26a) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/Android/libs/armeabi-v7a/libMMD4MecanimBulletPhysics.so using Guid(40755fa04ab4c28428bdaa5a811af26a) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'adc5231a177542ca37f705365c88075c') in 0.0250295 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000129 seconds.
+  path: Assets/MMD/Materials/2.zundamonaozame.mat
+  artifactKey: Guid(ec686dc266bf1a6479c0f1c01791a64c) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/Materials/2.zundamonaozame.mat using Guid(ec686dc266bf1a6479c0f1c01791a64c) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'b73ad00d1e5b5ed7e2cc197c45e7fd35') in 0.0688871 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/pmx2fbx_275
+  artifactKey: Guid(5dddc555b26072c4b821a9bd7618688a) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/pmx2fbx_275 using Guid(5dddc555b26072c4b821a9bd7618688a) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '13531c13e6b06773b196af905a3c13bd') in 0.021541 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000139 seconds.
+  path: Assets/MMD/MMD4Mecanim/Scripts/Internal/MMD4Mecanim.dll
+  artifactKey: Guid(900acfa85703e094c83da0439179f736) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Scripts/Internal/MMD4Mecanim.dll using Guid(900acfa85703e094c83da0439179f736) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '769765de444d99678f878683e91d7386') in 0.022725 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000125 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/x86_64/MMD4MecanimBulletPhysics.dll
+  artifactKey: Guid(82f34cdf1bd2d5f42bd70e80312fa7ab) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/x86_64/MMD4MecanimBulletPhysics.dll using Guid(82f34cdf1bd2d5f42bd70e80312fa7ab) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '44850e195d26b0c4d2cae052cdf5f200') in 0.0225446 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000094 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-NEXTEdge-Pass4.shader
+  artifactKey: Guid(684f8af9b4ff4bc459588db5b0f6275d) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-NEXTEdge-Pass4.shader using Guid(684f8af9b4ff4bc459588db5b0f6275d) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '14f7f2e8b815873386d1d4bebf3c3a7b') in 0.0224408 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000104 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-NoShadowCasting-BothFaces.shader
+  artifactKey: Guid(906f22b741b7e424bb3e7f851cd1ab60) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-NoShadowCasting-BothFaces.shader using Guid(906f22b741b7e424bb3e7f851cd1ab60) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '56bf225a8f675e9cd7ffffadc576f794') in 0.031553 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/Revision.txt
+  artifactKey: Guid(c6554212ba6183a48a1b0a1d90d36e7f) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/Revision.txt using Guid(c6554212ba6183a48a1b0a1d90d36e7f) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '4d7fb012edfd1a7ec815a4b560eebf10') in 0.0240483 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000072 seconds.
+  path: Assets/MMD/Zundamon_2025_MMD_A.MMD4Mecanim.asset
+  artifactKey: Guid(3ec2e3d0b9926944ba48df5e40ee78d3) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/Zundamon_2025_MMD_A.MMD4Mecanim.asset using Guid(3ec2e3d0b9926944ba48df5e40ee78d3) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'da9d4ed6dab908816ed39a79989ca93b') in 0.0489261 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-BothFaces-Transparent-Edge.shader
+  artifactKey: Guid(cb76052a74ccbf64c8d9ca0db4e251ab) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-BothFaces-Transparent-Edge.shader using Guid(cb76052a74ccbf64c8d9ca0db4e251ab) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '8610b18a585bd6d4f3ddaf81b9698eda') in 0.0319177 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000047 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/Android/libs/arm64-v8a/libMMD4MecanimBulletPhysics.so
+  artifactKey: Guid(a13f5b508829f474abd1535536d833b8) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/Android/libs/arm64-v8a/libMMD4MecanimBulletPhysics.so using Guid(a13f5b508829f474abd1535536d833b8) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '7cedcc2a36f74548d4469e5813a0f00f') in 0.0233416 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000132 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-ForwardBase.cginc
+  artifactKey: Guid(aab65b740ff199e47b3847ef8ba3dc4b) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-ForwardBase.cginc using Guid(aab65b740ff199e47b3847ef8ba3dc4b) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'ae9e43e40798f3d6daaf9d5d626ddf1d') in 0.0208717 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000059 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Transparent.shader
+  artifactKey: Guid(e9d94c7bf0c5e13498b997e5580ddc18) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Transparent.shader using Guid(e9d94c7bf0c5e13498b997e5580ddc18) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '237ee206980ab15355b7e23816cdf08d') in 0.0219472 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000153 seconds.
+  path: Assets/MMD/MMD4Mecanim/Textures/toon08.bmp
+  artifactKey: Guid(43738c821c5a48644bde82f4cae51d69) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Textures/toon08.bmp using Guid(43738c821c5a48644bde82f4cae51d69) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'c219b470b8ab583c876d1d01513c6caa') in 0.0314726 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000082 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/Android/libs/x86/libMMD4MecanimBulletPhysics.so
+  artifactKey: Guid(e565ced1897bffa4e87c792f78a3cd26) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/Android/libs/x86/libMMD4MecanimBulletPhysics.so using Guid(e565ced1897bffa4e87c792f78a3cd26) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'b28da00a5350694ec57ee08fbbebf09e') in 0.0237518 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000130 seconds.
+  path: Assets/MMD/MMD4Mecanim/Textures/toon04.bmp
+  artifactKey: Guid(a357488a5cc06b14baece60ad007820f) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Textures/toon04.bmp using Guid(a357488a5cc06b14baece60ad007820f) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'e9feb1975ce133f52f3929f3665a22af') in 0.0291026 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000133 seconds.
+  path: Assets/MMD/MMD4Mecanim/Textures/toon07.bmp
+  artifactKey: Guid(cfb5fa9e741a4fa41b4ef4636570d8e9) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Textures/toon07.bmp using Guid(cfb5fa9e741a4fa41b4ef4636570d8e9) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '3a5ac5550e811ced702cbe023d613c0f') in 0.0300681 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000078 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/mecab.dll
+  artifactKey: Guid(fcbcaabb2f9fff145aa6eb5b0a1d4db6) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/mecab.dll using Guid(fcbcaabb2f9fff145aa6eb5b0a1d4db6) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '0a4fac2827aa3bf4e3a8f9edd63acd54') in 0.0187958 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000083 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-NoShadowCasting-BothFaces-Edge.shader
+  artifactKey: Guid(a3c37b1da3c5ce04f9935c9c89779d57) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-NoShadowCasting-BothFaces-Edge.shader using Guid(a3c37b1da3c5ce04f9935c9c89779d57) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'f202dc8c0cc6368c5688b693c1b07133') in 0.025446 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000086 seconds.
+  path: Assets/UI,Material/Material/Ground.mat
+  artifactKey: Guid(970e7df84517f6d4ca41883f00ade08f) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/UI,Material/Material/Ground.mat using Guid(970e7df84517f6d4ca41883f00ade08f) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '3247309d9faff41c8fec5b3cae242f16') in 0.0339474 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000086 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/libfbxsdk.dll
+  artifactKey: Guid(f6b80e5ddecb0eb40ada90831d8af9e8) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/libfbxsdk.dll using Guid(f6b80e5ddecb0eb40ada90831d8af9e8) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '1e03fee0d8ce7cba8f73a8fbd4b4cafb') in 0.0237527 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000148 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-Lighting.cginc
+  artifactKey: Guid(2ffb98514cb658a4e89c26f2c98a62f6) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-Lighting.cginc using Guid(2ffb98514cb658a4e89c26f2c98a62f6) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'b558597cd8d6aebb3e0879f6033d966b') in 0.021523 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000174 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimAssignMaterialModel.cs
+  artifactKey: Guid(5a3d683c6605a3b49afe2ed1ce3ccb93) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/MMD4MecanimAssignMaterialModel.cs using Guid(5a3d683c6605a3b49afe2ed1ce3ccb93) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'b7593e8dfca30f4a59397ee721312afb') in 0.0208382 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000131 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/iOS/libMMD4MecanimBulletPhysics.a
+  artifactKey: Guid(e4033f8619e6d4d4d80211aa320c2bfa) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/iOS/libMMD4MecanimBulletPhysics.a using Guid(e4033f8619e6d4d4d80211aa320c2bfa) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '34f28dbde6974d4cc8bc4d26c2b92561') in 0.020403 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000077 seconds.
+  path: Assets/MMD/MMD4Mecanim/Textures/toon09.bmp
+  artifactKey: Guid(0c528739af24cd84c83b4c300bb885d6) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Textures/toon09.bmp using Guid(0c528739af24cd84c83b4c300bb885d6) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'e52c3a2c4f07a245fdd4d8dcbc7356ed') in 0.0311362 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Scenes/SampleScene.unity
+  artifactKey: Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Scenes/SampleScene.unity using Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '1e5ac7f07bcff8aca142f10c0860bf06') in 0.0275963 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000118 seconds.
+  path: Assets/MMD/Materials/1.zundamonmototai.mat
+  artifactKey: Guid(76d6a4a0bb8a80d478a1ef64f542f48b) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/Materials/1.zundamonmototai.mat using Guid(76d6a4a0bb8a80d478a1ef64f542f48b) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '49d2661130438d070156e5940e547ef6') in 0.0274439 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/x86/MMD4MecanimBulletPhysics.dll
+  artifactKey: Guid(d9f0ed263a55f9945a544bd61a26bf58) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/x86/MMD4MecanimBulletPhysics.dll using Guid(d9f0ed263a55f9945a544bd61a26bf58) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '86bd460740b56f38784ffe0a94a18f80') in 0.0274772 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000091 seconds.
+  path: Assets/MMD/tex/Zundamon_Body_Texture.png
+  artifactKey: Guid(a4ce94830077d09458eaae34105e214b) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/tex/Zundamon_Body_Texture.png using Guid(a4ce94830077d09458eaae34105e214b) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'ecc6bffb85d67848526e0a8ef6ae104b') in 0.0433061 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000046 seconds.
+  path: Assets/MMD/MMD4Mecanim/Scripts/MMD4MecanimRigidBody.cs
+  artifactKey: Guid(f6e01d66644a7034c9705894814b41f1) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Scripts/MMD4MecanimRigidBody.cs using Guid(f6e01d66644a7034c9705894814b41f1) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '7902e3e3d130b32a4b81e22d3f7d08ad') in 0.0264126 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000069 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/Android/libs/x86/libMMD4MecanimBulletPhysics.so
+  artifactKey: Guid(cc650b2075d576646a37a41b869d47f3) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/Android/libs/x86/libMMD4MecanimBulletPhysics.so using Guid(cc650b2075d576646a37a41b869d47f3) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'ba6d9f0cabb85f9a115af984a6a6653d') in 0.0315447 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000113 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/iOS/libMMD4MecanimBulletPhysics.a
+  artifactKey: Guid(62d1b5d66cbbec84f8dcdc8ff0682f8d) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics 2.75/iOS/libMMD4MecanimBulletPhysics.a using Guid(62d1b5d66cbbec84f8dcdc8ff0682f8d) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'd71a97fe3dd716f677adc5984c8b812f') in 0.0257159 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000150 seconds.
+  path: Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/libmecab.dylib
+  artifactKey: Guid(e3c9fc101210b4eb9a3a80845b53539a) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Editor/PMX2FBX/libmecab.dylib using Guid(e3c9fc101210b4eb9a3a80845b53539a) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '015e80ef509e4fa95ea52cd78ad64fea') in 0.0238557 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000139 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-Transparent.shader
+  artifactKey: Guid(7abe3633302fe3344918aecfcba7e71c) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Tess-Transparent.shader using Guid(7abe3633302fe3344918aecfcba7e71c) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '794c1441a3b93b9c08d0ef9ed061a237') in 0.0236603 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000077 seconds.
+  path: Assets/MMD/MMD4Mecanim/Scripts/MMD4MecanimAnimMorphHelper.cs
+  artifactKey: Guid(f69667fdb18cfe34bac2f8372bd8efa3) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Scripts/MMD4MecanimAnimMorphHelper.cs using Guid(f69667fdb18cfe34bac2f8372bd8efa3) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'a7fad095fb177c130484a9125605622c') in 0.0209181 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000113 seconds.
+  path: Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/iOS/libBulletPhysics.a
+  artifactKey: Guid(27f85126a70564f4ba9ff9d001860a08) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Plugins/MMD4MecanimBulletPhysics/iOS/libBulletPhysics.a using Guid(27f85126a70564f4ba9ff9d001860a08) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'fd82802e4fe1ef5d542ce82df6385d2f') in 0.0245506 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000123 seconds.
+  path: Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-Tessellation.cginc
+  artifactKey: Guid(26beeadcdbb9c834c857204a9b817b66) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Shaders/MMD4Mecanim-MMDLit-Surface-Tessellation.cginc using Guid(26beeadcdbb9c834c857204a9b817b66) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: 'f5057392bd2521ecde9f90ae4095b8d5') in 0.0204811 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000058 seconds.
+  path: Assets/MMD/MMD4Mecanim/Textures/toon0.bmp
+  artifactKey: Guid(bfc96f46cce79bb43b1edfd545be458d) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/MMD/MMD4Mecanim/Textures/toon0.bmp using Guid(bfc96f46cce79bb43b1edfd545be458d) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter) -> (artifact id: '4e53ee0c85470c67e564d0c52cc80d79') in 0.0301082 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
