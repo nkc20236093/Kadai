@@ -2081,6 +2081,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zundamon_2025_MMD_A
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 03cb5f0762983464bb53b94c5c537f1c, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
     - target: {fileID: 7026134587718898032, guid: 03cb5f0762983464bb53b94c5c537f1c, type: 3}
       propertyPath: m_UpdateWhenOffscreen
       value: 1
@@ -2102,6 +2106,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 03cb5f0762983464bb53b94c5c537f1c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1583739950}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 03cb5f0762983464bb53b94c5c537f1c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1583739953}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 03cb5f0762983464bb53b94c5c537f1c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1583739952}
     - targetCorrespondingSourceObject: {fileID: 2745160687090273722, guid: 03cb5f0762983464bb53b94c5c537f1c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1007530472}
@@ -4571,6 +4581,38 @@ CapsuleCollider:
   m_Height: 1.4
   m_Direction: 1
   m_Center: {x: 0, y: 0.65, z: 0}
+--- !u!114 &1583739952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007530289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521b611700410be45810047f0a74e899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1583739953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007530289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MovingTurnSpeed: 360
+  m_StationaryTurnSpeed: 180
+  m_JumpPower: 12
+  m_GravityMultiplier: 2
+  m_RunCycleLegOffset: 0.2
+  m_MoveSpeedMultiplier: 1
+  m_AnimSpeedMultiplier: 1
+  m_GroundCheckDistance: 0.5
 --- !u!114 &1588179899
 MonoBehaviour:
   m_ObjectHideFlags: 0
