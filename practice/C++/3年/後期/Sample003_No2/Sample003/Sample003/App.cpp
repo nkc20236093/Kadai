@@ -228,7 +228,7 @@ bool App::InitD3D()
 		pImmediateContext.Get()->OMSetRenderTargets(
 			1,									// 描画ターゲットの数
 			pRenderTargetView.GetAddressOf(),	// 描画ターゲットビューの配列
-			nullptr							// 深度/ステンシルビューを設定しない
+			nullptr								// 深度,ステンシルビューを設定しない
 		);
 	}
 

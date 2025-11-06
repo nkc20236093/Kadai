@@ -18,8 +18,23 @@ cbuffer Float4Buffer:register(b0)
 
 float4 main(PS_IN input) : SV_TARGET
 {
-	float4 tex = float4(0.0f, 0.5f, 1.0f, 1.0f);
-	tex = g_Texture.Sample(g_Sampler, input.tex);
-	tex.rgb = pow(tex.rgb,f4.x);
-	return tex * input.col;
+	// uvのyが0.5未満なら青、0.6以上は赤、それ以外はテクスチャ
+	float4 tex = float4(1.0f, 0.0f, 1.0f, 1.0f);
+    if (input.tex.y < 0.5)
+    {
+        tex = float4(0, 0, 1, 1);
+    }
+    else if (input.tex.y >= 0.6)
+    {
+        tex = float4(1, 0, 0, 1);
+    }
+    else
+    {
+        tex = g_Texture.Sample(g_Sampler, input.tex);
+    }
+    
+    return tex;
+	//tex = g_Texture.Sample(g_Sampler, input.tex);
+	//tex.rgb = pow(tex.rgb,f4.x);
+	//return tex * input.col;
 }

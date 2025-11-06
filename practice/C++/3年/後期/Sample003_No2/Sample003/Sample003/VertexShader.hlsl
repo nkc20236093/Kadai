@@ -36,6 +36,7 @@ VS_OUT main(VS_IN input)
 
 	output.col = input.col;
 	output.tex = input.tex;
-
+    output.normal = input.normal;				// 法線ベクトルは変換しない
+	
 	return output;
 }
