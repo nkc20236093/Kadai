@@ -104,3 +104,6 @@ practice/C++/3年/Sample002/Sample002/packages/Microsoft.XAudio2.Redist.1.2.11/
 practice/C++/3年/Sample002/Sample002/packages/
 practice/C++/3年/Sample002__/Sample002/packages/directxtk_desktop_2019.2023.4.28.1/.signature.p7s
 practice/C++/3年/Sample002__/Sample002/packages/
+!**/MMD/
+!**/MMD/**
+**/MMD/*.unitypackage
