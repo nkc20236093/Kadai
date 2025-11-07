@@ -140,9 +140,10 @@
     <vertexScaleByHeightFlag>false</vertexScaleByHeightFlag>
     <vertexScaleByHeight>158</vertexScaleByHeight>
     <waitProcessExitting>false</waitProcessExitting>
-    <pmxAssetPath>Assets/MMD/Zundamon_2025_MMD_A.pmx</pmxAssetPath>
+    <pmxAssetPath>Assets/MMD/Zundamon/Zundamon_2025_MMD_A.pmx</pmxAssetPath>
     <vmdAssetPathList />
     <fbxOutputPath>Assets/MMD/Zundamon_2025_MMD_A.fbx</fbxOutputPath>
+    <fbxAssetPath>Assets/MMD/Zundamon/Zundamon_2025_MMD_A.fbx</fbxAssetPath>
     <bulletPhysicsVersion>_275</bulletPhysicsVersion>
     <useWineFlag>false</useWineFlag>
     <wine>Manual</wine>
@@ -183,5 +184,73 @@
       <selfShadowEnabled>true</selfShadowEnabled>
       <sphereMapEnabled>true</sphereMapEnabled>
     </materialGlobalProperty>
+    <materialProperyList>
+      <MaterialProperty>
+        <materialName>0.zundamonfuku</materialName>
+        <isVisible>true</isVisible>
+        <isLocked>false</isLocked>
+        <isUIFoldout>false</isUIFoldout>
+        <overrideToonTone>false</overrideToonTone>
+        <overrideShadowLum>false</overrideShadowLum>
+        <overrideTess>false</overrideTess>
+        <tessEnabled>false</tessEnabled>
+        <transparencyCache>Enabled</transparencyCache>
+      </MaterialProperty>
+      <MaterialProperty>
+        <materialName>1.zundamonmototai</materialName>
+        <isVisible>true</isVisible>
+        <isLocked>false</isLocked>
+        <isUIFoldout>false</isUIFoldout>
+        <overrideToonTone>false</overrideToonTone>
+        <overrideShadowLum>false</overrideShadowLum>
+        <overrideTess>false</overrideTess>
+        <tessEnabled>false</tessEnabled>
+        <transparencyCache>Disabled</transparencyCache>
+      </MaterialProperty>
+      <MaterialProperty>
+        <materialName>2.zundamonaozame</materialName>
+        <isVisible>true</isVisible>
+        <isLocked>false</isLocked>
+        <isUIFoldout>false</isUIFoldout>
+        <overrideToonTone>false</overrideToonTone>
+        <overrideShadowLum>false</overrideShadowLum>
+        <overrideTess>false</overrideTess>
+        <tessEnabled>false</tessEnabled>
+        <transparencyCache>Enabled</transparencyCache>
+      </MaterialProperty>
+    </materialProperyList>
+    <materialBlockPropertyList>
+      <MaterialBlockProperty>
+        <materialNames>
+          <string>0.zundamonfuku</string>
+          <string>1.zundamonmototai</string>
+          <string>2.zundamonaozame</string>
+        </materialNames>
+        <isUIFoldout>true</isUIFoldout>
+        <baseColor>
+          <r>1</r>
+          <g>1</g>
+          <b>1</b>
+          <a>1</a>
+        </baseColor>
+        <emissionColor>
+          <r>0</r>
+          <g>0</g>
+          <b>0</b>
+          <a>0</a>
+        </emissionColor>
+        <emissionPower>1</emissionPower>
+        <standardBRDF>Specular</standardBRDF>
+        <standardSpecularColor>
+          <r>0</r>
+          <g>0</g>
+          <b>0</b>
+          <a>0</a>
+        </standardSpecularColor>
+        <standardMetallicGlossiness>0</standardMetallicGlossiness>
+        <standardSpecularGlossiness>0</standardSpecularGlossiness>
+        <standardMetallic>0</standardMetallic>
+      </MaterialBlockProperty>
+    </materialBlockPropertyList>
   </mmd4MecanimProperty>
 </PMX2FBXConfig>
