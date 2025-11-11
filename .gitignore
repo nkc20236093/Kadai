@@ -21,6 +21,7 @@
 # /[Aa]ssets/AssetStoreTools*
 *Library/
 *kadai2/
+**Logs/
 *Vehicles/
 *.nupkg
 *.lib
